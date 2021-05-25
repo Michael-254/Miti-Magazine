@@ -21,6 +21,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
+Route::get('/choose/plan', function () {
+    return view('ChoosePlan');
+})->name('choose.plan');
+
+
 Route::prefix('auth')->group(function () {
     Route::get('/{key}/redirect', [App\Http\Controllers\SocialiteController::class, 'redirect'])->name('socialite');
     Route::get('/{key}/callback', [App\Http\Controllers\SocialiteController::class, 'callback']);
