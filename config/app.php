@@ -166,6 +166,7 @@ return [
         /*
          * Package Service Providers...
          */
+        Delights\Ipay\IpayServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -173,6 +174,7 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\ElfinderServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 

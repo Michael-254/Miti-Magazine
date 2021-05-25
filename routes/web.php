@@ -17,6 +17,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('read', 'MagazineController@show');
+Route::get('payment', 'PaymentController@payment');
+Route::get('file-manager', 'FileManagerController@index');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
