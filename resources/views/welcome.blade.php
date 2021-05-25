@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <title>BGF | Miti Magazine Online</title>
+    <title>Miti Magazine | Better Globe Forestry LTD</title>
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
@@ -23,36 +23,23 @@
 
         <nav x-data="{ open: false }" class="relative">
             <!-- Primary Navigation Menu -->
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex justify-between h-16">
+            <div class="flex-1">
+                <div class="h-16 px-6 flex items-center justify-between">
                     <div class="flex">
-                        <!-- Logo -->
-                        <div class="flex-shrink-0 flex items-center">
-                            <img src="{{asset('storage/logo.png')}}" class="block h-10 w-auto lg:w-16 lg:h-16 fill-current" alt="Logo Image" />
-                        </div>
-
-                        <!-- Navigation Links -->
-                        <div class="hidden space-x-8 sm:-my-px sm:ml-5 sm:flex">
-                            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                                <h2 class="text-blue-500 text-xl">Miti Magazine</h2>
-                            </x-nav-link>
-                        </div>
+                        <img src="{{asset('storage/logo.png')}}" class="block h-10 w-auto lg:w-16 lg:h-16 fill-current" alt="Logo Image" />
+                        <x-nav-link :href="route('dashboard')">
+                            <h2 class="hidden sm:flex text-blue-500 text-xl">Miti Magazine</h2>
+                        </x-nav-link>
                     </div>
 
-                    <!-- Settings Dropdown -->
                     <div class="hidden sm:flex sm:items-center sm:ml-6">
-                        <div class="hidden space-x-2 sm:-my-px sm:ml-5 sm:flex mr-3">
-                            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                                <p class="border rounded-md outline-none text-xs uppercase font-bold px-4 py-2 
-                                   bg-green-500 hover:bg-blue-600 hover:text-white">
-                                    Get Started
-                                </p>
-                            </x-nav-link>
-                        </div>
                         @guest
-                        <div class="hidden space-x-2 sm:-my-px sm:ml-2 sm:flex">
-                            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                                Login
+                        <div class="hidden space-x-2 sm:-my-px sm:ml-5 sm:flex mr-3">
+                            <x-nav-link :href="route('login')">
+                                <p class="border rounded-md outline-none text-xs uppercase font-bold px-4 py-2 
+                                   bg-blue-600 hover:bg-blue-800 hover:text-white">
+                                    Login
+                                </p>
                             </x-nav-link>
                         </div>
                         @endguest
@@ -72,6 +59,12 @@
                             </x-slot>
 
                             <x-slot name="content">
+                                <x-dropdown-link href="#">
+                                    My Profile
+                                </x-dropdown-link>
+                                <x-dropdown-link href="#">
+                                    My Subscription
+                                </x-dropdown-link>
                                 <!-- Authentication -->
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
@@ -100,19 +93,13 @@
 
             <!-- Responsive Navigation Menu -->
             <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-                <div class="pt-1 pb-1 space-y-1">
-                    <x-responsive-nav-link>
-                        <p class="border rounded-md outline-none max-w- text-xs uppercase font-bold px-2 py-2 
-                                   bg-green-500 hover:bg-blue-600 hover:text-white">
-                            Get Started
-                        </p>
-                    </x-responsive-nav-link>
-                </div>
-
                 @guest
                 <div class="pt-1 pb-1 space-y-1">
-                    <x-responsive-nav-link>
-                        Login
+                    <x-responsive-nav-link :href="route('login')">
+                        <p class="border rounded-md outline-none max-w- text-xs uppercase font-bold px-2 py-2 
+                                   bg-blue-600 hover:bg-blue-800 hover:text-white">
+                            Login
+                        </p>
                     </x-responsive-nav-link>
                 </div>
                 @endguest
@@ -134,6 +121,12 @@
                     </div>
 
                     <div class="mt-3 space-y-1">
+                        <x-responsive-nav-link :href="route('dashboard')">
+                            My Profile
+                        </x-responsive-nav-link>
+                        <x-responsive-nav-link :href="route('dashboard')">
+                            My Subscription
+                        </x-responsive-nav-link>
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -154,8 +147,14 @@
             <div class="items-center flex flex-wrap">
                 <div class="w-full lg:w-6/12 px-4 mt-16 ml-auto mr-auto text-center">
                     <div>
-                        <h1 class="text-white font-semibold text-5xl">Welcome to Miti Online</h1>
-                        <p class="mt-4 text-lg text-gray-300">Miti is a high-quality quarterly on forestry in East Africa, providing specialist information beautifully presented. Since 2009.</p>
+                        <h1 class="text-white font-semibold text-2xl md:text-5xl">Welcome to Miti Magazine</h1>
+                        <h4 class="mt-4 text-sm md:text-2xl md:font-semibold text-white">Miti is a high-quality quarterly on forestry in East Africa, providing specialist information beautifully presented. Since 2009.</h4>
+                    </div>
+                    <div class="mt-5">
+                        <ul class="text-white text-sm mb-6 md:font-semibold md:text-xl">
+                            <li>A subscription is for 1 year only, meaning 4 issues</li>
+                        </ul>
+                        <button style="padding: 15px 24px 13px; border-radius: 4px; font: 500 15px / 16px hind; color: black; background-color: rgb(34,139,34); justify-content: center; text-align: center; cursor: pointer; text-decoration: none; outline: none; border: none; width: 280px;">SUBSCRIBE NOW</button>
                     </div>
                 </div>
             </div>
@@ -202,8 +201,6 @@
 
 
         </div>
-
-        @livewire('homepage-plans')
 
     </main>
 
