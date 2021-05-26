@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('landing.page');
 
 Route::get('read', 'MagazineController@show');
 Route::get('payment', 'PaymentController@payment');
@@ -26,9 +26,12 @@ Route::get('/dashboard', function () {
 })->middleware(['auth'])->name('dashboard');
 
 Route::get('/choose/plan', function () {
-    return view('ChoosePlan');
+    return view('choose-plan');
 })->name('choose.plan');
 
+Route::get('/subscribe/plan', function () {
+    return view('selected-plan');
+})->name('subscribe.plan');
 
 Route::prefix('auth')->group(function () {
     Route::get('/{key}/redirect', [App\Http\Controllers\SocialiteController::class, 'redirect'])->name('socialite');

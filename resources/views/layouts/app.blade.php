@@ -212,7 +212,7 @@
                     <div class="card-content">
                         <div class="card-body">
                             <div class="card-text">
-                                <p>The fixed navbar layout has a fixed navbar and navigation menu and footer. Only navbar section is fixed to user. In this page you can experience it.</p>
+                               @yield('content')
                             </div>
                         </div>
                     </div>

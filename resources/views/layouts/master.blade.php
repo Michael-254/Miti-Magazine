@@ -35,6 +35,11 @@
                     </div>
 
                     <div class="hidden sm:flex sm:items-center sm:ml-6">
+                        <div class="hidden space-x-2 sm:-my-px sm:ml-5 sm:flex mr-3">
+                            <x-nav-link :href="route('landing.page')">
+                                Home
+                            </x-nav-link>
+                        </div>
                         @guest
                         <div class="hidden space-x-2 sm:-my-px sm:ml-5 sm:flex mr-3">
                             <x-nav-link :href="route('login')">
@@ -95,6 +100,11 @@
 
             <!-- Responsive Navigation Menu -->
             <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden  {{ Request::path() !=  '/' ? 'bg-gray-900' : ''  }}">
+                <div class="pt-1 pb-1 space-y-1">
+                    <x-responsive-nav-link :href="route('landing.page')">
+                        Home
+                    </x-responsive-nav-link>
+                </div>
                 @guest
                 <div class="pt-1 pb-1 space-y-1">
                     <x-responsive-nav-link :href="route('login')">
@@ -155,8 +165,8 @@
                     <div class="mt-5">
                         <ul class="text-white text-sm mb-12 md:font-semibold md:text-xl">
                             <li>A subscription is for 1 year only, meaning 4 issues</li>
-                        </ul>    
-                        <a  href="{{route('choose.plan')}}" style="padding: 15px 81px 13px;border-radius: 4px;font: 500 15px / 16px hind;color: black;background-color: rgb(34,139,34);justify-content: center;text-align: center;cursor: pointer;text-decoration: none;outline: none;border: none;width: 280px;">SUBSCRIBE</a>
+                        </ul>
+                        <a href="{{route('choose.plan')}}" style="padding: 15px 81px 13px;border-radius: 4px;font: 500 15px / 16px hind;color: black;background-color: rgb(34,139,34);justify-content: center;text-align: center;cursor: pointer;text-decoration: none;outline: none;border: none;width: 280px;">SUBSCRIBE</a>
                     </div>
                 </div>
             </div>
