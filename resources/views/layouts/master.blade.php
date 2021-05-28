@@ -40,6 +40,11 @@
                                 Home
                             </x-nav-link>
                         </div>
+                        <div class="hidden space-x-2 sm:-my-px sm:ml-5 sm:flex mr-3">
+                            <x-nav-link href="#contact-info">
+                                Contact Information
+                            </x-nav-link>
+                        </div>
                         @guest
                         <div class="hidden space-x-2 sm:-my-px sm:ml-5 sm:flex mr-3">
                             <x-nav-link :href="route('login')">
@@ -54,7 +59,7 @@
                         @auth
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
-                                <button class="flex items-center text-sm font-medium text-white hover:text-blue-500 hover:border-gray-300 focus:outline-none focus:text-white focus:border-gray-300 transition duration-150 ease-in-out">
+                                <button class="ml-3 flex items-center text-sm font-medium text-white hover:text-blue-500 hover:border-gray-300 focus:outline-none focus:text-white focus:border-gray-300 transition duration-150 ease-in-out">
                                     <div>{{ Auth::user()->name }}</div>
 
                                     <div class="ml-1">
@@ -105,6 +110,11 @@
                         Home
                     </x-responsive-nav-link>
                 </div>
+                <div class="pt-1 pb-1 space-y-1">
+                    <x-responsive-nav-link :href="route('landing.page')">
+                        Contact Information
+                    </x-responsive-nav-link>
+                </div>
                 @guest
                 <div class="pt-1 pb-1 space-y-1">
                     <x-responsive-nav-link :href="route('login')">
@@ -115,7 +125,6 @@
                     </x-responsive-nav-link>
                 </div>
                 @endguest
-
                 <!-- Responsive Settings Options -->
                 @auth
                 <div class="pt-4 pb-1 border-t border-gray-200">
@@ -196,7 +205,7 @@
                         </a>
                     </div>
                 </div>
-                <div class="px-4 sm:w-1/2 md:w-1/4 mt-4 md:mt-0">
+                <div id="contact-info" class="px-4 sm:w-1/2 md:w-1/4 mt-4 md:mt-0">
                     <h6 class="font-bold mb-2">Address</h6>
                     <address class="not-italic mb-4 text-sm">
                         Better Globe Forestry Ltd.<br>

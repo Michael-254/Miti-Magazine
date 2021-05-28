@@ -15,6 +15,10 @@ class CreateSubscriptionsTable extends Migration
     {
         Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained();
+            $table->foreignId('subscription_plan_id')->constrained();
+            $table->timestamp('start_date');
+            $table->timestamp('end_date');
             $table->timestamps();
         });
     }
