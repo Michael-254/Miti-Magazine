@@ -17,9 +17,18 @@ Route::get('/', function () {
     return view('welcome');
 })->name('landing.page');
 
-Route::get('read', 'MagazineController@show');
-Route::get('payment', 'PaymentController@payment');
-Route::get('file-manager', 'FileManagerController@index');
+Route::prefix('user')->middleware(['auth'])->group(function () {
+    Route::get('profile', 'UserController@show')->name('profile.show');
+    Route::patch('{user}/update-profile', 'UserController@update')->name('profile.update');
+    Route::get('change-password', 'UserController@passwordChange')->name('change.password');
+    Route::post('change-password', 'UserController@updatePassword')->name('update.password');;
+    Route::get('payment', 'PaymentController@payment');
+    Route::get('file-manager', 'FileManagerController@index');
+});
+
+Route::get('/read', 'MagazineController@show');
+
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
