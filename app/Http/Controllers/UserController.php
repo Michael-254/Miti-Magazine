@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangePasswordRequest;
+use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Hash;
 
@@ -14,19 +15,10 @@ class UserController extends Controller
         return view('users.update-profile');
     }
 
-    public function update(Request $request, User $user)
+    public function update(ProfileUpdateRequest $request, User $user)
     {
-        $request->validate([
-            'name' => 'required',
-            'country' => 'required',
-        ]);
 
-        $user->update([
-            'name' => $request->name,
-            'country' => $request->country,
-            'gender' => $request->gender,
-            'company' => $request->company,
-        ]);
+        $user->update($request->validated());
 
         Toastr::success('Updated successfully', 'Success');
         return back();
@@ -37,17 +29,13 @@ class UserController extends Controller
         return view('users.password-change');
     }
 
-    public function updatePassword(Request $request)
+    public function updatePassword(ChangePasswordRequest $request)
     {
-        $request->validate([
-            'current_password' => 'required',
-            'password' => 'required|confirmed|min:8',
-        ]);
-
         if (!Hash::check($request->current_password, auth()->user()->password)) {
             return back()->withErrors('Current password does not match!');
         }
 
+        User::find(auth()->user()->id)->update(['password' => Hash::make($request->password)]);
         Toastr::success('Password updated', 'Success');
         return view('users.password-change');
     }
