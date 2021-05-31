@@ -21,7 +21,7 @@ class UserController extends Controller
         $user->update($request->validated());
 
         Toastr::success('Updated successfully', 'Success');
-        return back();
+        return redirect('user/profile');
     }
 
     public function passwordChange()
@@ -37,6 +37,6 @@ class UserController extends Controller
 
         User::find(auth()->user()->id)->update(['password' => Hash::make($request->password)]);
         Toastr::success('Password updated', 'Success');
-        return view('users.password-change');
+        return view('users.update-profile');
     }
 }
