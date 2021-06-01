@@ -17,9 +17,14 @@ Route::get('/', function () {
     return view('welcome');
 })->name('landing.page');
 
-Route::get('read', 'MagazineController@show');
+Route::get('read/{slug}', 'MagazineController@show');
 Route::get('payment', 'PaymentController@payment');
+Route::get('ipay/callback', 'PaymentController@callback');
 Route::get('file-manager', 'FileManagerController@index');
+
+Route::get('express-checkout','PaypalController@getExpressCheckout');
+Route::get('express-checkout-success', 'PayPalController@getExpressCheckoutSuccess');
+Route::post('paypal/ipn','PayPalController@postNotify');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -24,7 +24,7 @@
   </head> 
 <body>
 	<!-- begin flipbook  -->
-	<div id="fb5-ajax" data-cat="{{ $slug }}" data-template="true"> 			
+	<div id="fb5-ajax" data-cat="miti-magazine" data-template="true"> 			
 
 		<!-- BACKGROUND FLIPBOOK -->
 		<div class="fb5-bcg-book"></div>  
@@ -51,7 +51,7 @@
 				<li key="lazy_loading_thumbs">false</li>	<!-- enabled/disabled lazdy loading for thumbs -->
 				<li key="double_click_enabled">true</li> 	<!-- enabled/disabled double click mouse for flipbook -->                 
 				<li key="rtl">false</li>					<!-- enabled/disabled 'right to left' for eastern countries -->
-				<li key="pdf_url">files/magazines/1.pdf</li>		    <!-- pathway to a pdf file ( the file will be read live ) -->
+				<li key="pdf_url">/files/magazines/1.pdf</li>		    <!-- pathway to a pdf file ( the file will be read live ) -->
 				<li key="pdf_scale">2</li>					<!-- to live a pdf file (if you want to have a strong zoom - increase the value) -->
 				<li key="page_mode">auto</li>               <!-- value to 'single', 'double', or 'auto' -->
 				<li key="sound_sheet"></li>                 <!-- sound for sheet -->
@@ -89,7 +89,7 @@
 				<!-- BEGIN LINKS -->
 				<section id="links">
 				
-					   
+					   <a href="{{ url('/') }}">Miti Magazine</a>
 			   
 				</section>     
 				<!-- END LINKS -->                         
@@ -99,7 +99,7 @@
 				<div id="fb5-book">                       
 										 
 							<!-- begin page 1 -->          
-							<div data-background-image="pages/1.jpg">          
+							<div data-background-image="/pages/1.jpg">          
 								   
 										 <!-- container page book --> 
 										 <div class="fb5-cont-page-book">
@@ -126,7 +126,7 @@
 							  
 										 
 							 <!-- begin page 2 -->          
-							<div data-background-image="pages/2.jpg">
+							<div data-background-image="/pages/2.jpg">
 							  
 								   
 								 <!-- container page book --> 
@@ -155,7 +155,7 @@
 										 
 										 
 							 <!-- begin page 3 -->         
-							<div data-background-image="pages/3.jpg">
+							<div data-background-image="/pages/3.jpg">
 							  
 								   
 								 <!-- container page book --> 
@@ -185,7 +185,7 @@
 										 
 										 
 							 <!-- begin page 4 -->          
-							<div data-background-image="pages/4.jpg">
+							<div data-background-image="/pages/4.jpg">
 							  
 								   
 								 <!-- container page book --> 
@@ -213,7 +213,7 @@
 										 
 										 
 							 <!-- begin page 5 -->          
-							<div data-background-image="pages/5.jpg">
+							<div data-background-image="/pages/5.jpg">
 							  
 								   
 								 <!-- container page book --> 
@@ -243,7 +243,7 @@
 										 
 										 
 							 <!-- begin page 6 -->         
-							<div data-background-image="pages/6_7.jpg" class="fb5-double fb5-first">
+							<div data-background-image="/pages/6_7.jpg" class="fb5-double fb5-first">
 							  
 								   
 								 <!-- container page book --> 
@@ -274,7 +274,7 @@
 										 
 										 
 							 <!-- begin page 7 -->          
-							<div data-background-image="pages/6_7.jpg" class="fb5-double fb5-second">
+							<div data-background-image="/pages/6_7.jpg" class="fb5-double fb5-second">
 							  
 								   
 								 <!-- container page book --> 
@@ -304,7 +304,7 @@
 										 
 										 
 							 <!-- begin page 8 -->          
-							<div data-background-image="pages/8_9.jpg" class="fb5-double fb5-first">
+							<div data-background-image="/pages/8_9.jpg" class="fb5-double fb5-first">
 							  
 								   
 								 <!-- container page book --> 
@@ -331,7 +331,7 @@
 										 
 										 
 							 <!-- begin page 9 -->          
-							<div data-background-image="pages/8_9.jpg" class="fb5-double fb5-second">
+							<div data-background-image="/pages/8_9.jpg" class="fb5-double fb5-second">
 							  
 								   
 								 <!-- container page book --> 
@@ -363,7 +363,7 @@
 										 
 										 
 							 <!-- begin page 10 -->          
-							<div data-background-image="pages/10.jpg">
+							<div data-background-image="/pages/10.jpg">
 							  
 								   
 								 <!-- container page book --> 
@@ -393,7 +393,7 @@
 										 
 										 
 							 <!-- begin page 11 -->          
-							<div data-background-image="pages/11.jpg">
+							<div data-background-image="/pages/11.jpg">
 							  
 								   
 								 <!-- container page book --> 
@@ -422,7 +422,7 @@
 										 
 										 
 							 <!-- begin page 12 -->          
-							<div data-background-image="pages/12.jpg">
+							<div data-background-image="/pages/12.jpg">
 							  
 								   
 								 <!-- container page book --> 
@@ -461,11 +461,8 @@
 			
 				<div class="fb5-bcg-tools"></div>
 				
-				
-				 
-				<a id="fb5-logo" target="_blank" href="https://storek.co.ke/tobystavern">
-					<img alt="" src="img/logo.png">
-					 
+				<a id="fb5-logo" target="_blank" href="{{ url('/') }}">
+					<img alt="" src="/img/logo.png" style="visibility: visible; width: 80px">		 
 				</a>
 				
 				<div class="fb5-menu" id="fb5-center">
@@ -473,7 +470,12 @@
 					
 						<!-- icon_home -->
 						<li>
-							<a title="show home page" class="fb5-home"><i class="fa fa-home"></i></a>
+							<a href="{{ url('/') }}" title="go back to website" class="fb5-home"><i class="fa fa-arrow-left"></i></a>
+						</li>
+					
+						<!-- icon_home -->
+						<li>
+							<a title="show first page" class="fb5-home"><i class="fa fa-home"></i></a>
 						</li>
 										
 						
@@ -485,15 +487,13 @@
 								
 						<!-- icon arrow left -->
 						<li>
-							<a title="prev page" class="fb5-arrow-left"><i class="fa fa-chevron-left"></i>
-		</a>
+							<a title="prev page" class="fb5-arrow-left"><i class="fa fa-chevron-left"></i></a>
 						</li>
 										
 						
 						  <!-- icon arrow right -->
 						<li>
-							<a title="next page" class="fb5-arrow-right"><i class="fa fa-chevron-right"></i>
-		</a>
+							<a title="next page" class="fb5-arrow-right"><i class="fa fa-chevron-right"></i></a>
 						</li>
 										
 						
@@ -558,78 +558,77 @@
 		
 					<ul id="fb5-slider">       	 
 												
-												 <!-- thumb 1 -->
-												 <li class="1">
-													  <img alt="" data-src="pages/1_.jpg">
-												  
-												 </li>
-																																 
-												 <!-- thumb 2 -->
-												 <li class="2">
-													<img alt="" data-src="pages/2_.jpg">										  
-												 </li>
-											
-													
-												 <!-- thumb 3 -->
-												 <li class="3">
-													  <!-- img -->
-													  <img alt="" data-src="pages/3_.jpg">
-												  
-												 </li>
-												 
-												 
-												 <!-- thumb 4 -->
-												 <li class="4">
-													  <!-- img -->
-													  <img alt="" data-src="pages/4_.jpg">
-												  
-												 </li>
-												 
-												 
-												 <!-- thumb 5 -->								 	
-												 <li class="5">
-													  <!-- img -->
-													  <img alt="" data-src="pages/5_.jpg">
-												  
-												 </li>
-												 
-												 <!-- thumb 6 and 7 -->
-												 <li class="6">
-													  <!-- img -->
-													  <img alt="" data-src="pages/6_7_.jpg">
-												  
-												 </li>
-												 
-																				 
-												 <!-- thumb 8 and 9 -->
-												 <li class="8">
-													  <!-- img -->
-													  <img alt="" data-src="pages/8_9_.jpg">
-												  
-												 </li>
-												 
-																			
-												 <!-- thumb 10 -->
-												 <li class="10">
-													  <!-- img -->
-													  <img alt="" data-src="pages/10_.jpg">
-												  
-												 </li>
-												 
-												 <!-- thumb 11 -->
-												 <li class="11">
-													  <!-- img -->
-													  <img alt="" data-src="pages/11_.jpg">
-												  
-												 </li>
-												 
-												 
-												 <!-- thumb 12 -->
-												 <li class="12">
-													  <!-- img -->
-													  <img alt="" data-src="pages/12_.jpg">
-												  
-												 </li>
+						<!-- thumb 1 -->
+						<li class="1">
+							<img alt="" data-src="/pages/1_.jpg">
+						</li>
+																										
+						<!-- thumb 2 -->
+						<li class="2">
+							<img alt="" data-src="/pages/2_.jpg">
+						</li>
+				
+						
+						<!-- thumb 3 -->
+						<li class="3">
+							<!-- img -->
+							<img alt="" data-src="/pages/3_.jpg">
+						
+						</li>
+						
+						
+						<!-- thumb 4 -->
+						<li class="4">
+							<!-- img -->
+							<img alt="" data-src="/pages/4_.jpg">
+						
+						</li>
+						
+						
+						<!-- thumb 5 -->								 	
+						<li class="5">
+							<!-- img -->
+							<img alt="" data-src="/pages/5_.jpg">
+						
+						</li>
+						
+						<!-- thumb 6 and 7 -->
+						<li class="6">
+							<!-- img -->
+							<img alt="" data-src="/pages/6_7_.jpg">
+						
+						</li>
+						
+														
+						<!-- thumb 8 and 9 -->
+						<li class="8">
+							<!-- img -->
+							<img alt="" data-src="/pages/8_9_.jpg">
+						
+						</li>
+						
+												
+						<!-- thumb 10 -->
+						<li class="10">
+							<!-- img -->
+							<img alt="" data-src="/pages/10_.jpg">
+						
+						</li>
+						
+						<!-- thumb 11 -->
+						<li class="11">
+							<!-- img -->
+							<img alt="" data-src="/pages/11_.jpg">
+						
+						</li>
+						
+						
+						<!-- thumb 12 -->
+						<li class="12">
+							<!-- img -->
+							<img alt="" data-src="/pages/12_.jpg">
+						
+						</li>
 												
 														 
 		

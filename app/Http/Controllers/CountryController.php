@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Magazine;
+use App\Models\Country;
 use Illuminate\Http\Request;
 
-class MagazineController extends Controller
+class CountryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,24 +41,21 @@ class MagazineController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Magazine  $magazine
+     * @param  \App\Models\Country  $country
      * @return \Illuminate\Http\Response
      */
-    public function show($slug)
+    public function show(Country $country)
     {
-        //$magazine = Magazine::whereSlug($slug)->first();
-        $magazine = collect();
-        
-        return view('read', compact('magazine'));
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Magazine  $magazine
+     * @param  \App\Models\Country  $country
      * @return \Illuminate\Http\Response
      */
-    public function edit(Magazine $magazine)
+    public function edit(Country $country)
     {
         //
     }
@@ -67,10 +64,10 @@ class MagazineController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Magazine  $magazine
+     * @param  \App\Models\Country  $country
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Magazine $magazine)
+    public function update(Request $request, Country $country)
     {
         //
     }
@@ -78,10 +75,10 @@ class MagazineController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Magazine  $magazine
+     * @param  \App\Models\Country  $country
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Magazine $magazine)
+    public function destroy(Country $country)
     {
         //
     }

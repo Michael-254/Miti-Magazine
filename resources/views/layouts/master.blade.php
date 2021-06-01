@@ -174,8 +174,6 @@
         @endif
     </div>
 
-
-
     @yield('content')
 
     <footer class="footer-1 bg-black text-white py-8 sm:py-12 mt-4">
@@ -228,7 +226,6 @@
     <div class="bg-black text-center text-xs text-white py-3">
         <p>Copyright © 2021 <a href="#">Better Globe Forestry</a>.</p>
     </div>
-
 
     @livewireScripts
     <script src="https://kit.fontawesome.com/43d7c4e320.js" crossorigin="anonymous"></script>

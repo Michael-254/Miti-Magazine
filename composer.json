@@ -13,7 +13,8 @@
         "laravel/framework": "^8.12",
         "laravel/socialite": "^5.2",
         "laravel/tinker": "^2.5",
-        "livewire/livewire": "^2.4"
+        "livewire/livewire": "^2.4",
+        "srmklive/paypal": "~3.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
@@ -29,7 +30,9 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
-            "Delights\\Ipay\\": "packages/delights/ipay/src/"
+            "Delights\\Ipay\\": "packages/delights/ipay/src/",
+            "Delights\\Sage\\": "packages/delights/sage/src/",
+            "Delights\\SageApi\\": "packages/delights/sage-api/src/"
         }
     },
     "autoload-dev": {

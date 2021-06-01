@@ -1,0 +1,26 @@
+{
+  "name": "delights/sage-accounting",
+  "description": "Api to integrate with Sage Accounting.",
+  "type": "library",
+  "keywords": ["framework", "laravel"],
+  "license": "MIT",
+  "require": {
+    "php": ">=5.6.4",
+    "delights/sage-api": "^1.1"
+  },
+  "require-dev": {
+    "vlucas/phpdotenv": "^2.4",
+    "phpunit/phpunit": "~6.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Delights\\Sage\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "minimum-stability": "stable"
+}
