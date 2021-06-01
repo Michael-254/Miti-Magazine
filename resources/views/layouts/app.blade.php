@@ -148,7 +148,7 @@
             <div class="navbar-container main-menu-content" data-menu="menu-container">
                 <!-- include ../../../includes/mixins-->
                 <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
-                    <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="feather icon-zap"></i><span data-i18n="Starter kit">Manage Account</span></a>
+                    <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="fa fa-user"></i><span data-i18n="Starter kit">Manage Account</span></a>
                         <ul class="dropdown-menu">
                             <li class="{{ (request()->is('user/update-profile')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="{{route('profile.show')}}" data-toggle="dropdown" data-i18n="Floating navbar">My profile</a>
                             </li>
@@ -160,8 +160,37 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="feather icon-life-buoy"></i><span>My Subscription</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="feather icon-folder"></i><span>My orders</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-newspaper-o"></i><span>My Subscription</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="feather icon-shopping-cart"></i><span>My orders</span></a></li>
+
+                    @admin
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-users"></i><span>Customers</span></a></li>
+                    <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="fa fa-money"></i><span data-i18n="Starter kit">Sales</span></a>
+                        <ul class="dropdown-menu">
+                            <li class="{{ (request()->is('user/update-profile')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Floating navbar">Payments</a>
+                            </li>
+                            <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Orders</a>
+                            </li>
+                            <li data-menu=""><a class="dropdown-item" href="sk-layout-2-columns.html" data-toggle="dropdown" data-i18n="2 columns">Invoices</a>
+                            </li>
+                            <li data-menu=""><a class="dropdown-item" href="sk-layout-2-columns.html" data-toggle="dropdown" data-i18n="2 columns">Inventory</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="fa fa-cogs"></i><span data-i18n="Starter kit">System Administration</span></a>
+                        <ul class="dropdown-menu">
+                            <li class="{{ (request()->is('user/update-profile')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Floating navbar">Magazines</a>
+                            </li>
+                            <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Subscription Plans</a>
+                            </li>
+                            <li data-menu=""><a class="dropdown-item" href="sk-layout-2-columns.html" data-toggle="dropdown" data-i18n="2 columns">Upload Cover Images</a>
+                            </li>
+                            <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Gifts</a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endadmin
+
                 </ul>
             </div>
             <!-- /horizontal menu content-->

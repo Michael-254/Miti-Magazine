@@ -15,6 +15,19 @@
                         <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
                             <!-- Validation Errors -->
                             <x-auth-validation-errors class="mb-2" :errors="$errors" />
+                            @if(!auth()->user()->hasVerifiedEmail())
+                            <div class="col-12">
+                                <div class="alert alert-warning alert-dismissible mb-2" role="alert">
+                                    <p class="mb-0 text-green-600">
+                                        Your email is not confirmed. Please check your inbox.
+                                    </p>
+                                    <form method="POST" action="{{ route('verification.send') }}">
+                                        @csrf
+                                        <button type="submit" class="text-blue-600 hover:text-blue-800">Resend confirmation</button>
+                                    </form>
+                                </div>
+                            </div>
+                            @endif
                             <!-- users edit account form start -->
                             <form action="{{route('profile.update',auth()->user())}}" method="POST">
                                 @csrf
@@ -34,6 +47,7 @@
                                                 <input type="email" name="email" class="form-control" value="{{auth()->user()->email}}" disabled>
                                             </div>
                                         </div>
+
                                         <div class="form-group">
                                             <div class="controls">
                                                 <label>Gender</label>
@@ -49,7 +63,7 @@
 
                                         <div class="form-group">
                                             <label>Company</label>
-                                            <input type="text" name="company" class="form-control" value="" placeholder="Company name">
+                                            <input type="text" name="company" class="form-control" value="{{auth()->user()->company}}" placeholder="Company name">
                                         </div>
 
 
