@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateMagazinesTable extends Migration
+class CreateCardsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,14 @@ class CreateMagazinesTable extends Migration
      */
     public function up()
     {
-        Schema::create('magazines', function (Blueprint $table) {
+        Schema::create('cards', function (Blueprint $table) {
             $table->id();
-            $table->integer('issue_no');
-            $table->string('title');
-            $table->string('slug');
-            $table->string('file');
+            $table->foreignId('user_id')->constrained();
+            $table->string('brand');
+            $table->string('card_owner');
+            $table->string('number');
+            $table->string('exp_month');
+            $table->string('exp_year');
             $table->timestamps();
         });
     }
@@ -30,6 +32,6 @@ class CreateMagazinesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('magazines');
+        Schema::dropIfExists('cards');
     }
 }

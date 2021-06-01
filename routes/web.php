@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,18 +14,37 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+
 Route::get('/', function () {
     return view('welcome');
 })->name('landing.page');
 
 Route::get('read/{slug}', 'MagazineController@show');
+
 Route::get('payment', 'PaymentController@payment');
 Route::get('ipay/callback', 'PaymentController@callback');
-Route::get('file-manager', 'FileManagerController@index');
-
 Route::get('express-checkout','PaypalController@getExpressCheckout');
 Route::get('express-checkout-success', 'PayPalController@getExpressCheckoutSuccess');
 Route::post('paypal/ipn','PayPalController@postNotify');
+
+Route::prefix('user')->middleware(['auth'])->group(function () {
+    Route::get('profile', 'UserController@show')->name('profile.show');
+    Route::patch('{user}/update-profile', 'UserController@update')->name('profile.update');
+    Route::get('change-password', 'UserController@passwordChange')->name('change.password');
+    Route::post('change-password', 'UserController@updatePassword')->name('update.password');;
+    Route::get('payment', 'PaymentController@payment');
+    Route::get('file-manager', 'FileManagerController@index');
+});
 
 Route::get('/dashboard', function () {
     return view('dashboard');

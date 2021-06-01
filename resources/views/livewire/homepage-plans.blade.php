@@ -4,6 +4,13 @@
     <h4 class="text-gray-600">Our subscription is for 1 year only, meaning 4 issues.</h4>
   </div>
 
+  <div wire:loading.delay>
+    <div  style="display: flex; justify-content: center; align-items: center; background-color: black; position:fixed; 
+              top: 0px; left: 0px; z-index: 9999; width: 100%; height: 100%; opacity: .75;">
+      <x-loading />
+    </div>
+  </div>
+
   <div class="mt-8 border-b">
     <ul class='flex justify-center cursor-pointer'>
       <li wire:click="copySelected('1')" class="py-2 px-6 bg-white rounded-t-lg text-xs md:text-sm {{ $copies ==  '1' ? 'bg-gray-300' : ''  }}">Single Copy</li>
@@ -15,7 +22,7 @@
   <!-- component -->
   <div class="w-full my-12 text-green-700 font-bold">
     <div class="flex flex-col sm:flex-row justify-center mb-6 sm:mb-0">
-    <div class="flex-1 lg:flex-initial lg:w-1/4 border border-gray-400 rounded-md shadow-md bg-white mt-4 flex flex-col">
+      <div class="flex-1 lg:flex-initial lg:w-1/4 border border-gray-400 rounded-md shadow-md bg-white mt-4 flex flex-col">
         <div class="p-8 text-3xl font-bold text-center">Digital</div>
         <div class="border-0 border-grey-light border-t border-solid text-sm">
           <div class="text-center border-0 border-grey-light border-b border-solid py-4">
@@ -32,7 +39,7 @@
           </div>
         </div>
         <div class="text-center px-8 pt-8 text-xl mt-auto">
-           {{$plans->amounts->digital}}
+          {{$plans->amounts->digital}}
           <span class="text-grey-light italic">
             /year
           </span>
@@ -58,7 +65,7 @@
           </div>
         </div>
         <div class="text-center px-8 pt-8 text-xl mt-auto">
-        {{$plans->amounts->printed}}
+          {{$plans->amounts->printed}}
           <span class="text-grey-light italic">
             /year
           </span>
@@ -84,7 +91,7 @@
           </div>
         </div>
         <div class="text-center px-8 pt-8 text-xl mt-auto">
-        {{$plans->amounts->combined}}
+          {{$plans->amounts->combined}}
           <span class="text-grey-light italic">
             /year
           </span>

@@ -10,7 +10,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Online Miti Magazine | Better Globe Forestry LTD</title>
     <link rel="apple-touch-icon" href="{{asset('/storage/logo.png')}}">
-    <link rel="shortcut icon" type="image/x-icon" href="{{asset('/storage/logo.png')}}">
+
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600" rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
@@ -33,6 +33,7 @@
     <!-- END: Custom CSS-->
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
@@ -72,8 +73,8 @@
                         </ul>
                         <ul class="nav navbar-nav bookmark-icons">
                             <li class="nav-item d-none d-lg-block">
-                                <a class="nav-link" href="sk-layout-2-columns.html" data-toggle="tooltip" data-placement="top" title="2-Columns">
-                                    <img src="{{('storage/logo.png')}}" class="w-10 h-10" alt="">
+                                <a class="nav-link" href="{{route('landing.page')}}" data-toggle="tooltip" data-placement="top" title="Go to Home Page">
+                                    <img src="{{asset('storage/logo.png')}}" class="w-10 h-10" alt="">
                                 </a>
                             </li>
                         </ul>
@@ -105,10 +106,9 @@
                                     <span class="user-name text-bold-600">{{auth()->user()->name}}</span>
                                     <span class="text-blue-600 user-status">Online</span>
                                 </div>
-                                <span><img class="round" src="{{asset('parent/app-assets/images/portrait/small/avatar-s-11.jpg')}}" alt="avatar" height="40" width="40"></span>
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <a class="dropdown-item" href="#"><i class="feather icon-user"></i> Edit Profile</a>
+                                <a class="dropdown-item" href="{{route('profile.show')}}"><i class="feather icon-user"></i> Edit Profile</a>
                                 <a class="dropdown-item" href="#"><i class="feather icon-mail"></i> My Subscription</a>
                                 <div class="dropdown-divider"></div>
                                 <form method="POST" action="{{ route('logout') }}">
@@ -148,21 +148,49 @@
             <div class="navbar-container main-menu-content" data-menu="menu-container">
                 <!-- include ../../../includes/mixins-->
                 <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="feather icon-home"></i><span data-i18n="Dashboard">Dashboard</span></a></li>
-                    <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="feather icon-zap"></i><span data-i18n="Starter kit">Starter kit</span></a>
+                    <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="fa fa-user"></i><span data-i18n="Starter kit">Manage Account</span></a>
                         <ul class="dropdown-menu">
-                            <li data-menu=""><a class="dropdown-item" href="sk-layout-2-columns.html" data-toggle="dropdown" data-i18n="2 columns">2 columns</a>
+                            <li class="{{ (request()->is('user/update-profile')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="{{route('profile.show')}}" data-toggle="dropdown" data-i18n="Floating navbar">My profile</a>
                             </li>
-                            <li class="active" data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Fixed navbar</a>
+                            <li data-menu=""><a class="dropdown-item" href="sk-layout-2-columns.html" data-toggle="dropdown" data-i18n="2 columns">Invite Others</a>
                             </li>
-                            <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Floating navbar">Floating navbar</a>
+                            <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Payment methods</a>
                             </li>
-                            <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed layout">Fixed layout</a>
+                            <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">My payments and Invoices</a>
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="feather icon-life-buoy"></i><span>Raise Support</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="feather icon-folder"></i><span>Documentation</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-newspaper-o"></i><span>My Subscription</span></a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="feather icon-shopping-cart"></i><span>My orders</span></a></li>
+
+                    @admin
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-users"></i><span>Customers</span></a></li>
+                    <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="fa fa-money"></i><span data-i18n="Starter kit">Sales</span></a>
+                        <ul class="dropdown-menu">
+                            <li class="{{ (request()->is('user/update-profile')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Floating navbar">Payments</a>
+                            </li>
+                            <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Orders</a>
+                            </li>
+                            <li data-menu=""><a class="dropdown-item" href="sk-layout-2-columns.html" data-toggle="dropdown" data-i18n="2 columns">Invoices</a>
+                            </li>
+                            <li data-menu=""><a class="dropdown-item" href="sk-layout-2-columns.html" data-toggle="dropdown" data-i18n="2 columns">Inventory</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="fa fa-cogs"></i><span data-i18n="Starter kit">System Administration</span></a>
+                        <ul class="dropdown-menu">
+                            <li class="{{ (request()->is('user/update-profile')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Floating navbar">Magazines</a>
+                            </li>
+                            <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Subscription Plans</a>
+                            </li>
+                            <li data-menu=""><a class="dropdown-item" href="sk-layout-2-columns.html" data-toggle="dropdown" data-i18n="2 columns">Upload Cover Images</a>
+                            </li>
+                            <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Gifts</a>
+                            </li>
+                        </ul>
+                    </li>
+                    @endadmin
+
                 </ul>
             </div>
             <!-- /horizontal menu content-->
@@ -179,15 +207,14 @@
                 <div class="content-header-left col-md-9 col-12 mb-2">
                     <div class="row breadcrumbs-top">
                         <div class="col-12">
-                            <h2 class="content-header-title float-left mb-0">Fixed Navbar</h2>
                             <div class="breadcrumb-wrapper col-12">
                                 <ol class="breadcrumb">
-                                    <li class="breadcrumb-item"><a href="sk-layout-2-columns.html">Home</a>
+                                    <li class="breadcrumb-item"><a href="sk-layout-2-columns.html">{{Request::segment(1)}}</a>
                                     </li>
-                                    <li class="breadcrumb-item"><a href="#">Starter Kit</a>
+                                    <li class="breadcrumb-item active"><a href="#">{{Request::segment(2)}}</a>
                                     </li>
-                                    <li class="breadcrumb-item active">Fixed Navbar
-                                    </li>
+                                    <!-- <li class="breadcrumb-item active">Fixed Navbar
+                                    </li> -->
                                 </ol>
                             </div>
                         </div>
@@ -197,27 +224,13 @@
                     <div class="form-group breadcrum-right">
                         <div class="dropdown">
                             <button class="btn-icon btn btn-primary btn-round btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="feather icon-settings"></i></button>
-                            <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#">Chat</a><a class="dropdown-item" href="#">Email</a><a class="dropdown-item" href="#">Calendar</a></div>
+                            <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#">Chat</a></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="content-body">
-                <!-- Extract to Slot -->
-                <section id="description" class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Description</h4>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-body">
-                            <div class="card-text">
-                               @yield('content')
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
+            @yield('content')
         </div>
     </div>
     <!-- END: Content-->
@@ -247,10 +260,16 @@
     <!-- BEGIN: Theme JS-->
     <script src="{{asset('parent/app-assets/js/core/app-menu.js')}}"></script>
     <script src="{{asset('parent/app-assets/js/core/app.js')}}"></script>
+    <script src="{{asset('parent/app-assets/js/scripts/components.js')}}"></script>
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
+    <script src="{{asset('parent/app-assets/js/scripts/forms/form-tooltip-valid.js')}}"></script>
     <!-- END: Page JS-->
+    <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
+    {!! Toastr::message() !!}
+    @yield('scripts')
 
 </body>
 <!-- END: Body-->

@@ -6,7 +6,7 @@
     <meta content="width=device-width,initial-scale=1" name="viewport">
        
     <!-- title -->
-    <title>Miti Magazine</title>        
+    <title>Miti Magazine | Better Globe Forestry LTD</title>        
         
     <!-- add css style -->
     <link type="text/css" href="{{ asset('css/style.css') }}" rel="stylesheet">
