@@ -13,11 +13,14 @@ class ManagePlans extends Component
 
     public $location, $quantity;
     public $printed, $digital, $combined;
+    public $amend = null;
+    public $printedE, $digitalE, $combinedE, $locationE, $quantityE;
 
 
     public function save()
     {
 
+        $this->amend = '';
         $data = $this->validate([
             'location' => 'required',
             'quantity' => 'required',
@@ -41,8 +44,52 @@ class ManagePlans extends Component
         $this->reset();
     }
 
+    public function updatePlan()
+    {
+
+        $plan = SubscriptionPlan::findOrFail($this->amend);
+        $data = $this->validate([
+            'locationE' => 'required',
+            'quantityE' => 'required',
+            'printedE' => 'required',
+            'digitalE' => 'required',
+            'combinedE' => 'required',
+        ]);
+
+        $plan->update([
+            'location' => $this->locationE,
+            'quantity' => $this->quantityE,
+        ]);
+
+        $plan->amounts()->update([
+            'printed' =>  $this->printedE,
+            'digital' =>  $this->digitalE,
+            'combined' => $this->combinedE,
+        ]);
+
+        session()->flash('message', 'Plan updated Successfully');
+        $this->reset();
+    }
+
+    public function change($id)
+    {
+        $this->amend = $id;
+        $selected = SubscriptionPlan::findOrFail($id);
+        $this->locationE = $selected->location;
+        $this->quantityE = $selected->quantity;
+        $this->printedE = $selected->amounts->printed;
+        $this->digitalE = $selected->amounts->digital;
+        $this->combinedE = $selected->amounts->combined;
+    }
+
+    public function cancel()
+    {
+        $this->reset();
+    }
+
     public function destroy($id)
     {
+        $this->amend = '';
         SubscriptionPlan::findOrFail($id)->delete();
         session()->flash('message', 'Plan deleted Successfully');
     }
@@ -50,7 +97,7 @@ class ManagePlans extends Component
     public function render()
     {
         return view('livewire.manage-plans', [
-            'plans' => SubscriptionPlan::orderBy('id', 'asc')->paginate(8),
+            'plans' => SubscriptionPlan::orderBy('id', 'asc')->paginate(6),
         ]);
     }
 }
