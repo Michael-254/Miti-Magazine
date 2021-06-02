@@ -153,7 +153,7 @@
                 <ul class="nav navbar-nav" id="main-menu-navigation" data-menu="menu-navigation">
                     <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="fa fa-user"></i><span data-i18n="Starter kit">Manage Account</span></a>
                         <ul class="dropdown-menu">
-                            <li class="{{ (request()->is('user/update-profile')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="{{route('profile.show')}}" data-toggle="dropdown" data-i18n="Floating navbar">My profile</a>
+                            <li class="{{ (request()->is('user/profile')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="{{route('profile.show')}}" data-toggle="dropdown" data-i18n="Floating navbar">My profile</a>
                             </li>
                             <li data-menu=""><a class="dropdown-item" href="sk-layout-2-columns.html" data-toggle="dropdown" data-i18n="2 columns">Invite Others</a>
                             </li>
