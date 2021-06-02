@@ -14,53 +14,49 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/email/verify', function () {
-    return view('auth.verify-email');
-})->middleware('auth')->name('verification.notice');
 
-Route::post('/email/verification-notification', function (Request $request) {
-    $request->user()->sendEmailVerificationNotification();
+//EMAIL VERIFICATION
+Route::prefix('email')->group(function () {
+    Route::view('verify', 'auth.verify-email')->middleware('auth')->name('verification.notice');
+    Route::post('verification-notification', function (Request $request) {
+        $request->user()->sendEmailVerificationNotification();
+        return back()->with('message', 'Verification link sent!');
+    })->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+});
 
-    return back()->with('message', 'Verification link sent!');
-})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
-
-
-Route::get('/', function () {
-    return view('welcome');
-})->name('landing.page');
-
-Route::get('read/{slug}', 'MagazineController@show');
-
+//Payments
 Route::get('payment', 'PaymentController@payment');
 Route::get('ipay/callback', 'PaymentController@callback');
-Route::get('express-checkout','PaypalController@getExpressCheckout');
+Route::get('express-checkout', 'PaypalController@getExpressCheckout');
 Route::get('express-checkout-success', 'PayPalController@getExpressCheckoutSuccess');
-Route::post('paypal/ipn','PayPalController@postNotify');
+Route::post('paypal/ipn', 'PayPalController@postNotify');
 
+//User Links
 Route::prefix('user')->middleware(['auth'])->group(function () {
     Route::get('profile', 'UserController@show')->name('profile.show');
     Route::patch('{user}/update-profile', 'UserController@update')->name('profile.update');
     Route::get('change-password', 'UserController@passwordChange')->name('change.password');
-    Route::post('change-password', 'UserController@updatePassword')->name('update.password');;
-    Route::get('payment', 'PaymentController@payment');
-    Route::get('file-manager', 'FileManagerController@index');
+    Route::post('change-password', 'UserController@updatePassword')->name('update.password');
+    Route::get('read/{slug}', 'MagazineController@show');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+//Admin Links
+Route::prefix('admin')->middleware(['auth'])->group(function () {
+    Route::get('file-manager', 'FileManagerController@index')->name('manage.magazines');
+    Route::view('subscription-plans', 'admin.subscription-plans')->name('manage.plans');
+});
 
-Route::get('/choose/plan', function () {
-    return view('choose-plan');
-})->name('choose.plan');
+Route::view('/dashboard', 'dashboard')->middleware(['auth'])->name('dashboard');
 
-Route::get('/subscribe/plan', function () {
-    return view('selected-plan');
-})->name('subscribe.plan');
+//Unauth Pages
+Route::view('/', 'welcome')->name('landing.page');
+Route::view('/choose/plan', 'choose-plan')->name('choose.plan');
+Route::view('/subscribe/plan', 'selected-plan')->name('subscribe.plan');
 
+//Socialite Login
 Route::prefix('auth')->group(function () {
-    Route::get('/{key}/redirect', [App\Http\Controllers\SocialiteController::class, 'redirect'])->name('socialite');
-    Route::get('/{key}/callback', [App\Http\Controllers\SocialiteController::class, 'callback']);
+    Route::get('/{key}/redirect', 'SocialiteController@redirect')->name('socialite');
+    Route::get('/{key}/callback', 'SocialiteController@callback');
 });
 
 require __DIR__ . '/auth.php';

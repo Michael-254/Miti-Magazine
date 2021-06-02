@@ -11,6 +11,6 @@ class FileManagerController extends Controller
     */
     public function index()
     {
-        return view('file-manager');
+        return view('admin.file-manager');
     }
 }

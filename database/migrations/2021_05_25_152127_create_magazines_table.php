@@ -17,8 +17,9 @@ class CreateMagazinesTable extends Migration
             $table->id();
             $table->integer('issue_no');
             $table->string('title');
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->string('file');
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

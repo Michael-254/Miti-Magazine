@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Country;
 use App\Models\User;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Hash;
@@ -12,7 +13,8 @@ class UserController extends Controller
 {
     public function show()
     {
-        return view('users.update-profile');
+        $countries = Country::all();
+        return view('users.update-profile', compact('countries'));
     }
 
     public function update(ProfileUpdateRequest $request, User $user)
@@ -37,6 +39,6 @@ class UserController extends Controller
 
         User::find(auth()->user()->id)->update(['password' => Hash::make($request->password)]);
         Toastr::success('Password updated', 'Success');
-        return view('users.update-profile');
+        return redirect('user/profile');
     }
 }

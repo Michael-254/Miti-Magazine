@@ -66,12 +66,14 @@
                                             <input type="text" name="company" class="form-control" value="{{auth()->user()->company}}" placeholder="Company name">
                                         </div>
 
-
                                         <div class="form-group">
                                             <label>Country</label>
-                                            <input type="text" name="country" class="form-control" value="{{auth()->user()->country}}" placeholder="Country">
+                                            <select name="country" class="select2 form-control">
+                                                @foreach($countries as $country)
+                                                <option value="{{$country->id}}" @if (auth()->user()->country == $country->id) selected @endif>{{$country->country}}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
-
 
                                     </div>
                                     <div class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-1">

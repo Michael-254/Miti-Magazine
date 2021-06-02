@@ -10,12 +10,14 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Online Miti Magazine | Better Globe Forestry LTD</title>
     <link rel="apple-touch-icon" href="{{asset('/storage/logo.png')}}">
+    <link rel="shortcut icon" type="image/x-icon" href="{{asset('/storage/logo.png')}}">
 
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600" rel="stylesheet">
 
     <!-- BEGIN: Vendor CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/vendors/css/vendors.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/vendors/css/ui/prism.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/vendors/css/forms/select/select2.min.css')}}">
     <!-- END: Vendor CSS-->
 
     <!-- BEGIN: Theme CSS-->
@@ -40,6 +42,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    @livewireStyles
 
 </head>
 <!-- END: Head-->
@@ -179,11 +182,11 @@
                     </li>
                     <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="fa fa-cogs"></i><span data-i18n="Starter kit">System Administration</span></a>
                         <ul class="dropdown-menu">
-                            <li class="{{ (request()->is('user/update-profile')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Floating navbar">Magazines</a>
+                            <li class="{{ (request()->is('user/update-profile')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Floating navbar">Upload Magazine</a>
                             </li>
-                            <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Subscription Plans</a>
+                            <li data-menu="" class="{{ (request()->is('admin/subscription-plans')) ? 'active' : '' }}"><a class="dropdown-item" href="{{route('manage.plans')}}" data-toggle="dropdown" data-i18n="Fixed navbar">Subscription Plans</a>
                             </li>
-                            <li data-menu=""><a class="dropdown-item" href="sk-layout-2-columns.html" data-toggle="dropdown" data-i18n="2 columns">Upload Cover Images</a>
+                            <li data-menu="" class="{{ (request()->is('admin/file-manager')) ? 'active' : '' }}"><a class="dropdown-item" href="{{route('manage.magazines')}}" data-toggle="dropdown" data-i18n="2 columns">Manage Magazines</a>
                             </li>
                             <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Gifts</a>
                             </li>
@@ -224,7 +227,6 @@
                     <div class="form-group breadcrum-right">
                         <div class="dropdown">
                             <button class="btn-icon btn btn-primary btn-round btn-sm dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="feather icon-settings"></i></button>
-                            <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="#">Chat</a></div>
                         </div>
                     </div>
                 </div>
@@ -246,7 +248,7 @@
     </footer>
     <!-- END: Footer-->
 
-
+    @livewireScripts
     <!-- BEGIN: Vendor JS-->
     <script src="{{asset('parent/app-assets/vendors/js/vendors.min.js')}}"></script>
     <script src="{{asset('parent/app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
@@ -261,6 +263,7 @@
     <script src="{{asset('parent/app-assets/js/core/app-menu.js')}}"></script>
     <script src="{{asset('parent/app-assets/js/core/app.js')}}"></script>
     <script src="{{asset('parent/app-assets/js/scripts/components.js')}}"></script>
+    <script src="{{asset('parent/app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->

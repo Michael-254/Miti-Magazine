@@ -16,9 +16,23 @@
         [x-cloak] {
             display: none;
         }
- 
+
         html {
             scroll-behavior: smooth;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .animate-fadeIn {
+            animation: fadeIn 2s ease-in forwards;
         }
     </style>
     @livewireStyles
@@ -81,7 +95,7 @@
                             </x-slot>
 
                             <x-slot name="content">
-                                <x-dropdown-link href="#">
+                                <x-dropdown-link href="{{route('profile.show')}}">
                                     My Profile
                                 </x-dropdown-link>
                                 <x-dropdown-link href="#">
@@ -120,11 +134,6 @@
                         Home
                     </x-responsive-nav-link>
                 </div>
-                <div class="pt-1 pb-1 space-y-1">
-                    <x-responsive-nav-link :href="route('landing.page')">
-                        Contact Information
-                    </x-responsive-nav-link>
-                </div>
                 @guest
                 <div class="pt-1 pb-1 space-y-1">
                     <x-responsive-nav-link :href="route('login')">
@@ -152,7 +161,7 @@
                     </div>
 
                     <div class="mt-3 space-y-1">
-                        <x-responsive-nav-link :href="route('dashboard')">
+                        <x-responsive-nav-link :href="route('profile.show')">
                             My Profile
                         </x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('dashboard')">
@@ -175,7 +184,7 @@
 
         @if(Request::path() == '/')
         <div class="container relative mx-auto">
-            <div class="items-center flex flex-wrap">
+            <div class="items-center flex flex-wrap js-show-on-scroll">
                 <div class="w-full lg:w-6/12 px-4 mt-16 ml-auto mr-auto text-center">
                     <div>
                         <h1 class="text-white font-semibold text-2xl md:text-5xl">Welcome to Miti Magazine</h1>
@@ -195,20 +204,20 @@
 
     @yield('content')
 
-    <footer class="footer-1 bg-black text-white py-8 sm:py-12 mt-4">
+    <footer class="footer-1 bg-black text-white py-8 sm:py-12 mt-4 js-show-on-scroll">
         <div class="container mx-auto px-8">
 
             <div class="sm:flex sm:flex-wrap sm:-mx-4 mt-2 pt-6 sm:mt-2 sm:pt-12 border-t">
                 <div class="sm:w-full px-4 md:w-1/4">
                     <h5 class="text-xl font-bold mb-6 sm:text-center xl:text-left">Stay connected</h5>
                     <div class="flex sm:justify-center xl:justify-start">
-                        <a href="" class="w-8 h-8 border border-2 border-gray-400 rounded-full text-center py-1 text-gray-600 hover:text-white hover:bg-blue-600 hover:border-blue-600">
+                        <a href="" class="w-8 h-8 border-2 border-gray-400 rounded-full text-center py-1 text-gray-600 hover:text-white hover:bg-blue-600 hover:border-blue-600">
                             <i class="fab fa-facebook"></i>
                         </a>
-                        <a href="" class="w-8 h-8 border border-2 border-gray-400 rounded-full text-center py-1 ml-2 text-gray-600 hover:text-white hover:bg-blue-400 hover:border-blue-400">
+                        <a href="" class="w-8 h-8 border-2 border-gray-400 rounded-full text-center py-1 ml-2 text-gray-600 hover:text-white hover:bg-blue-400 hover:border-blue-400">
                             <i class="fab fa-twitter"></i>
                         </a>
-                        <a href="" class="w-8 h-8 border border-2 border-gray-400 rounded-full text-center py-1 ml-2 text-gray-600 hover:text-white hover:bg-red-600 hover:border-red-600">
+                        <a href="" class="w-8 h-8 border-2 border-gray-400 rounded-full text-center py-1 ml-2 text-gray-600 hover:text-white hover:bg-red-600 hover:border-red-600">
                             <i class="fab fa-google-plus-g"></i>
                         </a>
                     </div>
@@ -248,6 +257,27 @@
 
     @livewireScripts
     <script src="https://kit.fontawesome.com/43d7c4e320.js" crossorigin="anonymous"></script>
+    <script>
+        const callback = function(entries) {
+            entries.forEach((entry) => {
+                console.log(entry);
+
+                if (entry.isIntersecting) {
+                    entry.target.classList.add("animate-fadeIn");
+                } else {
+                    entry.target.classList.remove("animate-fadeIn");
+                }
+            });
+        };
+
+        const observer = new IntersectionObserver(callback);
+
+        const targets = document.querySelectorAll(".js-show-on-scroll");
+        targets.forEach(function(target) {
+            target.classList.add("opacity-0");
+            observer.observe(target);
+        });
+    </script>
 
 </body>
 
