@@ -19,7 +19,7 @@ class CreateMagazinesTable extends Migration
             $table->string('title');
             $table->string('slug')->unique();
             $table->string('file');
-            $table->string('image')->nullable();
+            $table->string('image');
             $table->timestamps();
         });
     }

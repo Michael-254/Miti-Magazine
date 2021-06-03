@@ -182,7 +182,7 @@
                     </li>
                     <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="fa fa-cogs"></i><span data-i18n="Starter kit">System Administration</span></a>
                         <ul class="dropdown-menu">
-                            <li class="{{ (request()->is('user/update-profile')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Floating navbar">Upload Magazine</a>
+                            <li class="{{ (request()->is('admin/upload-magazine')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="{{route('upload.magazine')}}" data-toggle="dropdown" data-i18n="Floating navbar">Upload Magazine</a>
                             </li>
                             <li data-menu="" class="{{ (request()->is('admin/subscription-plans')) ? 'active' : '' }}"><a class="dropdown-item" href="{{route('manage.plans')}}" data-toggle="dropdown" data-i18n="Fixed navbar">Subscription Plans</a>
                             </li>

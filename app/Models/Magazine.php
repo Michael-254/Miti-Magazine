@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Magazine extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['issue_no','title','slug','file','image'];
 }

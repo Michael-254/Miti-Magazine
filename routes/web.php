@@ -44,6 +44,8 @@ Route::prefix('user')->middleware(['auth'])->group(function () {
 Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('file-manager', 'FileManagerController@index')->name('manage.magazines');
     Route::view('subscription-plans', 'admin.subscription-plans')->name('manage.plans');
+    Route::view('upload-magazine', 'admin.magazine-upload')->name('upload.magazine');
+    Route::post('post-magazine', 'MagazineController@store')->name('magazine.upload');
 });
 
 Route::view('/dashboard', 'dashboard')->middleware(['auth'])->name('dashboard');

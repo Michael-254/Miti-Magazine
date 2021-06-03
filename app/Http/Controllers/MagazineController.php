@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Magazine;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class MagazineController extends Controller
 {
@@ -35,7 +38,35 @@ class MagazineController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'issue_no' => 'required',
+            'title' => 'required',
+            'file' => 'required|mimes:pdf',
+            'image' => 'required|mimes:jpeg,jpg,png,gif',
+        ]);
+        $slug = Str::slug($request->title);
+        ini_set('memory_limit', '256M');
+
+        //Image
+        $image = $request->image;
+        $image_name = time() . '_' . $image->getClientOriginalName() . '.' . $image->getClientOriginalExtension();
+        $dir = public_path('files/magazines/cover/');
+        $imgResize = Image::make($image->getRealPath())->resize(160, 200);
+        $imgResize->save($dir . '/' . $image_name, 80);
+
+        //file
+        $file = $request->file('file');
+        $filename = Carbon::now()->timestamp . '_' . $file->getClientOriginalName();
+        $destinationPath = public_path() . '/files/magazines';
+        $file->move($destinationPath, $filename);
+
+        $magazine = Magazine::create([
+            'issue_no' => $request->issue_no,
+            'title' => $request->issue_no,
+            'slug' => $slug,
+            'file' => $filename,
+            'image' =>  $image_name,
+        ]);
     }
 
     /**
@@ -48,7 +79,7 @@ class MagazineController extends Controller
     {
         //$magazine = Magazine::whereSlug($slug)->first();
         $magazine = collect();
-        
+
         return view('read', compact('magazine'));
     }
 
