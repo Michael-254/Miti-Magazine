@@ -1,4 +1,4 @@
-<div>
+<div class="mt-12">
   <div class="text-center">
     <h1 class="font-bold text-3xl text-green-600 mb-2">Subscription Plans {{$plans->location ?? ''}}</h1>
     <h4 class="text-gray-600">Our subscription is for 1 year only, meaning 4 issues.</h4>

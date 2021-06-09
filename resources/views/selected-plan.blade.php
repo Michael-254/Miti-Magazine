@@ -1,7 +1,7 @@
-@extends('layouts.master')
+@extends('layouts.main')
 @section('content')
 
-<section class="mx-auto flex sm:max-w-6xl p-4 w-full border-2 rounded-lg shadow-lg">
+<section class="mx-auto mt-12 flex sm:max-w-6xl p-4 w-full border-2 rounded-lg shadow-lg">
     <div class="flex-1 lg:flex lg:space-x-7 lg:py-5">
         <div>
             <div>
