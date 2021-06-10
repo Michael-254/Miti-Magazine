@@ -24,12 +24,35 @@
     </div>
 
 </div>
-<main class="my-8 w-full flex flex-col items-center">
 
-    <div class="max-w-6xl mx-4 js-show-on-scroll">
-        <h2 class="mt-1 pb-1 font-bold text-xl text-green-500 border-b border-green-600">Recent Miti Issues</h2>
+<div class="my-4 flex flex-col px-10 p-6 bg-black shadow-md">
+    <section class="text-xl uppercase font-bold px-1 mb-2 text-white">
+        About our Subscriptions
+    </section>
+    <section class="flex items-center font-normal text-white text-md mt-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <p class="text-sm md:text-lg leading-relaxed ml-1">
+            Your subscription Plan will automatically renew after one year
+        </p>
+    </section>
+    <section class="flex items-center font-normal text-md text-white">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <p class="text-sm md:text-lg leading-relaxed ml-1">
+           For more than 10 copies kindly contact us through mail <x-nav-link class="text-blue-500 font-bold" href="#contact-info">Contact Information</x-nav-link>
+        </p>
+    </section>
+</div>
 
-        <div class="flex flex-col sm:grid sm:grid-cols-3 sm:-mx-2">
+<main class="my-8 w-full flex flex-col">
+
+    <div class="mx-4 js-show-on-scroll">
+        <h2 class="mt-1 pb-1 font-bold text-xl text-green-500 border-b border-green-600 items-center">Recent Miti Issues</h2>
+
+        <div class="flex flex-col sm:grid lg:grid-cols-5 md:grid-cols-3 sm:-mx-2">
             <a href="{{ url('user/read/issue_47') }}" class="mt-4" data-aos="flip-right">
                 <div class="bg-white h-full p-8 border-b-4 border-green-500 rounded-lg flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
                     <div class="border rounded-md px-2 py-2">
@@ -40,7 +63,7 @@
                 </div>
             </a>
 
-            <a href="{{ url('user/read/issue_46') }}" class="mt-4">
+            <a href="{{ url('user/read/issue_46') }}" class="mt-4" data-aos="flip-right">
                 <div class="bg-white h-full p-8 border-b-4 border-green-500 rounded-lg flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
                     <div class="border rounded-md px-2 py-2">
                         <img class="object-fill h-48 w-full" src="https://files.magzter.com/resize/magazine/1354588640/1622100821/thumb/1.jpg">
@@ -50,7 +73,7 @@
                 </div>
             </a>
 
-            <a href="{{ url('user/read/issue_46') }}" class="mt-4">
+            <a href="{{ url('user/read/issue_46') }}" class="mt-4" data-aos="flip-right">
                 <div class="bg-white h-full p-8 border-b-4 border-green-500 rounded-lg flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
                     <div class="border rounded-md px-2 py-2">
                         <img class="object-fill h-48 w-full" src="https://files.magzter.com/resize/magazine/1343918525/1622011952/thumb/1.jpg">
@@ -60,7 +83,7 @@
                 </div>
             </a>
 
-            <a href="{{ url('user/read/issue_46') }}" class="mt-4">
+            <a href="{{ url('user/read/issue_46') }}" class="mt-4" data-aos="flip-right">
                 <div class="bg-white h-full p-8 border-b-4 border-green-500 rounded-lg flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
                     <div class="border rounded-md px-2 py-2">
                         <img class="object-fill h-48 w-full" src="https://files.magzter.com/resize/magazine/1359122596/1622010544/thumb/1.jpg">
@@ -70,7 +93,7 @@
                 </div>
             </a>
 
-            <a href="{{ url('user/read/issue_47') }}" class="mt-4">
+            <a href="{{ url('user/read/issue_47') }}" class="mt-4" data-aos="flip-right">
                 <div class="bg-white h-full p-8 border-b-4 border-green-500 rounded-lg flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
                     <div class="border rounded-md px-2 py-2">
                         <img class="object-fill h-48 w-full" src="https://files.magzter.com/resize/magazine/1429714855/1620997113/thumb/1.jpg">
@@ -80,7 +103,7 @@
                 </div>
             </a>
 
-            <a href="{{ url('user/read/issue_46') }}" class="mt-4">
+            <a href="{{ url('user/read/issue_46') }}" class="mt-4" data-aos="flip-right">
                 <div class="bg-white h-full p-8 border-b-4 border-green-500 rounded-lg flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
                     <div class="border rounded-md px-2 py-2">
                         <img class="object-fill h-48 w-full" src="https://files.magzter.com/resize/magazine/1338193253/1621603041/thumb/1.jpg">

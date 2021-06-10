@@ -8,7 +8,6 @@
         "php": "^7.3|^8.0",
         "ext-gd": "^8.0",
         "barryvdh/laravel-elfinder": "^0.4.7",
-        "brian2694/laravel-toastr": "^5.56",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -20,6 +19,7 @@
         "srmklive/paypal": "~3.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.6",
         "facade/ignition": "^2.5",
         "fakerphp/faker": "^1.9.1",
         "laravel/breeze": "^1.1",

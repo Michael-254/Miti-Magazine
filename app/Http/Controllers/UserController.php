@@ -6,7 +6,6 @@ use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Country;
 use App\Models\User;
-use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -21,9 +20,7 @@ class UserController extends Controller
     {
 
         $user->update($request->validated());
-
-        Toastr::success('Updated successfully', 'Success');
-        return redirect('user/profile');
+        return redirect('user/profile')->with('message','Updated successfully');
     }
 
     public function passwordChange()
@@ -38,7 +35,6 @@ class UserController extends Controller
         }
 
         User::find(auth()->user()->id)->update(['password' => Hash::make($request->password)]);
-        Toastr::success('Password updated', 'Success');
-        return redirect('user/profile');
+        return redirect('user/profile')->with('message','Password updated');
     }
 }

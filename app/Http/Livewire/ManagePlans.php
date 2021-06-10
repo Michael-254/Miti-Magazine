@@ -97,7 +97,7 @@ class ManagePlans extends Component
     public function render()
     {
         return view('livewire.manage-plans', [
-            'plans' => SubscriptionPlan::orderBy('id', 'asc')->paginate(6),
+            'plans' => SubscriptionPlan::with('amounts')->orderBy('id', 'asc')->paginate(6),
         ]);
     }
 }

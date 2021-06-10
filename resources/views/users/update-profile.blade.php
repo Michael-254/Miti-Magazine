@@ -13,6 +13,15 @@
 
                     <div class="tab-content">
                         <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
+                            <!-- Success Message -->
+                            @if(session()->has('message'))
+                            <div class="alert alert-success flex items-center">
+                                <i class="fa fa-check mr-1"></i>
+                                <p class="mb-0">
+                                    {{ session()->get('message') }}
+                                </p>
+                            </div>
+                            @endif
                             <!-- Validation Errors -->
                             <x-auth-validation-errors class="mb-2" :errors="$errors" />
                             @if(!auth()->user()->hasVerifiedEmail())
