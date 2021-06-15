@@ -25,11 +25,11 @@
 
 </div>
 
-<div class="my-4 flex flex-col px-10 p-6 bg-black shadow-md">
-    <section class="text-xl uppercase font-bold px-1 mb-2 text-white">
+<div class="my-4 flex flex-col px-10 p-3 shadow-md">
+    <section class="text-xl uppercase font-bold px-1 mb-2 text-black">
         About our Subscriptions
     </section>
-    <section class="flex items-center font-normal text-white text-md mt-2">
+    <section class="flex items-center font-normal text-gray-500 text-md mt-2">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
@@ -37,7 +37,7 @@
             Your subscription Plan will automatically renew after one year
         </p>
     </section>
-    <section class="flex items-center font-normal text-md text-white">
+    <section class="flex items-center font-normal text-md text-gray-500">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
@@ -49,11 +49,11 @@
 
 <main class="my-8 w-full flex flex-col">
 
-    <div class="mx-4 js-show-on-scroll">
-        <h2 class="mt-1 pb-1 font-bold text-xl text-green-500 border-b border-green-600 items-center">Recent Miti Issues</h2>
+    <div class="mx-4">
+        <h2 class="mt-1 font-bold text-xl uppercase px-8 text-black">Recent Miti Issues</h2>
 
         <div class="flex flex-col sm:grid lg:grid-cols-5 md:grid-cols-3 sm:-mx-2">
-            <a href="{{ url('user/read/issue_47') }}" class="mt-4" data-aos="flip-right">
+            <a href="{{ url('user/read/issue_47') }}" class="mt-2" data-aos="flip-right">
                 <div class="bg-white h-full p-8 border-b-4 border-green-500 rounded-lg flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
                     <div class="border rounded-md px-2 py-2">
                         <img class="object-fill h-48 w-full" src="https://files.magzter.com/resize/magazine/1394809325/1621316173/thumb/1.jpg">
@@ -63,7 +63,7 @@
                 </div>
             </a>
 
-            <a href="{{ url('user/read/issue_46') }}" class="mt-4" data-aos="flip-right">
+            <a href="{{ url('user/read/issue_46') }}" class="mt-2" data-aos="flip-right">
                 <div class="bg-white h-full p-8 border-b-4 border-green-500 rounded-lg flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
                     <div class="border rounded-md px-2 py-2">
                         <img class="object-fill h-48 w-full" src="https://files.magzter.com/resize/magazine/1354588640/1622100821/thumb/1.jpg">
@@ -73,7 +73,7 @@
                 </div>
             </a>
 
-            <a href="{{ url('user/read/issue_46') }}" class="mt-4" data-aos="flip-right">
+            <a href="{{ url('user/read/issue_46') }}" class="mt-2" data-aos="flip-right">
                 <div class="bg-white h-full p-8 border-b-4 border-green-500 rounded-lg flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
                     <div class="border rounded-md px-2 py-2">
                         <img class="object-fill h-48 w-full" src="https://files.magzter.com/resize/magazine/1343918525/1622011952/thumb/1.jpg">
@@ -83,7 +83,7 @@
                 </div>
             </a>
 
-            <a href="{{ url('user/read/issue_46') }}" class="mt-4" data-aos="flip-right">
+            <a href="{{ url('user/read/issue_46') }}" class="mt-2" data-aos="flip-right">
                 <div class="bg-white h-full p-8 border-b-4 border-green-500 rounded-lg flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
                     <div class="border rounded-md px-2 py-2">
                         <img class="object-fill h-48 w-full" src="https://files.magzter.com/resize/magazine/1359122596/1622010544/thumb/1.jpg">
@@ -93,7 +93,7 @@
                 </div>
             </a>
 
-            <a href="{{ url('user/read/issue_47') }}" class="mt-4" data-aos="flip-right">
+            <a href="{{ url('user/read/issue_47') }}" class="mt-2" data-aos="flip-right">
                 <div class="bg-white h-full p-8 border-b-4 border-green-500 rounded-lg flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
                     <div class="border rounded-md px-2 py-2">
                         <img class="object-fill h-48 w-full" src="https://files.magzter.com/resize/magazine/1429714855/1620997113/thumb/1.jpg">
@@ -103,10 +103,50 @@
                 </div>
             </a>
 
-            <a href="{{ url('user/read/issue_46') }}" class="mt-4" data-aos="flip-right">
+            <a href="{{ url('user/read/issue_46') }}" class="mt-2" data-aos="flip-right">
                 <div class="bg-white h-full p-8 border-b-4 border-green-500 rounded-lg flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
                     <div class="border rounded-md px-2 py-2">
                         <img class="object-fill h-48 w-full" src="https://files.magzter.com/resize/magazine/1338193253/1621603041/thumb/1.jpg">
+                    </div>
+                    <div class="mt-4 font-bold">Issue 46</div>
+                    <div class="text-center mt-2 text-gray-600 text-sm">Captured Topics can be put here</div>
+                </div>
+            </a>
+
+            <a href="{{ url('user/read/issue_46') }}" class="mt-2" data-aos="flip-right">
+                <div class="bg-white h-full p-8 border-b-4 border-green-500 rounded-lg flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
+                    <div class="border rounded-md px-2 py-2">
+                        <img class="object-fill h-48 w-full" src="https://files.magzter.com/resize/magazine/1430147033/1622118068/thumb/1.jpg">
+                    </div>
+                    <div class="mt-4 font-bold">Issue 46</div>
+                    <div class="text-center mt-2 text-gray-600 text-sm">Captured Topics can be put here</div>
+                </div>
+            </a>
+
+            <a href="{{ url('user/read/issue_46') }}" class="mt-2" data-aos="flip-right">
+                <div class="bg-white h-full p-8 border-b-4 border-green-500 rounded-lg flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
+                    <div class="border rounded-md px-2 py-2">
+                        <img class="object-fill h-48 w-full" src="https://files.magzter.com/resize/magazine/1343679896/1617070061/thumb/1.jpg">
+                    </div>
+                    <div class="mt-4 font-bold">Issue 46</div>
+                    <div class="text-center mt-2 text-gray-600 text-sm">Captured Topics can be put here</div>
+                </div>
+            </a>
+
+            <a href="{{ url('user/read/issue_46') }}" class="mt-2" data-aos="flip-right">
+                <div class="bg-white h-full p-8 border-b-4 border-green-500 rounded-lg flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
+                    <div class="border rounded-md px-2 py-2">
+                        <img class="object-fill h-48 w-full" src="https://files.magzter.com/resize/magazine/1412680414/1623066486/thumb/1.jpg">
+                    </div>
+                    <div class="mt-4 font-bold">Issue 46</div>
+                    <div class="text-center mt-2 text-gray-600 text-sm">Captured Topics can be put here</div>
+                </div>
+            </a>
+
+            <a href="{{ url('user/read/issue_46') }}" class="mt-2" data-aos="flip-right">
+                <div class="bg-white h-full p-8 border-b-4 border-green-500 rounded-lg flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
+                    <div class="border rounded-md px-2 py-2">
+                        <img class="object-fill h-48 w-full" src="https://files.magzter.com/resize/magazine/1423230088/1619552515/thumb/1.jpg">
                     </div>
                     <div class="mt-4 font-bold">Issue 46</div>
                     <div class="text-center mt-2 text-gray-600 text-sm">Captured Topics can be put here</div>

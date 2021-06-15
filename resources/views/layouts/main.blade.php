@@ -31,7 +31,7 @@
     <div class="container h-16 bg-black {{ Request::path() ==  '/' ? 'top-0 absolute z-50' : ''  }}">
         <nav x-data="{ open: false }">
             <!-- Primary Navigation Menu -->
-            <div class="h-16 px-6 flex items-center justify-between">
+            <div class="h-16 px-6 flex items-center justify-between" data-aos="fade-right">
                 <div class="flex">
                     <img src="{{asset('storage/logo.png')}}" class="block h-10 w-auto fill-current" alt="Logo Image" />
                     <x-nav-link :href="route('dashboard')">
