@@ -44,7 +44,12 @@
           </span>
         </div>
         <div class="text-center pt-8 mb-8 mt-auto">
-          <x-button class="bg-green-600 hover:bg-blue-600">Choose Plan</x-button>
+          <form action="{{route('chosen.plan')}}" method="POST">
+            @csrf
+            <input type="hidden" name="plan_id" value="{{$plans->id}}">
+            <input type="hidden" name="plan_type" value="digital">
+            <x-button class="bg-green-600 hover:bg-blue-600">Choose Plan</x-button>
+          </form>
         </div>
       </div>
       <div class="flex-1 lg:flex-initial lg:w-1/4 border border-gray-400 rounded-md  bg-white mt-4 sm:-mt-4 shadow-lg z-30 flex flex-col">
@@ -70,7 +75,12 @@
           </span>
         </div>
         <div class="w-full text-center mb-8 mt-auto">
-          <x-button class="bg-green-600 hover:bg-blue-600">Choose Plan</x-button>
+          <form action="{{route('chosen.plan')}}" method="POST">
+            @csrf
+            <input type="hidden" name="plan_id" value="{{$plans->id}}">
+            <input type="hidden" name="plan_type" value="printed">
+            <x-button class="bg-green-600 hover:bg-blue-600">Choose Plan</x-button>
+          </form>
         </div>
       </div>
       <div class="flex-1 lg:flex-initial lg:w-1/4 border border-gray-400 rounded-md shadow-md bg-white mt-4 flex flex-col">
@@ -96,7 +106,12 @@
           </span>
         </div>
         <div class="text-center pt-8 mb-8 mt-auto">
-          <x-button class="bg-green-600 hover:bg-blue-600">Choose Plan</x-button>
+          <form action="{{route('chosen.plan')}}" method="POST">
+            @csrf
+            <input type="hidden" name="plan_id" value="{{$plans->id}}">
+            <input type="hidden" name="plan_type" value="combined">
+            <x-button class="bg-green-600 hover:bg-blue-600">Choose Plan</x-button>
+          </form>
         </div>
       </div>
     </div>

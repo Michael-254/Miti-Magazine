@@ -69,8 +69,7 @@ class MagazineController extends Controller
             'image' =>  $image_name,
         ]);
 
-        Toastr::success('Uploaded successfully', 'Success');
-        return redirect('admin/file-manager');
+        return redirect('admin/file-manager')->with('message','Uploaded successfully');
     }
 
     /**

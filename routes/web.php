@@ -53,7 +53,8 @@ Route::view('/dashboard', 'dashboard')->middleware(['auth'])->name('dashboard');
 //Unauth Pages
 Route::view('/', 'welcome')->name('landing.page');
 Route::view('/choose/plan', 'choose-plan')->name('choose.plan');
-Route::view('/subscribe/plan', 'selected-plan')->name('subscribe.plan');
+Route::post('/subscribe/plan', 'SubscriptionController@store')->name('chosen.plan');
+Route::get('/subscribe/plan', 'SubscriptionController@index')->name('subscribe.plan');
 
 //Socialite Login
 Route::prefix('auth')->group(function () {
