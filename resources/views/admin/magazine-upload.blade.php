@@ -29,8 +29,8 @@
                                                             <div class="col-12">
                                                                 <div class="form-group">
                                                                     <label class="font-bold text-green-600">Issue_no</label>
-                                                                    <div class="position-relative has-icon-left">
-                                                                        <input type="text" name="issue_no" class="border-2 rounded-md form-control" placeholder="Current Password">
+                                                                    <div>
+                                                                        <input type="text" name="issue_no" class="border-2 rounded-md form-control" placeholder="Issue number">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -38,10 +38,9 @@
                                                             <div class="col-12">
                                                                 <div class="form-group">
                                                                     <label class="font-bold text-green-600">Title</label>
-                                                                    <div class="position-relative has-icon-left">
-                                                                        <input type="text" name="title" class="border-2 rounded-md form-control" placeholder="New Password">
+                                                                    <div>
+                                                                        <input type="text" name="title" class="border-2 rounded-md form-control" placeholder="Title of magazine">
                                                                         <div class="form-control-position">
-                                                                            <i class="feather icon-lock"></i>
                                                                         </div>
                                                                     </div>
                                                                 </div>

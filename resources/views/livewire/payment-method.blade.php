@@ -17,6 +17,11 @@
                     <img src="/storage/airtel.png" alt="" class="w-20 cursor-pointer">
                 </a>
             </li>
+            <li class="-mb-px mr-1">
+                <a class="inline-block py-2 px-4 text-blue-500 hover:text-blue-800 font-semibold" :class="{ 'bg-gray-300 border-l border-t border-r' : tab === 'tab4' }" @click.prevent="tab = 'tab4'">
+                    <img src="/storage/paypal.png" alt="" class="w-20 cursor-pointer">
+                </a>
+            </li>
         </ul>
         <div class="content bg-white px-4 py-4 border-l border-r border-b pt-4">
             <div x-cloak x-show="tab === 'tab1'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100">
