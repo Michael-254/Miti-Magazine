@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
+use File;
 
 class MagazineController extends Controller
 {
@@ -50,7 +51,10 @@ class MagazineController extends Controller
         //Image
         $image = $request->image;
         $image_name = time() . '_' . $image->getClientOriginalName() . '.' . $image->getClientOriginalExtension();
-        $dir = public_path('files/magazines/cover/');
+        $dir = public_path('files/magazines/cover');
+        if (!file_exists($dir)) {
+            File::makeDirectory($dir, 493, true);
+        }
         $imgResize = Image::make($image->getRealPath())->resize(160, 200);
         $imgResize->save($dir . '/' . $image_name, 80);
 

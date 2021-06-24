@@ -27,8 +27,9 @@ Route::prefix('email')->group(function () {
 //Payments
 Route::get('payment', 'PaymentController@payment');
 Route::get('ipay/callback', 'PaymentController@callback');
-Route::get('express-checkout', 'PaypalController@getExpressCheckout');
-Route::get('express-checkout-success', 'PayPalController@getExpressCheckoutSuccess');
+Route::get('paypal/checkout', 'PaypalController@paymentProcess');
+Route::get('paypal/success', 'PayPalController@paymentSuccess');
+Route::get('paypal/cancel', 'PayPalController@paymentCancel');
 Route::post('paypal/ipn', 'PayPalController@postNotify');
 
 //User Links
@@ -53,7 +54,8 @@ Route::view('/dashboard', 'dashboard')->middleware(['auth'])->name('dashboard');
 //Unauth Pages
 Route::view('/', 'welcome')->name('landing.page');
 Route::view('/choose/plan', 'choose-plan')->name('choose.plan');
-Route::view('/subscribe/plan', 'selected-plan')->name('subscribe.plan');
+Route::post('/subscribe/plan', 'SubscriptionController@store')->name('chosen.plan');
+Route::get('/subscribe/plan', 'SubscriptionController@index')->name('subscribe.plan');
 
 //Socialite Login
 Route::prefix('auth')->group(function () {
