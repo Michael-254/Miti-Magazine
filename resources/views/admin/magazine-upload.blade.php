@@ -28,23 +28,19 @@
 
                                                             <div class="col-12">
                                                                 <div class="form-group">
-                                                                    <label for="password-icon">Issue_no</label>
-                                                                    <div class="position-relative has-icon-left">
-                                                                        <input type="text" name="issue_no" class="border-2 rounded-md form-control" placeholder="Current Password">
-                                                                        <div class="form-control-position">
-                                                                            <i class="feather icon-lock"></i>
-                                                                        </div>
+                                                                    <label class="font-bold text-green-600">Issue_no</label>
+                                                                    <div>
+                                                                        <input type="text" name="issue_no" class="border-2 rounded-md form-control" placeholder="Issue number">
                                                                     </div>
                                                                 </div>
                                                             </div>
 
                                                             <div class="col-12">
                                                                 <div class="form-group">
-                                                                    <label for="password-icon">Title</label>
-                                                                    <div class="position-relative has-icon-left">
-                                                                        <input type="text" name="title" class="border-2 rounded-md form-control" placeholder="New Password">
+                                                                    <label class="font-bold text-green-600">Title</label>
+                                                                    <div>
+                                                                        <input type="text" name="title" class="border-2 rounded-md form-control" placeholder="Title of magazine">
                                                                         <div class="form-control-position">
-                                                                            <i class="feather icon-lock"></i>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -52,7 +48,7 @@
 
                                                             <div class="media-body mt-75">
                                                                 <div class="col-12">
-                                                                    <label>Magazine</label>
+                                                                    <label class="font-bold text-green-600">Magazine</label>
                                                                     <input type="file" name="file" accept="application/pdf" class="btn btn-sm btn-primary ml-50 mb-50 mb-sm-0 cursor-pointer">
                                                                 </div>
                                                                 <p class="text-muted ml-75 mt-50"><small>Allowed PDF.</small></p>
@@ -60,7 +56,7 @@
 
                                                             <div class="media-body mt-75">
                                                                 <div class="col-12">
-                                                                    <label>Cover Image</label>
+                                                                    <label class="font-bold text-green-600">Cover Image</label>
                                                                     <input type="file" name="image" accept="image/*" class="btn btn-sm btn-primary ml-50 mb-50 mb-sm-0 cursor-pointer">
                                                                 </div>
                                                                 <p class="text-muted ml-75 mt-50"><small>Allowed JPG, GIF or PNG.</small></p>

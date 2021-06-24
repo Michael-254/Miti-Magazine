@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Magazine;
+use Brian2694\Toastr\Facades\Toastr;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -50,11 +51,8 @@ class MagazineController extends Controller
 
         //Image
         $image = $request->image;
-        $image_name = time() . '_' . $image->getClientOriginalName() . '.' . $image->getClientOriginalExtension();
+        $image_name = time() . '_' . $image->getClientOriginalName();
         $dir = public_path('files/magazines/cover');
-        if (!file_exists($dir)) {
-            File::makeDirectory($dir, 493, true);
-        }
         $imgResize = Image::make($image->getRealPath())->resize(160, 200);
         $imgResize->save($dir . '/' . $image_name, 80);
 
@@ -66,11 +64,13 @@ class MagazineController extends Controller
 
         $magazine = Magazine::create([
             'issue_no' => $request->issue_no,
-            'title' => $request->issue_no,
+            'title' => $request->title,
             'slug' => $slug,
             'file' => $filename,
             'image' =>  $image_name,
         ]);
+
+        return redirect('admin/file-manager')->with('message','Uploaded successfully');
     }
 
     /**

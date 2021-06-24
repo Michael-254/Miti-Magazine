@@ -67,7 +67,7 @@ return array(
         'driver' => 'LocalFileSystem',
         'path'   => public_path() . '/files/',
         'URL'    => public_path() . '/files/',
-        'uploadAllow'   => ['image/png', 'image/jpeg', 'image/pjpeg', 'image/gif'],
+        'uploadAllow'   => ['image/png', 'image/jpeg', 'image/pjpeg', 'image/gif','application/pdf',],
         'uploadDeny'    => ['all'],
         'uploadOrder'   => ['deny', 'allow'],
         'attributes' => [

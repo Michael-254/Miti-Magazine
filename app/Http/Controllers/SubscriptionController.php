@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Amount;
 use App\Models\Subscription;
+use App\Models\SubscriptionPlan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class SubscriptionController extends Controller
 {
@@ -14,7 +17,11 @@ class SubscriptionController extends Controller
      */
     public function index()
     {
-        //
+        $plan_id = Session::get('plan_id');
+        $plan_type = Session::get('plan_type');
+        $currency = SubscriptionPlan::findOrFail($plan_id);
+        $amount = Amount::whereSubscriptionPlanId($plan_id)->value($plan_type);
+        return view('selected-plan',compact('amount','currency'));
     }
 
     /**
@@ -35,7 +42,9 @@ class SubscriptionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       Session::put('plan_id',$request->plan_id);
+       Session::put('plan_type',$request->plan_type);
+       return redirect('subscribe/plan');
     }
 
     /**

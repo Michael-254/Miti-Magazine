@@ -15,7 +15,7 @@ class CreateMagazinesTable extends Migration
     {
         Schema::create('magazines', function (Blueprint $table) {
             $table->id();
-            $table->integer('issue_no');
+            $table->string('issue_no');
             $table->string('title');
             $table->string('slug')->unique();
             $table->string('file');
