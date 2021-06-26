@@ -58,6 +58,9 @@ class PaypalController extends Controller
             $currency = "USD";
             $amount = round($amount/2319);
         }
+        else {
+            $currency = "EUR";
+        }
 
         $order = $provider->createOrder([
             "intent"=> "CAPTURE",
