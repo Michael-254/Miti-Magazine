@@ -58,7 +58,7 @@ class ShippingController extends Controller
         ]);
         Session::put('customer_id', $customer->id);
 
-        $address = Shipping::firstOrCreate([
+        $address = Shipping::updateOrCreate([
             'user_id' => $customer->id,
         ], [
             'address' => $request->address,
