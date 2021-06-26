@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Shipping;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Session;
+use Illuminate\Support\Facades\Session;
 
 class ShippingController extends Controller
 {
@@ -48,16 +48,19 @@ class ShippingController extends Controller
             'payment_method' => 'required'
         ]);
 
-        $customer = User::create([
+        $customer = User::firstOrCreate([
             'email' => $request->email,
+        ], [
             'name' => $request->name,
             'country' => $request->country,
             'company' => $request->company,
             'password' => bcrypt('123456'),
-        ]);      
+        ]);
         Session::put('customer_id', $customer->id);
 
-        $address = $customer->shippingInfo()->create([
+        $address = Shipping::firstOrCreate([
+            'user_id' => $customer->id,
+        ], [
             'address' => $request->address,
             'zip_code' => $request->zip_code,
             'apartment' => $request->apartment,
@@ -65,10 +68,9 @@ class ShippingController extends Controller
             'state' => $request->state,
         ]);
 
-        if($request->payment_method == 'paypal'){
+        if ($request->payment_method == 'paypal') {
             return redirect('paypal/checkout');
-        }
-        else{
+        } else {
             return 'ipay';
         }
     }
