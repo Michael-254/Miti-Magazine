@@ -51,4 +51,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return null;
     }
+
+    public function shippingInfo()
+    {
+        return $this->hasOne(Shipping::class);
+    }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\Country;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,7 +30,8 @@ class AppServiceProvider extends ServiceProvider
         Blade::if('admin', function () {
             return auth()->user()->is_admin;
         });
-
+        
         Paginator::useBootstrap();
+        
     }
 }

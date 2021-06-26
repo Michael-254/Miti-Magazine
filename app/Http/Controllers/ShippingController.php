@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Shipping;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class ShippingController extends Controller
@@ -35,7 +36,38 @@ class ShippingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'email' => 'required',
+            'name' => 'required',
+            'address' => 'required',
+            'zip_code' => 'required',
+            'country' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'payment_method' => 'required'
+        ]);
+
+        $customer = User::create([
+            'email' => $request->email,
+            'name' => $request->name,
+            'country' => $request->country,
+            'company' => $request->company,
+            'password' => bcrypt('123456'),
+        ]);
+
+        $address = $customer->shippingInfo()->create([
+            'address' => $request->address,
+            'zip_code' => $request->zip_code,
+            'apartment' => $request->apartment,
+            'city' => $request->city,
+            'state' => $request->state,
+        ]);
+
+        if($request->payment_method == 'paypal'){
+            return redirect('paypal/checkout');
+        }else{
+            return 'ipay';
+        }
     }
 
     /**

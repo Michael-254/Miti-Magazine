@@ -56,6 +56,7 @@ Route::view('/', 'welcome')->name('landing.page');
 Route::view('/choose/plan', 'choose-plan')->name('choose.plan');
 Route::post('/subscribe/plan', 'SubscriptionController@store')->name('chosen.plan');
 Route::get('/subscribe/plan', 'SubscriptionController@index')->name('subscribe.plan');
+Route::post('/make/payment', 'ShippingController@store')->name('make.payment');
 
 //Socialite Login
 Route::prefix('auth')->group(function () {

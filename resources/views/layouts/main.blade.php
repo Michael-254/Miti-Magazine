@@ -28,7 +28,7 @@
 
 <body class="text-gray-800 antialiased font-sans">
 
-    <div class="container h-16 bg-black {{ Request::path() ==  '/' ? 'top-0 absolute z-50' : ''  }}">
+    <div class="w-full h-16 bg-black {{ Request::path() ==  '/' ? 'top-0 absolute z-50' : ''  }}">
         <nav x-data="{ open: false }">
             <!-- Primary Navigation Menu -->
             <div class="h-16 px-6 flex items-center justify-between" data-aos="fade-right">
