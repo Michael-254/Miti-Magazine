@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Shipping;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Session;
 
 class ShippingController extends Controller
 {
@@ -54,6 +55,7 @@ class ShippingController extends Controller
             'company' => $request->company,
             'password' => bcrypt('123456'),
         ]);
+        Session::put('customer_id', $customer->id);
 
         $address = $customer->shippingInfo()->create([
             'address' => $request->address,
@@ -65,7 +67,8 @@ class ShippingController extends Controller
 
         if($request->payment_method == 'paypal'){
             return redirect('paypal/checkout');
-        }else{
+        }
+        else{
             return 'ipay';
         }
     }

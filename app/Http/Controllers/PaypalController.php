@@ -8,6 +8,7 @@ use App\Models\Paypal as Payment;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Role;
+use Carbon\Carbon;
 use Session;
 use Mail;
 
@@ -22,7 +23,7 @@ class PaypalController extends Controller
     {
         $payments = Payment::all();
 
-        return view('back.payments', compact('payments'));
+        return view('admin.paypal-payments', compact('payments'));
     }
 
     /**
@@ -35,16 +36,23 @@ class PaypalController extends Controller
         \PayPal::setProvider();
         $provider = \PayPal::getProvider();
         $provider->setApiCredentials(config('paypal'));
-        $provider->setAccessToken($provider->getAccessToken());
+        $token = $provider->getAccessToken();
+        $provider->setAccessToken($token);
+
+        $plan_id = Session::get('plan_id');
+        $plan_type = Session::get('plan_type');
+        $currency = SubscriptionPlan::findOrFail($plan_id)->currency();
+        $amount = Amount::whereSubscriptionPlanId($plan_id)->value($plan_type);
+        $referenceId = Carbon::now()->timestamp;
 
         $order = $provider->createOrder([
             "intent"=> "CAPTURE",
             "purchase_units"=> [
                 0 => [
-                    "reference_id" => '1234567',
+                    "reference_id" => $referenceId,
                     "amount"=> [
-                        "currency_code"=> "USD",
-                        "value"=> "100.00"
+                        "currency_code"=> $currency,
+                        "value"=> $amount
                     ]
                 ]
             ],
@@ -53,6 +61,15 @@ class PaypalController extends Controller
                  'return_url' => env('APP_URL').'/paypal/success'
             ]
         ]);
+
+        $inputs = [
+            'user_id' => Session::get('customer_id'),
+            'amount' => $amount,
+            'reference' => $referenceId,
+            'paypal_order_id' => $order['id'],
+            'token' => $token
+        ];
+        Payment::create($inputs);
 
         Session::put('payapal_order_id', $order['id']);
 
@@ -69,7 +86,8 @@ class PaypalController extends Controller
         \PayPal::setProvider();
         $provider = \PayPal::getProvider();
         $provider->setApiCredentials(config('paypal'));
-        $provider->setAccessToken($provider->getAccessToken());
+        $token = $provider->getAccessToken();
+        $provider->setAccessToken($token);
 
         $order_id = Session::get('payapal_order_id');
         $provider->capturePaymentOrder($order_id);
@@ -94,6 +112,21 @@ class PaypalController extends Controller
      */
     public function postNotify(Request $request)
     {
-        //
+        \PayPal::setProvider();
+        $provider = \PayPal::getProvider();
+        $provider->setApiCredentials(config('paypal'));
+        $token = $provider->getAccessToken();
+        $provider->setAccessToken($token);
+
+        $response = (string) $this->provider->verifyIPN($post);
+
+        Payment::whereToken($token)->update(['payload' => json_encode($post), 'status' => $response]);
+
+        if ($response == 'VERIFIED') {
+            // Update order with success payment
+        }
+        else {
+            // Update order with failed payment
+        }
     }
 }
