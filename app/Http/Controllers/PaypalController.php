@@ -51,9 +51,11 @@ class PaypalController extends Controller
         // AUD, BRL, CAD, CNY, CZK, DKK, EUR, HKD, HUF, ILS, JPY, MYR, MXN, TWD, NZD, NOK, PHP, PLN, GBP, RUB, SGD, SEK, CHF, THB, USD
 
         if ($currency == 'KSh') {
+            $currency = "USD";
             $amount = round($amount/100);
         }
         elseif ($currency == 'TSh') {
+            $currency = "USD";
             $amount = round($amount/2319);
         }
 
@@ -63,7 +65,7 @@ class PaypalController extends Controller
                 0 => [
                     "reference_id" => $referenceId,
                     "amount"=> [
-                        "currency_code"=> 'USD',
+                        "currency_code"=> $currency,
                         "value"=> $amount
                     ]
                 ]
