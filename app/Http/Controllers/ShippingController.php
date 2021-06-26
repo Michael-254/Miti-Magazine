@@ -54,7 +54,7 @@ class ShippingController extends Controller
             'country' => $request->country,
             'company' => $request->company,
             'password' => bcrypt('123456'),
-        ]);
+        ]);      
         Session::put('customer_id', $customer->id);
 
         $address = $customer->shippingInfo()->create([

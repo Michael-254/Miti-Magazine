@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use App\Models\Paypal as Payment;
+use App\Models\SubscriptionPlan;
+use App\Models\Amount;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Role;
@@ -45,13 +47,23 @@ class PaypalController extends Controller
         $amount = Amount::whereSubscriptionPlanId($plan_id)->value($plan_type);
         $referenceId = Carbon::now()->timestamp;
 
+        // Supported currency
+        // AUD, BRL, CAD, CNY, CZK, DKK, EUR, HKD, HUF, ILS, JPY, MYR, MXN, TWD, NZD, NOK, PHP, PLN, GBP, RUB, SGD, SEK, CHF, THB, USD
+
+        if ($currency == 'KSh') {
+            $amount = round($amount/100);
+        }
+        elseif ($currency == 'TSh') {
+            $amount = round($amount/2319);
+        }
+
         $order = $provider->createOrder([
             "intent"=> "CAPTURE",
             "purchase_units"=> [
                 0 => [
                     "reference_id" => $referenceId,
                     "amount"=> [
-                        "currency_code"=> $currency,
+                        "currency_code"=> 'USD',
                         "value"=> $amount
                     ]
                 ]
@@ -62,14 +74,13 @@ class PaypalController extends Controller
             ]
         ]);
 
-        $inputs = [
+        Payment::create([
             'user_id' => Session::get('customer_id'),
             'amount' => $amount,
             'reference' => $referenceId,
             'paypal_order_id' => $order['id'],
-            'token' => $token
-        ];
-        Payment::create($inputs);
+            'token' => $token['access_token']
+        ]);
 
         Session::put('payapal_order_id', $order['id']);
 

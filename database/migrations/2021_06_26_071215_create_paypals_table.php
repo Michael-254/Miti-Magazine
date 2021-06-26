@@ -15,11 +15,11 @@ class CreatePaypalsTable extends Migration
     {
         Schema::create('paypals', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->nullable();
-            $table->string('amount')->nullable();
-            $table->string('reference')->nullable();
-            $table->text('paypal_order_id')->nullable();
-            $table->text('token')->nullable();
+            $table->foreignId('user_id');
+            $table->string('amount');
+            $table->string('reference');
+            $table->text('paypal_order_id');
+            $table->text('token');
             $table->text('payload')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();

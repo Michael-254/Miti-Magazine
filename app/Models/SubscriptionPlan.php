@@ -18,7 +18,7 @@ class SubscriptionPlan extends Model
     public function currency():string
     {
         return [
-            'Kenya' => 'Kshs',
+            'Kenya' => 'KSh',
             'Uganda' => 'UGX',
             'Tanzania' => 'TSh',
         ][$this->location] ?? '€';
