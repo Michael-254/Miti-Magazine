@@ -114,7 +114,7 @@ class PaypalController extends Controller
 
         $paypalToken = $request->get('token');
         $PayerID = $request->get('PayerID');
-        Payment::whereReference($order_id)->update(['token' => $paypalToken, 'PayerId' => $PayerID]);
+        Payment::where('paypal_order_id', $order_id)->update(['token' => $paypalToken, 'PayerId' => $PayerID]);
 
         return redirect('/')->with('ok', 'Your Paypal payment has been received, wait for confirmation');
     }

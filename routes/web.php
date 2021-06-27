@@ -28,9 +28,9 @@ Route::prefix('email')->group(function () {
 Route::get('ipay/checkout', 'PaymentController@payment');
 Route::get('ipay/callback', 'PaymentController@callback');
 Route::get('paypal/checkout', 'PaypalController@paymentProcess');
-Route::get('paypal/success', 'PayPalController@paymentSuccess');
-Route::get('paypal/cancel', 'PayPalController@paymentCancel');
-Route::post('paypal/ipn', 'PayPalController@postNotify');
+Route::get('paypal/success', 'PaypalController@paymentSuccess');
+Route::get('paypal/cancel', 'PaypalController@paymentCancel');
+Route::post('paypal/ipn', 'PaypalController@postNotify');
 
 //User Links
 Route::prefix('user')->middleware(['auth'])->group(function () {
