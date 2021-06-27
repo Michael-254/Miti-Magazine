@@ -1,6 +1,5 @@
 @extends('layouts.main')
 @section('content')
-
 <section class="mx-auto mt-12 flex sm:max-w-6xl p-4 w-full border-2 rounded-lg shadow-lg">
     <form action="{{route('make.payment')}}" method="POST">
         @csrf
@@ -47,6 +46,13 @@
                                         <option value="{{$country->id}}">{{$country->country}}</option>
                                         @endforeach
                                     </select>
+                                </div>
+
+                                <div class="mt-2">
+                                    <span class="text-green-700 font-semibold">Phone Number</span>
+                                </div>
+                                <div class="mt-2">
+                                    <input type="tel" name="phone_no" value="{{ old('phone_no') ?? auth()->user()->phone_no ?? '' }}" placeholder="Phone Number*" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 text-sm">
                                 </div>
                             </div>
                         </div>

@@ -226,5 +226,6 @@
         once: true,
     })
 </script>
+@yield('scripts')
 
 </html>

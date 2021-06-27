@@ -50,13 +50,15 @@ class ShippingController extends Controller
             'country' => 'required',
             'city' => 'required',
             'state' => 'required',
-            'payment_method' => 'required'
+            'payment_method' => 'required',
+            'phone_no' => 'required'
         ]);
 
         $customer = User::updateOrCreate([
             'email' => $request->email,
         ], [
             'name' => $request->name,
+            'phone_no' => $request->phone_no,
             'country' => $request->country,
             'company' => $request->company,
             'password' => bcrypt('123456'),
