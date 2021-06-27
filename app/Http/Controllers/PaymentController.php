@@ -83,7 +83,7 @@ class PaymentController extends Controller
             ->usingChannels($transactChannels)
             ->usingVendorId(env('IPAY_VENDOR_ID'), env('IPAY_VENDOR_SECRET'))
             ->withCallback(env('APP_URL').'ipay/callback')
-            ->withCustomer('0717606015', $customer->email, false)
+            ->withCustomer($customer->phone_no, $customer->email, false)
             ->transact($amount, $orderId, $invoiceNo);
 
         //dd($response);
