@@ -20,7 +20,8 @@ class CreatePaypalsTable extends Migration
             $table->string('amount');
             $table->string('reference');
             $table->text('paypal_order_id');
-            $table->text('token');
+            $table->text('token')->nullable();
+            $table->text('PayerID')->nullable();
             $table->text('payload')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();

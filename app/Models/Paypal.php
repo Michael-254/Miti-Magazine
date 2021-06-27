@@ -21,6 +21,7 @@ class Paypal extends Model
         'reference',
         'paypal_order_id',
         'token',
+        'PayerID',
         'payload',
         'status'
     ];

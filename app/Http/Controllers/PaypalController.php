@@ -88,8 +88,7 @@ class PaypalController extends Controller
             'currency' => $currency,
             'amount' => $amount,
             'reference' => $referenceId,
-            'paypal_order_id' => $order['id'],
-            'token' => $token['access_token']
+            'paypal_order_id' => $order['id']
         ]);
 
         Session::put('payapal_order_id', $order['id']);
@@ -112,6 +111,10 @@ class PaypalController extends Controller
 
         $order_id = Session::get('payapal_order_id');
         $provider->capturePaymentOrder($order_id);
+
+        $paypalToken = $request->get('token');
+        $PayerID = $request->get('PayerID');
+        Payment::whereReference($order_id)->update(['token' => $paypalToken, 'PayerId' => $PayerID]);
 
         return redirect('/')->with('ok', 'Your Paypal payment has been received, wait for confirmation');
     }
@@ -139,9 +142,18 @@ class PaypalController extends Controller
         $token = $provider->getAccessToken();
         $provider->setAccessToken($token);
 
+        $post = [
+            'cmd' => '_notify-validate',
+        ];
+        $data = $request->all();
+        foreach ($data as $key => $value) {
+            $post[$key] = $value;
+        }
+
         $response = (string) $this->provider->verifyIPN($post);
 
-        Payment::whereToken($token)->update(['payload' => json_encode($post), 'status' => $response]);
+        $paypalToken = $request->get('token');
+        Payment::whereToken($paypalToken)->update(['payload' => json_encode($post), 'status' => $response]);
 
         if ($response == 'VERIFIED') {
             // Update order with success payment
