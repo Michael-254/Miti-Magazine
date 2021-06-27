@@ -17,7 +17,9 @@ class CreateOrdersTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('subscription_plan_id')->constrained();
-            $table->string('status')->default('pending');
+            $table->string('status')->default('unverified');
+            $table->string('reference');
+            $table->string('type');
             $table->timestamps();
         });
     }

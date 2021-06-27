@@ -11,7 +11,7 @@ use App\Models\Order;
 use App\Models\User;
 use App\Models\Role;
 use Carbon\Carbon;
-use Session;
+use Illuminate\Support\Facades\Session;
 use Mail;
 
 class PaypalController extends Controller
@@ -45,7 +45,7 @@ class PaypalController extends Controller
         $plan_type = Session::get('plan_type');
         $currency = SubscriptionPlan::findOrFail($plan_id)->currency();
         $amount = Amount::whereSubscriptionPlanId($plan_id)->value($plan_type);
-        $referenceId = Carbon::now()->timestamp;
+        $referenceId = Session::get('referenceId');
 
         // Supported currency
         // AUD, BRL, CAD, CNY, CZK, DKK, EUR, HKD, HUF, ILS, JPY, MYR, MXN, TWD, NZD, NOK, PHP, PLN, GBP, RUB, SGD, SEK, CHF, THB, USD

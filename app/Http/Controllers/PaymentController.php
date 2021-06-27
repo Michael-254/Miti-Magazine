@@ -53,7 +53,7 @@ class PaymentController extends Controller
             ->withCustomer('0722000000', 'demo@example.com', false)
             ->transact(10, 'your order id', 'your order secret');
 
-        dd($response);
+        return $response;
     }
 
     /**

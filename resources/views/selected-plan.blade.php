@@ -22,21 +22,21 @@
                                 </div>
                                 <!-- Validation Errors -->
                                 <x-auth-validation-errors class="mb-2" :errors="$errors" />
-                                <span class="text-green-700 font-semibold">Customer Information (if gift, input email of beneficiary)</span>
+                                <span class="text-green-700 font-semibold">Customer Information (If gift, input information of beneficiary)</span>
                                 <div class="pb-3">
-                                    <input type="text" name="email" value="{{ old('email') }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="E-mail">
+                                    <input type="text" name="email" value="{{ old('email') ?? auth()->user()->email ?? ''}}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="E-mail">
                                 </div>
                                 <span class="text-green-700 font-semibold">Shipping/Billing Information</span>
                                 <div class="grid md:gap-2">
-                                    <input type="text" name="name" value="{{ old('name') }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="Name*">
+                                    <input type="text" name="name" value="{{ old('name') ?? auth()->user()->name ?? '' }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="Name*">
                                 </div>
-                                <input type="text" name="company" value="{{ old('company') }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="Company (optional)">
-                                <input type="text" name="address" value="{{ old('address') }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="Address*">
-                                <input type="text" name="apartment" value="{{ old('apartment') }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="Apartment, suite, etc. (optional)">
+                                <input type="text" name="company" value="{{ old('company') ?? auth()->user()->company ?? '' }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="Company (optional)">
+                                <input type="text" name="address" value="{{ old('address') ?? auth()->user()->shippingInfo->address ?? '' }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="Address*">
+                                <input type="text" name="apartment" value="{{ old('apartment') ?? auth()->user()->shippingInfo->apartment ?? '' }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="Apartment, suite, etc. (optional)">
                                 <div class="grid md:grid-cols-3 md:gap-2">
-                                    <input type="text" name="zip_code" value="{{ old('zip_code') }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="Zipcode*">
-                                    <input type="text" name="city" value="{{ old('city') }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="City*">
-                                    <input type="text" name="state" value="{{ old('state') }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="State*">
+                                    <input type="text" name="zip_code" value="{{ old('zip_code') ?? auth()->user()->shippingInfo->zip_code ?? '' }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="Zipcode*">
+                                    <input type="text" name="city" value="{{ old('city') ?? auth()->user()->shippingInfo->city ?? '' }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="City*">
+                                    <input type="text" name="state" value="{{ old('state') ?? auth()->user()->shippingInfo->state ?? '' }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="State*">
                                 </div>
 
                                 <div class="mt-2">

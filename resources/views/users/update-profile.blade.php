@@ -83,6 +83,7 @@
                                         <div class="form-group">
                                             <label>Country</label>
                                             <select name="country" class="select2 form-control">
+                                                <option value="">-- Choose Country --</option>
                                                 @foreach($countries as $country)
                                                 <option value="{{$country->id}}" @if (auth()->user()->country == $country->id) selected @endif>{{$country->country}}</option>
                                                 @endforeach
@@ -91,12 +92,12 @@
 
                                         <div class="form-group">
                                             <label>City</label>
-                                            <input type="text" name="city" class="form-control" value="{{auth()->user()->shippingInfo->city}}" placeholder="City">
+                                            <input type="text" name="city" class="form-control" value="{{auth()->user()->shippingInfo->city ?? ''}}" placeholder="City">
                                         </div>
 
                                         <div class="form-group">
                                             <label>State</label>
-                                            <input type="text" name="state" class="form-control" value="{{auth()->user()->shippingInfo->state}}" placeholder="State">
+                                            <input type="text" name="state" class="form-control" value="{{auth()->user()->shippingInfo->state ?? ''}}" placeholder="State">
                                         </div>
 
                                     </div>
@@ -105,17 +106,17 @@
 
                                         <div class="form-group">
                                             <label>Address</label>
-                                            <input type="text" name="address" class="form-control" value="{{auth()->user()->shippingInfo->address}}" placeholder="Address">
+                                            <input type="text" name="address" class="form-control" value="{{auth()->user()->shippingInfo->address ?? ''}}" placeholder="Address">
                                         </div>
 
                                         <div class="form-group">
                                             <label>Apartment</label>
-                                            <input type="text" name="apartment" class="form-control" value="{{auth()->user()->shippingInfo->apartment}}" placeholder="Apartment">
+                                            <input type="text" name="apartment" class="form-control" value="{{auth()->user()->shippingInfo->apartment ?? ''}}" placeholder="Apartment">
                                         </div>
 
                                         <div class="form-group">
                                             <label>Zip Code</label>
-                                            <input type="text" name="zip_code" class="form-control" value="{{auth()->user()->shippingInfo->zip_code}}" placeholder="Zip code">
+                                            <input type="text" name="zip_code" class="form-control" value="{{auth()->user()->shippingInfo->zip_code ?? ''}}" placeholder="Zip code">
                                         </div>
 
                                     </div>

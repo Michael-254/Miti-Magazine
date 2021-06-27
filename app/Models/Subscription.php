@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Subscription extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'subscription_plan_id',
+        'status',
+        'reference',
+        'start_date',
+        'end_date',
+    ];
 }

@@ -16,7 +16,6 @@ class CreateShippingsTable extends Migration
         Schema::create('shippings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained();
-            $table->string('company')->nullable();
             $table->string('address')->nullable();
             $table->string('apartment')->nullable();
             $table->string('zip_code')->nullable();
