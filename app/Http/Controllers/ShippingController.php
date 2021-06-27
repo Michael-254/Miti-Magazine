@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Amount;
+use App\Models\Order;
 use App\Models\Shipping;
+use App\Models\Subscription;
+use App\Models\SubscriptionPlan;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Session;
+use Illuminate\Support\Facades\Session;
 
 class ShippingController extends Controller
 {
@@ -48,16 +53,19 @@ class ShippingController extends Controller
             'payment_method' => 'required'
         ]);
 
-        $customer = User::create([
+        $customer = User::updateOrCreate([
             'email' => $request->email,
+        ], [
             'name' => $request->name,
             'country' => $request->country,
             'company' => $request->company,
             'password' => bcrypt('123456'),
-        ]);      
+        ]);
         Session::put('customer_id', $customer->id);
 
-        $address = $customer->shippingInfo()->create([
+        $address = Shipping::updateOrCreate([
+            'user_id' => $customer->id,
+        ], [
             'address' => $request->address,
             'zip_code' => $request->zip_code,
             'apartment' => $request->apartment,
@@ -65,11 +73,25 @@ class ShippingController extends Controller
             'state' => $request->state,
         ]);
 
-        if($request->payment_method == 'paypal'){
+        $plan_id = Session::get('plan_id');
+        $plan_type = Session::get('plan_type');
+        $referenceId = Carbon::now()->timestamp;
+        Session::put('referenceId', $referenceId);
+
+        Order::create([
+            'user_id' => $customer->id, 'subscription_plan_id' => $plan_id, 'reference' => $referenceId, 'type' => $plan_type
+        ]);
+
+        Subscription::create([
+            'user_id' => $customer->id, 'subscription_plan_id' => $plan_id, 'reference' => $referenceId,
+            'start_date' => Carbon::now()->format('Y-m-d'), 'end_date' => Carbon::now()->addYear()->format('Y-m-d')
+        ]);
+
+
+        if ($request->payment_method == 'paypal') {
             return redirect('paypal/checkout');
-        }
-        else{
-            return 'ipay';
+        } else {
+            return redirect('ipay/checkout');
         }
     }
 

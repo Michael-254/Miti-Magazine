@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Payment;
 use Illuminate\Http\Request;
 use Delights\Ipay\Cashier;
+use App\Models\Payment;
+use App\Models\SubscriptionPlan;
+use App\Models\Amount;
+use App\Models\Order;
+use App\Models\User;
+use App\Models\Role;
 use Carbon\Carbon;
+use Session;
 use Delights\Sage\SObjects\BankAccount;
 use Delights\Sage\SObjects\Contact;
 use Delights\Sage\SObjects\ContactPayment;
@@ -23,7 +29,7 @@ class PaymentController extends Controller
     {
         $payments = Payment::all();
 
-        return view('back.payments');
+        return view('admin.ipay-payments');
     }
 
     /**
@@ -43,19 +49,43 @@ class PaymentController extends Controller
             Cashier::CHANNEL_DEBIT_CARD,
             Cashier::CHANNEL_CREDIT_CARD,
         ];
-        $orderId = Carbon::now()->timestamp;
+        
+        $plan_id = Session::get('plan_id');
+        $plan_type = Session::get('plan_type');
+        $currency = SubscriptionPlan::findOrFail($plan_id)->currency();
+        $amount = Amount::whereSubscriptionPlanId($plan_id)->value($plan_type);
+        $orderId = Session::get('referenceId');
         $invoiceNo = $orderId;
+        
+        if ($currency == '€') {
+            $amount = $amount;
+        }
+        elseif ($currency == 'TSh') {
+            $amount = round($amount/21);
+        }
+        elseif ($currency == 'UGX') {
+            $amount = round($amount/33);
+        }
+        else {
+            $amount = round($amount*128);
+        }
 
         // Store in payment data in database
+        $customer = User::findOrFail(Session::get('customer_id'));
+        Payment::create([
+            'user_id' => $customer->id,
+            'currency' => 'KES',
+            'amount' => $amount,
+            'reference' => $orderId
+        ]);
 
         $response = $cashier
             ->usingChannels($transactChannels)
             ->usingVendorId(env('IPAY_VENDOR_ID'), env('IPAY_VENDOR_SECRET'))
             ->withCallback(env('APP_URL').'ipay/callback')
-            ->withCustomer('0722000000', 'demo@example.com', false)
-            ->transact(10, $orderId, $invoiceNo);
+            ->withCustomer('0717606015', $customer->email, false)
+            ->transact($amount, $orderId, $invoiceNo);
 
-        //dd($response);
         return $response;
     }
 

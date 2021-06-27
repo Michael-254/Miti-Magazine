@@ -45,7 +45,7 @@ class PaypalController extends Controller
         $plan_type = Session::get('plan_type');
         $currency = SubscriptionPlan::findOrFail($plan_id)->currency();
         $amount = Amount::whereSubscriptionPlanId($plan_id)->value($plan_type);
-        $referenceId = Carbon::now()->timestamp;
+        $referenceId = Session::get('referenceId');
 
         // Supported currency
         // AUD, BRL, CAD, CNY, CZK, DKK, EUR, HKD, HUF, ILS, JPY, MYR, MXN, TWD, NZD, NOK, PHP, PLN, GBP, RUB, SGD, SEK, CHF, THB, USD
@@ -57,6 +57,10 @@ class PaypalController extends Controller
         elseif ($currency == 'TSh') {
             $currency = "USD";
             $amount = round($amount/2319);
+        }
+        elseif ($currency == 'UGX') {
+            $currency = "USD";
+            $amount = round($amount/3556);
         }
         else {
             $currency = "EUR";

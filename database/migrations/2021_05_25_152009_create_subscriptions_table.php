@@ -17,6 +17,8 @@ class CreateSubscriptionsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('subscription_plan_id')->constrained();
+            $table->string('status')->default('unpaid');
+            $table->string('reference');
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
             $table->timestamps();

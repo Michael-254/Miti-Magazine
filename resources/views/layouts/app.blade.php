@@ -266,10 +266,6 @@
     <!-- BEGIN: Page JS-->
     <script src="{{asset('parent/app-assets/js/scripts/forms/form-tooltip-valid.js')}}"></script>
     <!-- END: Page JS-->
-<<<<<<< HEAD
-    <script src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-    <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
-    {{-- Toastr::message() --}}
 =======
 >>>>>>> ebbdd9695da8e275884ff9a4b9ebb287094ee620
     @yield('scripts')
