@@ -25,7 +25,7 @@ Route::prefix('email')->group(function () {
 });
 
 //Payments
-Route::get('payment', 'PaymentController@payment');
+Route::get('ipay/checkout', 'PaymentController@payment');
 Route::get('ipay/callback', 'PaymentController@callback');
 Route::get('paypal/checkout', 'PaypalController@paymentProcess');
 Route::get('paypal/success', 'PayPalController@paymentSuccess');

@@ -16,6 +16,7 @@ class Paypal extends Model
      */
     protected $fillable = [
         'user_id',
+        'currency',
         'amount',
         'reference',
         'paypal_order_id',

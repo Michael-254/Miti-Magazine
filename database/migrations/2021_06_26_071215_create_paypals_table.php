@@ -16,6 +16,7 @@ class CreatePaypalsTable extends Migration
         Schema::create('paypals', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
+            $table->string('currency');
             $table->string('amount');
             $table->string('reference');
             $table->text('paypal_order_id');

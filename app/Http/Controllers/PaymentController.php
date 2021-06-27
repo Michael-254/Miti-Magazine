@@ -43,6 +43,8 @@ class PaymentController extends Controller
             Cashier::CHANNEL_DEBIT_CARD,
             Cashier::CHANNEL_CREDIT_CARD,
         ];
+        $orderId = Carbon::now()->timestamp;
+        $invoiceNo = $orderId;
 
         // Store in payment data in database
 
@@ -51,9 +53,10 @@ class PaymentController extends Controller
             ->usingVendorId(env('IPAY_VENDOR_ID'), env('IPAY_VENDOR_SECRET'))
             ->withCallback(env('APP_URL').'ipay/callback')
             ->withCustomer('0722000000', 'demo@example.com', false)
-            ->transact(10, 'your order id', 'your order secret');
+            ->transact(10, $orderId, $invoiceNo);
 
-        dd($response);
+        //dd($response);
+        return $response;
     }
 
     /**
