@@ -86,7 +86,6 @@ class PaymentController extends Controller
             ->withCustomer($customer->phone_no, $customer->email, false)
             ->transact($amount, $orderId, $invoiceNo);
 
-        //dd($response);
         return $response;
     }
 
