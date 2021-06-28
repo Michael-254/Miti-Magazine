@@ -11,8 +11,9 @@ use App\Models\Order;
 use App\Models\User;
 use App\Models\Role;
 use Carbon\Carbon;
-use Session;
+use Illuminate\Support\Facades\Session;
 use Mail;
+use Illuminate\Support\Facades\Auth;
 
 class PaypalController extends Controller
 {
@@ -115,8 +116,10 @@ class PaypalController extends Controller
         $paypalToken = $request->get('token');
         $PayerID = $request->get('PayerID');
         Payment::where('paypal_order_id', $order_id)->update(['token' => $paypalToken, 'PayerId' => $PayerID]);
-
-        return redirect('/')->with('ok', 'Your Paypal payment has been received, wait for confirmation');
+        $user_id = Session::get('customer_id');
+        $paidUser = User::findorFail($user_id);
+        Auth::login($paidUser);
+        return redirect('/user/profile')->with('success', 'Your Paypal payment has been received, wait for confirmation');
     }
 
     /**
