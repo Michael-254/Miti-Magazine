@@ -2,6 +2,6 @@
 
 @section('content')
 
-@livewire('manage-ipay')
+@livewire('admin-ipay')
 
 @endsection

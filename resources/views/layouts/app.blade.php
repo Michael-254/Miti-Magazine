@@ -25,6 +25,8 @@
     <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/css/bootstrap-extended.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/css/colors.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/css/components.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/vendors/css/vendors.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/vendors/css/tables/datatable/datatables.min.css')}}">
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/css/core/menu/menu-types/horizontal-menu.css')}}">
@@ -167,7 +169,13 @@
                     <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-users"></i><span>Customers</span></a></li>
                     <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="fa fa-money"></i><span data-i18n="Starter kit">Sales</span></a>
                         <ul class="dropdown-menu">
-                            <li class="{{ (request()->is('user/update-profile')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Floating navbar">Payments</a>
+                            <li class="dropdown dropdown-submenu {{ (request()->is('admin/Paypal-payments')) || (request()->is('admin/Ipay-payments')) ? 'active' : '' }}" data-menu="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown" data-i18n="Menu Levels">Payments</a>
+                                <ul class="dropdown-menu">
+                                    <li data-menu=""><a class="dropdown-item" href="{{route('paypal.admin')}}" data-toggle="dropdown" data-i18n="Second Level">Paypal</a>
+                                    </li>
+                                    <li data-menu=""><a class="dropdown-item" href="{{route('ipay.admin')}}" data-toggle="dropdown" data-i18n="Second Level">I-Pay</a>
+                                    </li>
+                                </ul>
                             </li>
                             <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Orders</a>
                             </li>
@@ -240,7 +248,6 @@
     <!-- BEGIN: Footer-->
     <footer class="footer footer-static footer-light navbar-shadow">
         <p class="clearfix blue-grey lighten-2 mb-0"><span class="float-md-left d-block d-md-inline-block mt-25">COPYRIGHT &copy; 2021<a class="text-bold-800 grey darken-2" href="https://betterglobeforestry.com/" target="_blank">Better Globe Forestry,</a>All rights Reserved</span>
-            <button class="btn btn-primary btn-icon scroll-top" type="button"><i class="feather icon-arrow-up"></i></button>
         </p>
     </footer>
     <!-- END: Footer-->
@@ -266,8 +273,6 @@
     <!-- BEGIN: Page JS-->
     <script src="{{asset('parent/app-assets/js/scripts/forms/form-tooltip-valid.js')}}"></script>
     <!-- END: Page JS-->
-=======
->>>>>>> ebbdd9695da8e275884ff9a4b9ebb287094ee620
     @yield('scripts')
 
 </body>

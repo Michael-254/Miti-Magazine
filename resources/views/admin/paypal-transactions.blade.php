@@ -2,6 +2,6 @@
 
 @section('content')
 
-@livewire('manage-paypal')
+@livewire('admin-paypal')
 
 @endsection

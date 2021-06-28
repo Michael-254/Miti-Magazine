@@ -56,4 +56,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Shipping::class);
     }
+
+    public function myCountry(){
+        return $this->belongsTo(Country::class,'country');
+    }
 }
