@@ -30,4 +30,22 @@ class Paypal extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+        $query->where(function ($query) use ($term) {
+            $query->where('reference', 'like', $term)
+                ->orWhere('amount', 'like', $term)
+                ->orWhereHas('user', function ($query) use ($term) {
+                    $query->where('name', 'like', $term)
+                        ->orWhere('phone_no', 'like', $term)
+                        ->orWhere('email', 'like', $term)
+                        ->orWhere('company', 'like', $term)
+                        ->orWhereHas('myCountry', function ($query) use ($term) {
+                            $query->where('country', 'like', $term);
+                        });
+                });
+        });
+    }
 }

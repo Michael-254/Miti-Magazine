@@ -23,7 +23,7 @@ class CreatePaypalsTable extends Migration
             $table->text('token')->nullable();
             $table->text('PayerID')->nullable();
             $table->text('payload')->nullable();
-            $table->string('status')->nullable();
+            $table->string('status')->default('unverified');
             $table->timestamps();
         });
     }
