@@ -116,10 +116,12 @@ class PaypalController extends Controller
         $paypalToken = $request->get('token');
         $PayerID = $request->get('PayerID');
         Payment::where('paypal_order_id', $order_id)->update(['token' => $paypalToken, 'PayerId' => $PayerID]);
+		
         $user_id = Session::get('customer_id');
         $paidUser = User::findorFail($user_id);
         Auth::login($paidUser);
-        return redirect('/user/profile')->with('success', 'Your Paypal payment has been received, wait for confirmation');
+		
+        return redirect('/user/profile')->with('ok', 'Your Paypal payment has been received, wait for confirmation');
     }
 
     /**

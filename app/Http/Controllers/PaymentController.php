@@ -43,11 +43,19 @@ class PaymentController extends Controller
 
         $transactChannels = [
             Cashier::CHANNEL_MPESA,
+            Cashier::CHANNEL_BONGA,
             Cashier::CHANNEL_AIRTEL,
-            Cashier::CHANNEL_EQUITY,
-            Cashier::CHANNEL_MOBILE_BANKING,
-            Cashier::CHANNEL_DEBIT_CARD,
-            Cashier::CHANNEL_CREDIT_CARD,
+            cashier::CHANNEL_EQUITY,
+            cashier::CHANNEL_MOBILE_BANKING,
+            cashier::CHANNEL_DEBIT_CARD,
+            cashier::CHANNEL_CREDIT_CARD,
+            cashier::CHANNEL_MKOPO_RAHISI,
+            cashier::CHANNEL_SAIDA,
+            cashier::CHANNEL_ELIPA,
+            cashier::CHANNEL_UNIONPAY,
+            cashier::CHANNEL_MVISA,
+            cashier::CHANNEL_VOOMA,
+            cashier::CHANNEL_PESAPAL,
         ];
         
         $plan_id = Session::get('plan_id');
@@ -79,14 +87,14 @@ class PaymentController extends Controller
             'reference' => $orderId
         ]);
 
-        $response = $cashier
+        $fields = $cashier
             ->usingChannels($transactChannels)
             ->usingVendorId(env('IPAY_VENDOR_ID'), env('IPAY_VENDOR_SECRET'))
-            ->withCallback(env('APP_URL').'ipay/callback')
+            ->withCallback(env('APP_URL').'/ipay/callback')
             ->withCustomer($customer->phone_no, $customer->email, false)
             ->transact($amount, $orderId, $invoiceNo);
 
-        return $response;
+        return view('ipay', compact('fields'));
     }
 
     /**
