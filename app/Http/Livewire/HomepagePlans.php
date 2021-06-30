@@ -9,7 +9,7 @@ use Livewire\Component;
 class HomepagePlans extends Component
 {
     public $copies = 1;
-    public $ip = 'Tanzania';
+    public $ip = 'Kenya';
     public $location;
 
     public function copySelected($value)

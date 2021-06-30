@@ -22,6 +22,15 @@
                                 </p>
                             </div>
                             @endif
+                            @if(session()->has('ok'))
+                            @include('partials/alert', ['type' => 'success', 'message' => session('success')])
+                            @endif
+                            @if(session()->has('info'))
+                            @include('partials/alert', ['type' => 'warning', 'message' => session('info')])
+                            @endif
+                            @if(isset($info))
+                            @include('partials/alert', ['type' => 'info', 'message' => $info])
+                            @endif
                             <!-- Validation Errors -->
                             <x-auth-validation-errors class="mb-2" :errors="$errors" />
                             @if(!auth()->user()->hasVerifiedEmail())
@@ -47,13 +56,13 @@
                                         <div class="form-group">
                                             <div class="controls">
                                                 <label>Name</label>
-                                                <input type="text" name="name" class="form-control" placeholder="Username" value="{{auth()->user()->name}}" required data-validation-required-message="This username field is required">
+                                                <input type="text" name="name" class="rounded-md border-gray-400 form-control" placeholder="Username" value="{{auth()->user()->name}}" required data-validation-required-message="This username field is required">
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="controls">
                                                 <label>E-mail <a href="{{route('change.password')}}" class="font-bold text-blue-500 hover:text-blue-700 ml-5">Change password</a></label>
-                                                <input type="email" name="email" class="form-control" value="{{auth()->user()->email}}" disabled>
+                                                <input type="email" name="email" class="rounded-md border-gray-400 form-control" value="{{auth()->user()->email}}" disabled>
                                             </div>
                                         </div>
 
@@ -63,7 +72,7 @@
                                         <div class="form-group">
                                             <div class="controls">
                                                 <label>Gender</label>
-                                                <select name="gender" class="form-control" id="users-language-select2">
+                                                <select name="gender" class="rounded-md border-gray-400 form-control" id="users-language-select2">
                                                     <option value="">Select Gender</option>
                                                     <option value="1" @if (auth()->user()->gender == 1) selected @endif>Male</option>
                                                     <option value="2" @if (auth()->user()->gender == 2) selected @endif>Female</option>
@@ -73,7 +82,7 @@
 
                                         <div class="form-group">
                                             <label>Company</label>
-                                            <input type="text" name="company" class="form-control" value="{{auth()->user()->company}}" placeholder="Company name">
+                                            <input type="text" name="company" class="rounded-md border-gray-400 form-control" value="{{auth()->user()->company}}" placeholder="Company name">
                                         </div>
 
                                     </div>
@@ -82,7 +91,7 @@
 
                                         <div class="form-group">
                                             <label>Country</label>
-                                            <select name="country" class="select2 form-control">
+                                            <select name="country" class="select2 rounded-md border-gray-400 form-control">
                                                 <option value="">-- Choose Country --</option>
                                                 @foreach($countries as $country)
                                                 <option value="{{$country->id}}" @if (auth()->user()->country == $country->id) selected @endif>{{$country->country}}</option>
@@ -92,12 +101,12 @@
 
                                         <div class="form-group">
                                             <label>City</label>
-                                            <input type="text" name="city" class="form-control" value="{{auth()->user()->shippingInfo->city ?? ''}}" placeholder="City">
+                                            <input type="text" name="city" class="rounded-md border-gray-400 form-control" value="{{auth()->user()->shippingInfo->city ?? ''}}" placeholder="City">
                                         </div>
 
                                         <div class="form-group">
                                             <label>State</label>
-                                            <input type="text" name="state" class="form-control" value="{{auth()->user()->shippingInfo->state ?? ''}}" placeholder="State">
+                                            <input type="text" name="state" class="rounded-md border-gray-400 form-control" value="{{auth()->user()->shippingInfo->state ?? ''}}" placeholder="State">
                                         </div>
 
                                     </div>
@@ -106,17 +115,17 @@
 
                                         <div class="form-group">
                                             <label>Address</label>
-                                            <input type="text" name="address" class="form-control" value="{{auth()->user()->shippingInfo->address ?? ''}}" placeholder="Address">
+                                            <input type="text" name="address" class="rounded-md border-gray-400 form-control" value="{{auth()->user()->shippingInfo->address ?? ''}}" placeholder="Address">
                                         </div>
 
                                         <div class="form-group">
                                             <label>Apartment</label>
-                                            <input type="text" name="apartment" class="form-control" value="{{auth()->user()->shippingInfo->apartment ?? ''}}" placeholder="Apartment">
+                                            <input type="text" name="apartment" class="rounded-md border-gray-400 form-control" value="{{auth()->user()->shippingInfo->apartment ?? ''}}" placeholder="Apartment">
                                         </div>
 
                                         <div class="form-group">
                                             <label>Zip Code</label>
-                                            <input type="text" name="zip_code" class="form-control" value="{{auth()->user()->shippingInfo->zip_code ?? ''}}" placeholder="Zip code">
+                                            <input type="text" name="zip_code" class="rounded-md border-gray-400 form-control" value="{{auth()->user()->shippingInfo->zip_code ?? ''}}" placeholder="Zip code">
                                         </div>
 
                                     </div>

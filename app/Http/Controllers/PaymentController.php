@@ -65,7 +65,7 @@ class PaymentController extends Controller
         $orderId = Session::get('referenceId');
         $invoiceNo = $orderId;
         
-        if ($currency == '€') {
+        if ($currency == 'Kshs') {
             $amount = $amount;
         }
         elseif ($currency == 'TSh') {

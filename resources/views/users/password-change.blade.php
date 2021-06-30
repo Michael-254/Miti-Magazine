@@ -30,7 +30,7 @@
                                                                 <div class="form-group">
                                                                     <label for="password-icon">Current Password</label>
                                                                     <div class="position-relative has-icon-left">
-                                                                        <input type="password" name="current_password" class="form-control" placeholder="Current Password">
+                                                                        <input type="password" name="current_password" class="rounded-md border-gray-400 form-control" placeholder="Current Password">
                                                                         <div class="form-control-position">
                                                                             <i class="feather icon-lock"></i>
                                                                         </div>
@@ -42,7 +42,7 @@
                                                                 <div class="form-group">
                                                                     <label for="password-icon">New Password</label>
                                                                     <div class="position-relative has-icon-left">
-                                                                        <input type="password" name="password" class="form-control" placeholder="New Password">
+                                                                        <input type="password" name="password" class="rounded-md border-gray-400 form-control" placeholder="New Password">
                                                                         <div class="form-control-position">
                                                                             <i class="feather icon-lock"></i>
                                                                         </div>
@@ -54,7 +54,7 @@
                                                                 <div class="form-group">
                                                                     <label for="password-icon">Confirm Password</label>
                                                                     <div class="position-relative has-icon-left">
-                                                                        <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm Password">
+                                                                        <input type="password" name="password_confirmation" class="rounded-md border-gray-400 form-control" placeholder="Confirm Password">
                                                                         <div class="form-control-position">
                                                                             <i class="feather icon-lock"></i>
                                                                         </div>

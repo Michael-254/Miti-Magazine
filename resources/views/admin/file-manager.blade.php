@@ -2,8 +2,14 @@
 
 @section('styles')
 <style>
-    #page-wrapper { background-color: #222; height:100% !important }
-    .page-header { color: #ddd; }
+    #page-wrapper {
+        background-color: #222;
+        height: 100% !important
+    }
+
+    .page-header {
+        color: #ddd;
+    }
 </style>
 @endsection
 
@@ -28,6 +34,15 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
+        <!-- Success Message -->
+        @if(session()->has('message'))
+        <div class="alert alert-success flex items-center">
+            <i class="fa fa-check mr-1"></i>
+            <p class="mb-0">
+                {{ session()->get('message') }}
+            </p>
+        </div>
+        @endif
         <div class="card user-profile-list">
             <div class="card-body">
                 <div class="embed-responsive embed-responsive-16by9">

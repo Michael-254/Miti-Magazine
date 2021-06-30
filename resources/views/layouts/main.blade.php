@@ -19,15 +19,6 @@
         html {
             scroll-behavior: smooth;
         }
-
-		.alert {
-			position: absolute;
-			top:30%;
-			z-index:99;
-			width:25%;
-			right:0;
-			background-color: #42ba96 !important;
-		}
     </style>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -172,16 +163,6 @@
         </nav>
     </div>
 
-    @if(session()->has('ok'))
-        @include('partials/alert', ['type' => 'success', 'message' => session('ok')])
-    @endif
-    @if(session()->has('info'))
-        @include('partials/alert', ['type' => 'warning', 'message' => session('info')])
-    @endif  
-    @if(isset($info))
-        @include('partials/alert', ['type' => 'info', 'message' => $info])
-    @endif
-
     @yield('content')
 
     <footer class="bg-black text-white py-8 sm:py-12 mt-4">
@@ -244,12 +225,6 @@
         duration: 1200,
         once: true,
     })
-</script>
-<script>
-    window.onload = function() {
-        var duration = 30000; 
-        $('.alert').fadeIn().delay(duration).fadeOut();
-    };
 </script>
 @yield('scripts')
 
