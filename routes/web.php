@@ -27,13 +27,14 @@ Route::prefix('email')->group(function () {
 //Payments
 Route::get('ipay/checkout', 'PaymentController@payment');
 Route::get('ipay/callback', 'PaymentController@callback');
+Route::get('ipay/failed', 'PaymentController@paymentFailed');
 Route::get('paypal/checkout', 'PaypalController@paymentProcess');
 Route::get('paypal/success', 'PaypalController@paymentSuccess');
 Route::get('paypal/cancel', 'PaypalController@paymentCancel');
 Route::post('paypal/ipn', 'PaypalController@postNotify');
 
 //User Links
-Route::prefix('user')->middleware(['auth'])->group(function () {
+Route::prefix('user')->middleware(['auth', 'useremail'])->group(function () {
     Route::get('profile', 'UserController@show')->name('profile.show');
     Route::patch('{user}/update-profile', 'UserController@update')->name('profile.update');
     Route::get('change-password', 'UserController@passwordChange')->name('change.password');
@@ -42,7 +43,7 @@ Route::prefix('user')->middleware(['auth'])->group(function () {
 });
 
 //Admin Links
-Route::prefix('admin')->middleware(['auth'])->group(function () {
+Route::prefix('admin')->middleware(['auth', 'useremail'])->group(function () {
     Route::get('file-manager', 'FileManagerController@index')->name('manage.magazines');
     Route::view('subscription-plans', 'admin.subscription-plans')->name('manage.plans');
     Route::view('upload-magazine', 'admin.magazine-upload')->name('upload.magazine');
@@ -51,7 +52,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('Ipay-payments', 'ViewTransactionController@ipayTransaction')->name('ipay.admin');
 });
 
-Route::view('/dashboard', 'dashboard')->middleware(['auth'])->name('dashboard');
+Route::view('/dashboard', 'dashboard')->middleware(['auth', 'useremail'])->name('dashboard');
 
 //Unauth Pages
 Route::view('/', 'welcome')->name('landing.page');
