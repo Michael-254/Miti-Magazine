@@ -19,6 +19,7 @@ class CreatePaymentsTable extends Migration
             $table->string('currency');
             $table->string('amount');
             $table->string('reference');
+            $table->string('account');
             $table->string('status')->default('unverified');
             $table->timestamps();
         });

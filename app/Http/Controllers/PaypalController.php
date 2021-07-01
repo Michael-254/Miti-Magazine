@@ -159,7 +159,7 @@ class PaypalController extends Controller
             },
             "taxes": {
               "percentage": "10",
-              "inclusive": false
+              "inclusive": true
             }
         }', true);
         $plan = $provider->createPlan($data);
