@@ -81,7 +81,6 @@ class PaymentController extends Controller
         }
 
         // Store in payment data in database
-        $customer = User::findOrFail(Session::get('customer_id'));
         Payment::create([
             'user_id' => $customer->id,
             'currency' => 'KES',
