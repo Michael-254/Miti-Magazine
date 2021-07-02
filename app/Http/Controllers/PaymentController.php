@@ -12,13 +12,13 @@ use App\Models\Order;
 use App\Models\User;
 use App\Models\Role;
 use Carbon\Carbon;
-use Session;
 use Illuminate\Support\Facades\Log;
 use Delights\Sage\SObjects\BankAccount;
 use Delights\Sage\SObjects\Contact;
 use Delights\Sage\SObjects\ContactPayment;
 use Delights\Sage\SObjects\LedgerAccount;
 use Delights\Sage\SObjects\SalesInvoice;
+use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
 {
@@ -80,14 +80,7 @@ class PaymentController extends Controller
             $amount = round($amount*128);
         }
 
-        // Store in payment data in database
-        Payment::create([
-            'user_id' => $customer->id,
-            'currency' => 'KES',
-            'amount' => $amount,
-            'reference' => $orderId,
-        ]);
-
+        $customer = User::findOrFail(Session::get('customer_id'));
         $fields = $cashier
             ->usingChannels($transactChannels)
             ->usingVendorId(env('IPAY_VENDOR_ID'), env('IPAY_VENDOR_SECRET'))
@@ -95,8 +88,15 @@ class PaymentController extends Controller
             ->withCustomer($customer->phone_no, $customer->email, false)
             ->transact($amount, $orderId, $invoiceNo);
 
-        return view('ipay', compact('fields'));
+        // Store in payment data in database
+        Payment::create([
+            'user_id' => $customer->id,
+            'currency' => 'KES',
+            'amount' => $amount,
+            'reference' => $orderId
+        ]);
 
+        return view('ipay', compact('fields'));
     }
 
     /**
@@ -108,7 +108,8 @@ class PaymentController extends Controller
      */
     public function callback(Request $request)
     {
-        Log::info($request->all());
+        // Response
+        // http://localhost/ipay/callback?status=aei7p7yrx4ae34&txncd=PG28TZAZ0E&msisdn_id=EVANS+CHARLES&msisdn_idnum=254703780985&p1=&p2=&p3=&p4=&uyt=1817486427&agt=658397967&qwh=1226344355&ifd=784861590&afd=1521439284&poi=78179582&id=1625230215&ivm=1625230215&mc=5.00&channel=MPESA
 
         $orderId = Session::get('referenceId');
         $user_id = Session::get('customer_id');
