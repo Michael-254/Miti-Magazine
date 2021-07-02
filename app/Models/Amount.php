@@ -9,5 +9,5 @@ class Amount extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['printed','digital','combined','subscription_plan_id'];
+    protected $fillable = ['digital','combined','subscription_plan_id'];
 }

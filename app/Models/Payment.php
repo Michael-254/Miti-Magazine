@@ -19,6 +19,7 @@ class Payment extends Model
         'currency',
         'amount',
         'reference',
+        'account',
         'status'
     ];
 

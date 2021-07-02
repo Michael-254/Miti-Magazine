@@ -23,6 +23,16 @@ class RegisteredUserController extends Controller
     }
 
     /**
+     * Display the email prompt view.
+     *
+     * @return \Illuminate\View\View
+     */
+    public function email()
+    {
+        return view('auth.email-input');
+    }
+
+    /**
      * Handle an incoming registration request.
      *
      * @param  \Illuminate\Http\Request  $request

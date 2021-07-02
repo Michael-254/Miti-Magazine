@@ -24,7 +24,6 @@ class AmountFactory extends Factory
         return [
             'subscription_plan_id' => $this->faker->numberBetween(1, 12),
             'digital' => $this->faker->numberBetween(1000, 10000),
-            'printed' => $this->faker->numberBetween(1000, 10000),
             'combined' => $this->faker->numberBetween(1000, 10000),
         ];
     }

@@ -11,9 +11,15 @@ use App\Models\Order;
 use App\Models\User;
 use App\Models\Role;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Session;
 use Mail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Delights\Sage\SObjects\BankAccount;
+use Delights\Sage\SObjects\Contact;
+use Delights\Sage\SObjects\ContactPayment;
+use Delights\Sage\SObjects\LedgerAccount;
+use Delights\Sage\SObjects\SalesInvoice;
 
 class PaypalController extends Controller
 {
@@ -66,6 +72,8 @@ class PaypalController extends Controller
         else {
             $currency = "EUR";
         }
+        Session::put('user_currency', $currency);
+        Session::put('user_amount', $amount);
 
         $order = $provider->createOrder([
             "intent"=> "CAPTURE",
@@ -84,6 +92,7 @@ class PaypalController extends Controller
             ]
         ]);
 
+
         Payment::create([
             'user_id' => Session::get('customer_id'),
             'currency' => $currency,
@@ -92,7 +101,7 @@ class PaypalController extends Controller
             'paypal_order_id' => $order['id']
         ]);
 
-        Session::put('payapal_order_id', $order['id']);
+        Session::put('paypal_order_id', $order['id']);
 
         return redirect($order['links'][1]['href'])->send();
     }
@@ -110,13 +119,124 @@ class PaypalController extends Controller
         $token = $provider->getAccessToken();
         $provider->setAccessToken($token);
 
-        $order_id = Session::get('payapal_order_id');
+        $currency = Session::get('user_currency');
+        $amount = Session::get('user_amount');
+        $plan_id = Session::get('plan_id');
+        $plan_type = Session::get('plan_type');
+        $order_id = Session::get('paypal_order_id');
         $provider->capturePaymentOrder($order_id);
+
+        // Create a billin plan
+        $data = json_decode('{
+            "product_id": $plan_id,
+            "name": "Miti Magazine Subscription Plan",
+            "description": "Miti Magazine Subscription ".$plan_type." plan",
+            "status": "ACTIVE",
+            "billing_cycles": [
+              {
+                "frequency": {
+                  "interval_unit": "YEAR",
+                  "interval_count": 1
+                },
+                "tenure_type": "REGULAR",
+                "sequence": 1,
+                "total_cycles": 1,
+                "pricing_scheme": {
+                  "fixed_price": {
+                    "value": $amount,
+                    "currency_code": $currency
+                  }
+                }
+              }
+            ],
+            "payment_preferences": {
+              "auto_bill_outstanding": true,
+              "setup_fee": {
+                "value": "0",
+                "currency_code": $currency
+              },
+              "setup_fee_failure_action": "CONTINUE",
+              "payment_failure_threshold": 3
+            },
+            "taxes": {
+              "percentage": "10",
+              "inclusive": true
+            }
+        }', true);
+        $plan = $provider->createPlan($data);
 
         $paypalToken = $request->get('token');
         $PayerID = $request->get('PayerID');
         Payment::where('paypal_order_id', $order_id)->update(['token' => $paypalToken, 'PayerId' => $PayerID]);
+
+        // Handle Sage
+        /* $this->contact    = (new Contact($this->api, [
+            "name"             => "John Doe",
+            "contact_type_ids" => ["CUSTOMER"],
+        ]))->create();
+
+        $ledgerAccount = (new LedgerAccount($this->api))
+            ->where("ledger_account_type_id=SALES")->where("items_per_page=100")->where("ledger_account_classification=KE_SALES_AND_INCOMES")
+            ->get()->first(function ($ledgerAccount) {
+                return str_contains($ledgerAccount->displayed_as, '70500000');
+            });
+
+        $bankAccount = (new BankAccount($this->api))
+            ->get()->first(function ($bankAccount) {
+                return str_contains($bankAccount->displayed_as, '57200000');
+            });
+
+        $invoiceResource = (new SalesInvoice($this->api));
+        $invoices_count  = $invoiceResource->count();
+
+        $invoice = (new SalesInvoice($this->api, [
+            "contact_id"        => $this->contact->id,
+            "date"              => Carbon::now()->toDateString(),
+            "invoice_number"    => $invoices_count + 1,
+            "main_address"      => [
+                "name"              => "Main Address",
+                "address_line_1"    => "Moi Avenue",
+                "address_line_2"    => "",
+                "city"              => "Nairobi",
+                "region"            => "Kenya",
+                "postal_code"       => "00100",
+                "country_id"        => "KE"
+            ], "invoice_lines"      => [
+                [
+                    "description" => "Line 1",
+                    "ledger_account_id" => $ledgerAccount->id,
+                    "quantity" => 2,
+                    "unit_price" => 55,
+                    "tax_rate_id" => "KE_NO_TAX",
+                ],
+            ],
+        ]))->create();
+        $contactPayment = (new ContactPayment($this->api, [
+            "transaction_type_id" => "CUSTOMER_RECEIPT",
+            "contact_id" => $this->contact->id,
+            "bank_account_id" => $bankAccount->id,
+            "date" => Carbon::now()->toDateString(),
+            "total_amount"  => 110.00,
+            "allocated_artefacts" =>  [
+                [ 
+                    'artefact_id'   =>  $invoice->id,
+                    'amount'        => 110.00
+                ]
+            ]
+        ]))->create();
+
+        $this->assertNotFalse($invoice->id);
+        $freshInvoice = $invoiceResource->find($invoice->id);
+
+        $this->assertNotFalse($contactPayment->id);
+        $this->assertEquals($this->contact->id, $freshInvoice->contact["id"]);
+        $this->assertEquals(Carbon::now()->toDateString(), $freshInvoice->date);
+        $this->assertCount(1, $freshInvoice->invoice_lines);
+        $this->assertEquals($invoices_count + 1, $invoiceResource->count());
+        $this->assertEquals("PAID", $freshInvoice->status["id"]);
+        $this->assertEquals(110.0, $freshInvoice->total_paid); */
 		
+        // Login the user
         $user_id = Session::get('customer_id');
         $paidUser = User::findorFail($user_id);
         Auth::login($paidUser);
@@ -131,7 +251,7 @@ class PaypalController extends Controller
      */
     public function paymentCancel(Request $request)
     {
-        return redirect('/')->with('info', 'Your Paypal payment was canceled!');
+        return redirect('subscribe/plan')->with('info', 'Your Paypal payment was canceled!');
     }
 
     /**
@@ -141,6 +261,8 @@ class PaypalController extends Controller
      */
     public function postNotify(Request $request)
     {
+        Log::info($request->all());
+
         \PayPal::setProvider();
         $provider = \PayPal::getProvider();
         $provider->setApiCredentials(config('paypal'));
@@ -158,13 +280,17 @@ class PaypalController extends Controller
         $response = (string) $this->provider->verifyIPN($post);
 
         $paypalToken = $request->get('token');
-        Payment::whereToken($paypalToken)->update(['payload' => json_encode($post), 'status' => $response]);
+        $payment = Payment::whereToken($paypalToken)->update(['payload' => json_encode($post), 'status' => $response]);
 
         if ($response == 'VERIFIED') {
-            // Update order with success payment
+            Order::where('reference', $$payment->reference)->update(['status' => 'VERIFIED']);
+
+            Subscription::where('reference', $$payment->reference)->update(['status' => 'VERIFIED']);
         }
         else {
-            // Update order with failed payment
+            Order::where('reference', $payment->reference)->update(['status' => 'FAILED']);
+
+            Subscription::where('reference', $$payment->reference)->update(['status' => 'FAILED']);
         }
     }
 }

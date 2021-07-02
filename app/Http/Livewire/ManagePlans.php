@@ -12,9 +12,9 @@ class ManagePlans extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $location, $quantity;
-    public $printed, $digital, $combined;
+    public $digital, $combined;
     public $amend = null;
-    public $printedE, $digitalE, $combinedE, $locationE, $quantityE;
+    public $digitalE, $combinedE, $locationE, $quantityE;
 
 
     public function save()
@@ -24,7 +24,6 @@ class ManagePlans extends Component
         $data = $this->validate([
             'location' => 'required',
             'quantity' => 'required',
-            'printed' => 'required',
             'digital' => 'required',
             'combined' => 'required',
         ]);
@@ -35,7 +34,6 @@ class ManagePlans extends Component
         ]);
 
         $plan->amounts()->create([
-            'printed' =>  $this->printed,
             'digital' =>  $this->digital,
             'combined' => $this->combined,
         ]);
@@ -51,7 +49,6 @@ class ManagePlans extends Component
         $data = $this->validate([
             'locationE' => 'required',
             'quantityE' => 'required',
-            'printedE' => 'required',
             'digitalE' => 'required',
             'combinedE' => 'required',
         ]);
@@ -62,7 +59,6 @@ class ManagePlans extends Component
         ]);
 
         $plan->amounts()->update([
-            'printed' =>  $this->printedE,
             'digital' =>  $this->digitalE,
             'combined' => $this->combinedE,
         ]);
@@ -77,7 +73,6 @@ class ManagePlans extends Component
         $selected = SubscriptionPlan::findOrFail($id);
         $this->locationE = $selected->location;
         $this->quantityE = $selected->quantity;
-        $this->printedE = $selected->amounts->printed;
         $this->digitalE = $selected->amounts->digital;
         $this->combinedE = $selected->amounts->combined;
     }

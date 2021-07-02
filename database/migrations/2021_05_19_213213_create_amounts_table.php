@@ -17,7 +17,6 @@ class CreateAmountsTable extends Migration
             $table->id();
             $table->foreignId('subscription_plan_id')->constrained()->onDelete('cascade');
             $table->integer('digital');
-            $table->integer('printed');
             $table->integer('combined');
             $table->timestamps();
         });

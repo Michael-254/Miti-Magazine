@@ -37,7 +37,6 @@
                                                 <th>Location</th>
                                                 <th>Copies</th>
                                                 <th>Digital</th>
-                                                <th>Printed</th>
                                                 <th>Digital & Printed</th>
                                                 <th>Action</th>
 
@@ -68,9 +67,6 @@
                                                     <input wire:model.defer="digitalE" type="number" class="border-gray-300 form-control rounded-md" placeholder="Digital Price">
                                                 </td>
                                                 <td>
-                                                    <input wire:model.defer="printedE" type="number" class="border-gray-300 form-control rounded-md" placeholder="Digital Price">
-                                                </td>
-                                                <td>
                                                     <input wire:model.defer="combinedE" type="number" class="border-gray-300 form-control rounded-md" placeholder="Digital Price">
                                                 </td>
                                                 <td>
@@ -86,7 +82,6 @@
                                                 <td>{{$plan->location}}</td>
                                                 <td>{{$plan->quantity}}</td>
                                                 <td><span class="font-bold text-sm mr-0.5">{{$plan->currency()}}</span>{{$plan->amounts->digital}}</td>
-                                                <td><span class="font-bold text-sm mr-0.5">{{$plan->currency()}}</span>{{$plan->amounts->printed}}</td>
                                                 <td><span class="font-bold text-sm mr-0.5">{{$plan->currency()}}</span>{{$plan->amounts->combined}}</td>
                                                 <td>
                                                     <div class="flex space-x-2">
@@ -148,11 +143,6 @@
                                         <option value="5">5</option>
                                         <option value="10">10</option>
                                     </select>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="text-green-600 font-bold">Printed Price</label>
-                                    <input wire:model.defer="printed" type="number" class="border-gray-300 form-control rounded-md" placeholder="Printed Price">
                                 </div>
 
                                 <div class="form-group">

@@ -21,39 +21,9 @@
   <!-- component -->
   <div class="w-full my-12 text-green-700 font-bold">
     <div class="flex flex-col sm:flex-row justify-center mb-6 sm:mb-0">
-      <div class="flex-1 lg:flex-initial lg:w-1/4 border border-gray-400 rounded-md shadow-md bg-white mt-4 flex flex-col">
-        <div class="p-8 text-3xl font-bold text-center">Digital</div>
-        <div class="border-0 border-grey-light border-t border-solid text-sm">
-          <div class="text-center border-0 border-grey-light border-b border-solid py-4">
-            Unlimited Ice Creams
-          </div>
-          <div class="text-center border-0 border-grey-light border-b border-solid py-4">
-            Unlimited Cones
-          </div>
-          <div class="text-center border-0 border-grey-light border-b border-solid py-4">
-            Unlimited toppings
-          </div>
-          <div class="text-center border-0 border-grey-light border-b border-solid py-4">
-            Analytics
-          </div>
-        </div>
-        <div class="text-center px-8 pt-8 text-xl mt-auto">
-          <span class="font-bold text-sm mr-1">{{$plans->currency()}}</span>{{$plans->amounts->digital}}
-          <span class="text-grey-light italic">
-            /year
-          </span>
-        </div>
-        <div class="text-center pt-8 mb-8 mt-auto">
-          <form action="{{route('chosen.plan')}}" method="POST">
-            @csrf
-            <input type="hidden" name="plan_id" value="{{$plans->id}}">
-            <input type="hidden" name="plan_type" value="digital">
-            <x-button class="bg-green-600 hover:bg-blue-600">Choose Plan</x-button>
-          </form>
-        </div>
-      </div>
-      <div class="flex-1 lg:flex-initial lg:w-1/4 border border-gray-400 rounded-md  bg-white mt-4 sm:-mt-4 shadow-lg z-30 flex flex-col">
-        <div class="w-full p-8 text-3xl font-bold text-center">Printed</div>
+
+      <div  class="flex-1 lg:flex-initial lg:w-1/4 border border-gray-400 rounded-md  bg-white mt-4 sm:-mt-4 shadow-lg z-30 flex flex-col">
+        <div class="w-full p-8 text-3xl font-bold text-center">Digital</div>
         <div class="w-full border-0 border-grey-light border-t border-solid text-sm">
           <div class="text-center border-0 border-grey-light border-b border-solid py-4">
             2 Ice Creams
@@ -69,7 +39,7 @@
           </div>
         </div>
         <div class="text-center px-8 pt-8 text-xl mt-auto">
-          <span class="font-bold text-sm mr-1">{{$plans->currency()}}</span> {{$plans->amounts->printed}}
+          <span class="font-bold text-sm mr-1">{{$plans->currency()}}</span> {{$plans->amounts->digital}}
           <span class="text-grey-light italic">
             /year
           </span>
@@ -78,7 +48,7 @@
           <form action="{{route('chosen.plan')}}" method="POST">
             @csrf
             <input type="hidden" name="plan_id" value="{{$plans->id}}">
-            <input type="hidden" name="plan_type" value="printed">
+            <input type="hidden" name="plan_type" value="digital">
             <x-button class="bg-green-600 hover:bg-blue-600">Choose Plan</x-button>
           </form>
         </div>
