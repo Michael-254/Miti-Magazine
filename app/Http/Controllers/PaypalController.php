@@ -20,6 +20,7 @@ use Delights\Sage\SObjects\Contact;
 use Delights\Sage\SObjects\ContactPayment;
 use Delights\Sage\SObjects\LedgerAccount;
 use Delights\Sage\SObjects\SalesInvoice;
+use Delights\PayPal\Services\AdaptivePayments;
 
 class PaypalController extends Controller
 {
@@ -127,42 +128,47 @@ class PaypalController extends Controller
 
         // Create a billin plan
         $data = json_decode('{
-            "product_id": $plan_id,
-            "name": "Miti Magazine Subscription Plan",
-            "description": "Miti Magazine Subscription ".$plan_type." plan",
-            "status": "ACTIVE",
-            "billing_cycles": [
-              {
-                "frequency": {
-                  "interval_unit": "YEAR",
-                  "interval_count": 1
-                },
-                "tenure_type": "REGULAR",
-                "sequence": 1,
-                "total_cycles": 1,
-                "pricing_scheme": {
-                  "fixed_price": {
-                    "value": $amount,
-                    "currency_code": $currency
-                  }
-                }
-              }
-            ],
-            "payment_preferences": {
-              "auto_bill_outstanding": true,
-              "setup_fee": {
-                "value": "0",
-                "currency_code": $currency
-              },
-              "setup_fee_failure_action": "CONTINUE",
-              "payment_failure_threshold": 3
+            "plan_id": "P-5ML4271244454362WXNWU5NQ",
+            "start_time": "2018-11-01T00:00:00Z",
+            "quantity": "20",
+            "shipping_amount": {
+                "currency_code": "USD",
+                "value": "0.00"
             },
-            "taxes": {
-              "percentage": "10",
-              "inclusive": true
+            "subscriber": {
+                "name": {
+                "given_name": "John",
+                "surname": "Doe"
+                },
+                "email_address": "customer@example.com",
+                "shipping_address": {
+                "name": {
+                    "full_name": "John Doe"
+                },
+                "address": {
+                    "address_line_1": "2211 N First Street",
+                    "address_line_2": "Building 17",
+                    "admin_area_2": "San Jose",
+                    "admin_area_1": "CA",
+                    "postal_code": "95131",
+                    "country_code": "US"
+                }
+                }
+            },
+            "application_context": {
+                "brand_name": "Miti Magazine",
+                "locale": "en-US",
+                "shipping_preference": "SET_PROVIDED_ADDRESS",
+                "user_action": "SUBSCRIBE_NOW",
+                "payment_method": {
+                "payer_selected": "PAYPAL",
+                "payee_preferred": "IMMEDIATE_PAYMENT_REQUIRED"
+                },
+                "return_url": env("APP_URL")."/paypal/success",
+                "cancel_url": env("APP_URL")."/paypal/cancel"
             }
         }', true);
-        $plan = $provider->createPlan($data);
+        $plan = $provider->createSubscription($data);
 
         $paypalToken = $request->get('token');
         $PayerID = $request->get('PayerID');

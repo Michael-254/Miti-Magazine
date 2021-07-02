@@ -80,33 +80,23 @@ class PaymentController extends Controller
             $amount = round($amount*128);
         }
 
-        //$fields = $cashier
-        $response = $cashier
-            //->usingChannels($transactChannels)
+        $customer = User::findOrFail(Session::get('customer_id'));
+        $fields = $cashier
+            ->usingChannels($transactChannels)
             ->usingVendorId(env('IPAY_VENDOR_ID'), env('IPAY_VENDOR_SECRET'))
             ->withCallback(env('APP_URL').'/ipay/callback', env('APP_URL').'/ipay/failed')
             ->withCustomer($customer->phone_no, $customer->email, false)
             ->transact($amount, $orderId, $invoiceNo);
 
-        //return view('ipay', compact('fields'));
-
         // Store in payment data in database
-        $customer = User::findOrFail(Session::get('customer_id'));
         Payment::create([
             'user_id' => $customer->id,
             'currency' => 'KES',
             'amount' => $amount,
-            'reference' => $orderId,
-            'account' => $response->data->account
+            'reference' => $orderId
         ]);
 
-        // Recurring
-        $sid = $response->data->sid;
-        $cardid = 'E67TY8GQ27X';
-        $response = $cashier
-                ->usingVendorId(env('IPAY_VENDOR_ID'), env('IPAY_VENDOR_SECRET'))
-                ->withCustomer($customer->phone_no, $customer->email, false)
-                ->recurring($sid, $cardid);
+        return view('ipay', compact('fields'));
     }
 
     /**

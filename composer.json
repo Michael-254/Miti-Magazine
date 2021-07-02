@@ -34,6 +34,7 @@
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
             "Delights\\Ipay\\": "packages/delights/ipay/src/",
+            "Delights\\Paypal\\": "packages/delights/paypal/src/",
             "Delights\\Sage\\": "packages/delights/sage/src/",
             "Delights\\SageApi\\": "packages/delights/sage-api/src/"
         }
