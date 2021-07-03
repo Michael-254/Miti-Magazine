@@ -6,12 +6,12 @@ use Illuminate\Http\Request;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
 use App\Models\Paypal as Payment;
 use App\Models\SubscriptionPlan;
+use App\Models\Shipping;
 use App\Models\Amount;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Role;
 use Carbon\Carbon;
-use Mail;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
@@ -124,55 +124,14 @@ class PaypalController extends Controller
         $plan_id = Session::get('plan_id');
         $plan_type = Session::get('plan_type');
         $order_id = Session::get('paypal_order_id');
-        $provider->capturePaymentOrder($order_id);
+        $user_id = Session::get('customer_id');
+        $customer = User::findorFail($user_id);
 
-        // Create a billin plan
-        $data = json_decode('{
-            "plan_id": "P-5ML4271244454362WXNWU5NQ",
-            "start_time": "2018-11-01T00:00:00Z",
-            "quantity": "20",
-            "shipping_amount": {
-                "currency_code": "USD",
-                "value": "0.00"
-            },
-            "subscriber": {
-                "name": {
-                "given_name": "John",
-                "surname": "Doe"
-                },
-                "email_address": "customer@example.com",
-                "shipping_address": {
-                "name": {
-                    "full_name": "John Doe"
-                },
-                "address": {
-                    "address_line_1": "2211 N First Street",
-                    "address_line_2": "Building 17",
-                    "admin_area_2": "San Jose",
-                    "admin_area_1": "CA",
-                    "postal_code": "95131",
-                    "country_code": "US"
-                }
-                }
-            },
-            "application_context": {
-                "brand_name": "Miti Magazine",
-                "locale": "en-US",
-                "shipping_preference": "SET_PROVIDED_ADDRESS",
-                "user_action": "SUBSCRIBE_NOW",
-                "payment_method": {
-                "payer_selected": "PAYPAL",
-                "payee_preferred": "IMMEDIATE_PAYMENT_REQUIRED"
-                },
-                "return_url": env("APP_URL")."/paypal/success",
-                "cancel_url": env("APP_URL")."/paypal/cancel"
-            }
-        }', true);
-        $plan = $provider->createSubscription($data);
+        $provider->capturePaymentOrder($order_id);
 
         $paypalToken = $request->get('token');
         $PayerID = $request->get('PayerID');
-        Payment::where('paypal_order_id', $order_id)->update(['token' => $paypalToken, 'PayerId' => $PayerID]);
+        $payment = Payment::where('paypal_order_id', $order_id)->update(['token' => $paypalToken, 'PayerId' => $PayerID]);
 
         // Handle Sage
         /* $this->contact    = (new Contact($this->api, [
@@ -242,9 +201,7 @@ class PaypalController extends Controller
         $this->assertEquals(110.0, $freshInvoice->total_paid); */
 		
         // Login the user
-        $user_id = Session::get('customer_id');
-        $paidUser = User::findorFail($user_id);
-        Auth::login($paidUser);
+        Auth::login($customer);
 		
         return redirect('/user/profile')->with('ok', 'Your Paypal payment has been received, wait for confirmation');
     }

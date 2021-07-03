@@ -7,13 +7,15 @@ use Delights\Ipay\Cashier;
 use App\Models\Payment;
 use App\Models\SubscriptionPlan;
 use App\Models\Subscription;
+use App\Models\Shipping;
 use App\Models\Amount;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Role;
 use Carbon\Carbon;
-use Session;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 use Delights\Sage\SObjects\BankAccount;
 use Delights\Sage\SObjects\Contact;
 use Delights\Sage\SObjects\ContactPayment;
@@ -68,17 +70,23 @@ class PaymentController extends Controller
         $invoiceNo = $orderId;
         
         if ($currency == 'KSh') {
+            $currency = "KES";
             $amount = $amount;
         }
         elseif ($currency == 'TSh') {
+            $currency = "KES";
             $amount = round($amount/21);
         }
         elseif ($currency == 'UGX') {
+            $currency = "KES";
             $amount = round($amount/33);
         }
         else {
+            $currency = "KES";
             $amount = round($amount*128);
         }
+        Session::put('user_currency', $currency);
+        Session::put('user_amount', $amount);
 
         $customer = User::findOrFail(Session::get('customer_id'));
         $fields = $cashier
@@ -108,8 +116,14 @@ class PaymentController extends Controller
      */
     public function callback(Request $request)
     {
-        Log::info($request->all());
+        /* Response
+         * http://localhost/ipay/callback?status=aei7p7yrx4ae34&txncd=PG28TZAZ0E&msisdn_id=JOHN+DOE&msisdn_idnum=254722000000&p1=&p2=&p3=&p4=&uyt=1817486427&agt=658397967&qwh=1226344355&ifd=784861590&afd=1521439284&poi=78179582&id=1625230215&ivm=1625230215&mc=5.00&channel=MPESA
+        */
 
+        $currency = Session::get('user_currency');
+        $amount = Session::get('user_amount');
+        $plan_id = Session::get('plan_id');
+        $plan_type = Session::get('plan_type');
         $orderId = Session::get('referenceId');
         $user_id = Session::get('customer_id');
         $customer = User::findorFail($user_id);
@@ -131,7 +145,9 @@ class PaymentController extends Controller
             return redirect('subscribe/plan')->with('info', 'More: The amount that you have sent via mobile money is MORE than what was required to validate this transaction. (Up to the merchant to decide what to do with this transaction; whether to pass it or not)');
         }
         elseif($ipayStatus == 'aei7p7yrx4ae34') { 
-            Payment::where('reference', $orderId)->update(['status' => 'VERIFIED']);
+            $msisdn_id = isset($request->msisdn_id) ? $request->msisdn_id : null; 
+            $msisdn_idnum = isset($request->msisdn_idnum) ? $request->msisdn_idnum : null; 
+            $payment = Payment::where('reference', $orderId)->update(['msisdn_id' => $msisdn_id, 'msisdn_idnum' => $msisdn_idnum, 'txncd' => $request->txncd, 'channel' => $request->channel, 'status' => 'VERIFIED']);
 
             Order::where('reference', $orderId)->update(['status' => 'VERIFIED']);
 
@@ -139,7 +155,7 @@ class PaymentController extends Controller
 
             // Handle Sage
             /* $this->contact    = (new Contact($this->api, [
-                "name"             => "John Doe",
+                "name"             => $customer->name,
                 "contact_type_ids" => ["CUSTOMER"],
             ]))->create();
 

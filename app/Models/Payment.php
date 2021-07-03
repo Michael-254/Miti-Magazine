@@ -19,7 +19,10 @@ class Payment extends Model
         'currency',
         'amount',
         'reference',
-        'account',
+        'msisdn_id',
+        'msisdn_idnum',
+        'txncd',
+        'channel',
         'status'
     ];
 
