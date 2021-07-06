@@ -3,7 +3,7 @@
 <section id="shop-checkout" class="mx-auto mt-12 mb-16 flex sm:max-w-6xl p-4 w-full border-2 rounded-lg shadow-lg">
     <div class="container">
         <div class="shop-cart">
-            <form action="{{route('make.payment')}}" class="sep-top-md" method="POST">
+            <form action="{{route('checkout.pay')}}" class="sep-top-md" method="POST">
                 @csrf
                 <div class="row">
                     <div class="col-lg-6 no-padding">
@@ -64,45 +64,30 @@
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="table-responsive">
-                                    <h4 class="text-green-500 font-bold">Details of Selected Plan</h4>
+                                    <h4 class="text-green-500 font-bold">Order Total</h4>
                                     <table class="table">
                                         <tbody>
+                                                @foreach (Cart::getContent() as $cart)
                                             <tr>
                                                 <td class="cart-product-name">
-                                                    <strong>Country</strong>
-                                                </td>
-                                                <td class="cart-product-name text-right">
-                                                    <span class="amount">{{$currency->location}}</span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cart-product-name">
-                                                    <strong>Type</strong>
-                                                </td>
-                                                <td class="cart-product-name text-right">
-                                                    <span class="amount">
-                                                        @if($plan_type == 'combined')
-                                                        Printed and Digital
-                                                        @else
-                                                        Digital only
-                                                        @endif
-                                                    </span>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="cart-product-name">
-                                                    <strong>Quantity you will receive per Issue</strong>
+                                                    <strong>{{$cart->name}}</strong>
                                                 </td>
                                                 <td class="cart-product-name  text-right">
-                                                    <span class="amount">{{$currency->quantity}}</span>
+                                                    <span class="amount">{{$cart->quantity}}</span>
+                                                </td>
+                                                <td class="cart-product-name  text-right">
+                                                    @<span class="amount">{{$cart->price}}KSH</span>
                                                 </td>
                                             </tr>
+                                            @endforeach
                                             <tr>
                                                 <td class="cart-product-name">
-                                                    <strong>Amount to be Charged</strong>
+                                                    <strong>Order Subtotal</strong>
+                                                </td>
+                                                <td class="cart-product-name">
                                                 </td>
                                                 <td class="cart-product-name text-right">
-                                                    <span class="amount color lead"><strong>{{$currency->currency()}}{{$amount}}</strong></span>
+                                                    <span class="amount font-bold">{{Cart::getTotal()}}</span>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -120,7 +105,7 @@
                             </div>
                             <div class="col-lg-12">
                                 <div class="flex justify-between items-center pt-4">
-                                    <a href="{{route('choose.plan')}}" class="h-12 w-24 text-blue-500 text-sm font-medium">Change Plan</a>
+                                    <a href="{{route('previous.issues')}}" class="h-12 w-24 text-blue-500 text-sm font-medium">change mind</a>
                                     <x-button type="submit" class="bg-green-800 hover:bg-blue-700 text-white">Subscribe</x-button>
                                 </div>
                             </div>

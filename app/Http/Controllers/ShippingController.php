@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Amount;
+use App\Models\CartOrder;
 use App\Models\Order;
 use App\Models\Shipping;
 use App\Models\Subscription;
@@ -11,6 +12,8 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
+use Cart;
 
 class ShippingController extends Controller
 {
@@ -54,6 +57,7 @@ class ShippingController extends Controller
             'phone_no' => 'required'
         ]);
 
+        $random = Str::random(8);
         $customer = User::updateOrCreate([
             'email' => $request->email,
         ], [
@@ -61,7 +65,7 @@ class ShippingController extends Controller
             'phone_no' => $request->phone_no,
             'country' => $request->country,
             'company' => $request->company,
-            'password' => bcrypt('123456'),
+            'password' => bcrypt($random),
         ]);
         Session::put('customer_id', $customer->id);
 
@@ -87,6 +91,57 @@ class ShippingController extends Controller
         Subscription::create([
             'user_id' => $customer->id, 'subscription_plan_id' => $plan_id, 'reference' => $referenceId,
             'start_date' => Carbon::now()->format('Y-m-d'), 'end_date' => Carbon::now()->addYear()->format('Y-m-d')
+        ]);
+
+
+        if ($request->payment_method == 'paypal') {
+            return redirect('paypal/checkout');
+        } else {
+            return redirect('ipay/checkout');
+        }
+    }
+
+    public function checkout(Request $request)
+    {
+        $request->validate([
+            'email' => 'required',
+            'name' => 'required',
+            'address' => 'required',
+            'zip_code' => 'required',
+            'country' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'payment_method' => 'required',
+            'phone_no' => 'required'
+        ]);
+        $random = Str::random(8);
+        $customer = User::updateOrCreate([
+            'email' => $request->email,
+        ], [
+            'name' => $request->name,
+            'phone_no' => $request->phone_no,
+            'country' => $request->country,
+            'company' => $request->company,
+            'password' => bcrypt($random),
+        ]);
+        Session::put('customer_id', $customer->id);
+
+        $address = Shipping::updateOrCreate([
+            'user_id' => $customer->id,
+        ], [
+            'address' => $request->address,
+            'zip_code' => $request->zip_code,
+            'apartment' => $request->apartment,
+            'city' => $request->city,
+            'state' => $request->state,
+        ]);
+
+        $referenceId = Carbon::now()->timestamp;
+        Session::put('referenceId', $referenceId);
+        //$amount = Cart::getTotal();
+
+        CartOrder::create([
+            'user_id' => $customer->id, 'reference' => $referenceId,
         ]);
 
 
