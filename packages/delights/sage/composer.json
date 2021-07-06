@@ -1,26 +1,27 @@
 {
-  "name": "delights/sage-accounting",
-  "description": "Api to integrate with Sage Accounting.",
-  "type": "library",
-  "keywords": ["framework", "laravel"],
-  "license": "MIT",
-  "require": {
-    "php": ">=5.6.4",
-    "delights/sage-api": "^1.1"
-  },
-  "require-dev": {
-    "vlucas/phpdotenv": "^2.4",
-    "phpunit/phpunit": "~6.0"
-  },
-  "autoload": {
-    "psr-4": {
-      "Delights\\Sage\\": "src"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "Tests\\": "tests/"
-    }
-  },
-  "minimum-stability": "stable"
+    "name": "delights/ipay",
+    "description": "iPay Africa PHP package for transaction handling",
+    "type": "library",
+    "keywords": ["mpesa", "airtel money", "laravel", "transactions", "api", "ipay", "credit card"],
+    "autoload": {
+        "psr-4": {
+            "Delights\\Ipay\\": "src/iPay/"
+        }
+    },
+    "require": {
+        "php": ">=5.6",
+        "guzzlehttp/guzzle": "^6.2"
+    },
+    "require-dev": {
+        "mockery/mockery": "dev-master",
+        "phpunit/phpunit": "4.*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Evans Wanguba",
+            "email": "ewanguba@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev"
 }

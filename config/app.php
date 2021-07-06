@@ -168,6 +168,7 @@ return [
          * Package Service Providers...
          */
         Delights\Ipay\IpayServiceProvider::class,
+        Delights\Sage\SageServiceProvider::class,
 
         /*
          * Application Service Providers...

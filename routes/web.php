@@ -56,6 +56,7 @@ Route::view('/dashboard', 'dashboard')->middleware(['auth', 'useremail'])->name(
 
 //Unauth Pages
 Route::view('/', 'welcome')->name('landing.page');
+Route::get('/sage', 'PaymentController@sageTest'); //To be deleted
 Route::view('/choose/plan', 'choose-plan')->name('choose.plan');
 Route::post('/subscribe/plan', 'SubscriptionController@store')->name('chosen.plan');
 Route::get('/subscribe/plan', 'SubscriptionController@index')->name('subscribe.plan');

@@ -15,12 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
-use Delights\Sage\SObjects\BankAccount;
-use Delights\Sage\SObjects\Contact;
-use Delights\Sage\SObjects\ContactPayment;
-use Delights\Sage\SObjects\LedgerAccount;
-use Delights\Sage\SObjects\SalesInvoice;
-use Delights\PayPal\Services\AdaptivePayments;
+use Delights\Sage\SageEvolution;
 
 class PaypalController extends Controller
 {

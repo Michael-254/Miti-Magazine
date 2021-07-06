@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Delights\Ipay\Cashier;
+use Delights\Sage\SageEvolution;
 use App\Models\Payment;
 use App\Models\SubscriptionPlan;
 use App\Models\Subscription;
@@ -16,11 +17,6 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
-use Delights\Sage\SObjects\BankAccount;
-use Delights\Sage\SObjects\Contact;
-use Delights\Sage\SObjects\ContactPayment;
-use Delights\Sage\SObjects\LedgerAccount;
-use Delights\Sage\SObjects\SalesInvoice;
 
 class PaymentController extends Controller
 {
@@ -185,7 +181,8 @@ class PaymentController extends Controller
                     "region"            => "Kenya",
                     "postal_code"       => "00100",
                     "country_id"        => "KE"
-                ], "invoice_lines"      => [
+                ], 
+                "invoice_lines"      => [
                     [
                         "description" => "Line 1",
                         "ledger_account_id" => $ledgerAccount->id,
@@ -232,9 +229,27 @@ class PaymentController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function paymentFailed(Request $request)
+    public function paymentFailed()
     {
         return redirect('subscribe/plan')->with('info', 'Your iPay payment failed! Try again later.');
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function sageTest(Request $request)
+    {
+        $sage = new SageEvolution();
+        // $response = $sage->getTransaction('CustomerFind?Code=CASH');
+        // $response = $sage->getTransaction('CustomerExists?Code=CASH');
+        // $response = $sage->getTransaction('CustomerList?OrderBy=1&PageNumber=1&PageSize=50');
+        // $response = $sage->postTransaction('CustomerInsert', (object)["client" => ["Active" => true, "Description" => "Evans Charles Wanguba", "ChargeTax" => false, "Code" => "ECW001"]]);
+
+         $response = $sage->postTransaction('SalesOrderProcessInvoice', (object)["SalesOrder" => ["CustomerAccountCode" => "ECW001", "OrderDate" => Carbon::now()->toDateString(), "InvoiceDate" => Carbon::now()->toDateString()]]);
+         
+        dd($response);
     }
 
     /**
