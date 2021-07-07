@@ -83,6 +83,10 @@ class ShippingController extends Controller
         $plan_type = Session::get('plan_type');
         $referenceId = Carbon::now()->timestamp;
         Session::put('referenceId', $referenceId);
+        $currency = SubscriptionPlan::findOrFail($plan_id)->currency();
+        $amount = Amount::whereSubscriptionPlanId($plan_id)->value($plan_type);
+        Session::put('currency', $currency);
+        Session::put('amount', $amount);
 
         Order::create([
             'user_id' => $customer->id, 'subscription_plan_id' => $plan_id, 'reference' => $referenceId, 'type' => $plan_type

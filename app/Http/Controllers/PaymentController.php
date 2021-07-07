@@ -58,10 +58,8 @@ class PaymentController extends Controller
             cashier::CHANNEL_PESAPAL,
         ];
         
-        $plan_id = Session::get('plan_id');
-        $plan_type = Session::get('plan_type');
-        $currency = SubscriptionPlan::findOrFail($plan_id)->currency();
-        $amount = Amount::whereSubscriptionPlanId($plan_id)->value($plan_type);
+        $currency = Session::get('currency');
+        $amount = Session::get('amount');
         $orderId = Session::get('referenceId');
         $invoiceNo = $orderId;
         
@@ -118,8 +116,6 @@ class PaymentController extends Controller
 
         $currency = Session::get('user_currency');
         $amount = Session::get('user_amount');
-        $plan_id = Session::get('plan_id');
-        $plan_type = Session::get('plan_type');
         $orderId = Session::get('referenceId');
         $user_id = Session::get('customer_id');
         $customer = User::findorFail($user_id);

@@ -39,7 +39,7 @@ Route::prefix('user')->middleware(['auth', 'useremail'])->group(function () {
     Route::patch('{user}/update-profile', 'UserController@update')->name('profile.update');
     Route::get('change-password', 'UserController@passwordChange')->name('change.password');
     Route::post('change-password', 'UserController@updatePassword')->name('update.password');
-    Route::get('read/{slug}', 'MagazineController@show');
+    Route::get('read/{slug}', 'MagazineController@show')->middleware(['viewissue']);
 });
 
 //Admin Links

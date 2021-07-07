@@ -44,10 +44,8 @@ class PaypalController extends Controller
         $token = $provider->getAccessToken();
         $provider->setAccessToken($token);
 
-        $plan_id = Session::get('plan_id');
-        $plan_type = Session::get('plan_type');
-        $currency = SubscriptionPlan::findOrFail($plan_id)->currency();
-        $amount = Amount::whereSubscriptionPlanId($plan_id)->value($plan_type);
+        $currency = Session::get('currency');
+        $amount = Session::get('amount');
         $referenceId = Session::get('referenceId');
 
         // Supported currency
@@ -117,8 +115,6 @@ class PaypalController extends Controller
 
         $currency = Session::get('user_currency');
         $amount = Session::get('user_amount');
-        $plan_id = Session::get('plan_id');
-        $plan_type = Session::get('plan_type');
         $order_id = Session::get('paypal_order_id');
         $user_id = Session::get('customer_id');
         $customer = User::findorFail($user_id);
