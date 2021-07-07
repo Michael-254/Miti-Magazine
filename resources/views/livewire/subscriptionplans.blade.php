@@ -23,7 +23,6 @@
                                                 <th>Location</th>
                                                 <th>Copies</th>
                                                 <th>Digital</th>
-                                                <th>Printed</th>
                                                 <th>Digital & Printed</th>
                                                 <th>Action</th>
 
@@ -35,8 +34,7 @@
                                                 <td scope="row">{{$plan->id}}</td>
                                                 <td>{{$plan->location}}</td>
                                                 <td>{{$plan->quantity}}</td>
-                                                <td><span class="font-bold text-sm mr-0.5">{{$plan->currency()}}</span>{{$plan->amounts->digital}}</td>
-                                                <td><span class="font-bold text-sm mr-0.5">{{$plan->currency()}}</span>{{$plan->amounts->printed}}</td>
+                                                <td><span class="font-bold text-sm mr-0.5">{{$plan->currency()}}</span>{{$plan->amounts->digital}}</td>                           
                                                 <td><span class="font-bold text-sm mr-0.5">{{$plan->currency()}}</span>{{$plan->amounts->combined}}</td>
                                                 <td>
                                                     <div class="flex space-x-2">

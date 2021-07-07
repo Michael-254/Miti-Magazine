@@ -88,6 +88,7 @@ class PaypalController extends Controller
             ]
         ]);
 
+
         Payment::create([
             'user_id' => Session::get('customer_id'),
             'currency' => $currency,

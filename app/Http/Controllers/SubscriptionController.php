@@ -23,7 +23,13 @@ class SubscriptionController extends Controller
         $plan_type = Session::get('plan_type');
         $currency = SubscriptionPlan::findOrFail($plan_id);
         $amount = Amount::whereSubscriptionPlanId($plan_id)->value($plan_type);
-        return view('selected-plan',compact('amount','currency','countries'));
+        return view('selected-plan', compact('amount','currency','countries','plan_type'));
+    }
+
+    public function checkout()
+    {
+        $countries = Country::all();
+        return view('checkout',compact('countries'));
     }
 
     /**

@@ -1,83 +1,137 @@
 @extends('layouts.main')
 @section('content')
-<section class="mx-auto mt-12 flex sm:max-w-6xl p-4 w-full border-2 rounded-lg shadow-lg">
-    <form action="{{route('make.payment')}}" method="POST">
-        @csrf
-        <div class="flex-1 lg:flex lg:space-x-7 lg:py-5">
-            <div>
-                <div>
-                    <div class="bg-white shadow-lg rounded-lg">
-                        <div class="md:flex ">
-                            <div class="w-full p-4 px-5 py-5">
-                                <div class="flex flex-row">
-                                    <h2 class="mt-1 pb-1 font-bold text-xl text-green-700 border-green-600">Your Information</h2>
+<section id="shop-checkout" class="mx-auto mt-12 mb-16 flex sm:max-w-6xl p-4 w-full border-2 rounded-lg shadow-lg">
+    <div class="container">
+        <div class="shop-cart">
+            <form action="{{route('make.payment')}}" class="sep-top-md" method="POST">
+                @csrf
+                <div class="row">
+                    <div class="col-lg-6 no-padding">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h4 class="upper text-green-500 font-bold">Billing & Shipping Address</h4>
+                            </div>
+                            <!-- Validation Errors -->
+                            <x-auth-validation-errors class="mb-2 px-4" :errors="$errors" />
+                            <div class="col-lg-12 form-group">
+                                <label class="sr-only">Country</label>
+                                <select name="country" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm">
+                                    <option value="">-- Select your country --</option>
+                                    @foreach($countries as $country)
+                                    <option value="{{$country->id}}">{{$country->country}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <label class="sr-only">First Name</label>
+                                <input type="text" name="name" value="{{ old('name') ?? auth()->user()->name ?? '' }}" class="form-control" placeholder="Name*">
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <label class="sr-only">Company Name</label>
+                                <input type="text" name="company" value="{{ old('company') ?? auth()->user()->company ?? '' }}" class="form-control" placeholder="Company (optional)">
+                            </div>
+                            <div class="col-lg-12 form-group">
+                                <label class="sr-only">Address</label>
+                                <input type="text" name="address" value="{{ old('address') ?? auth()->user()->shippingInfo->address ?? '' }}" class="form-control" placeholder="Address*">
+                            </div>
+                            <div class="col-lg-6 form-group">
+                                <label class="sr-only">Apartment, suite, unit etc.</label>
+                                <input type="text" name="apartment" value="{{ old('apartment') ?? auth()->user()->shippingInfo->apartment ?? '' }}" class="form-control" placeholder="Apartment, suite, etc. (optional)">
+                            </div>
+                            <div class="col-lg-6 form-group">
+                                <label class="sr-only">Town / City</label>
+                                <input type="text" name="city" value="{{ old('city') ?? auth()->user()->shippingInfo->city ?? '' }}" class="form-control" placeholder="City*">
+                            </div>
+                            <div class="col-lg-6 form-group">
+                                <label class="sr-only">State / County</label>
+                                <input type="text" name="state" value="{{ old('state') ?? auth()->user()->shippingInfo->state ?? '' }}" class="form-control" placeholder="State*">
+                            </div>
+                            <div class="col-lg-6 form-group">
+                                <label class="sr-only">Postcode / Zip</label>
+                                <input type="text" name="zip_code" value="{{ old('zip_code') ?? auth()->user()->shippingInfo->zip_code ?? '' }}" class="form-control" placeholder="Zipcode*">
+                            </div>
+                            <div class="col-lg-6 form-group">
+                                <label class="sr-only">Email</label>
+                                <input type="text" name="email" value="{{ old('email') ?? auth()->user()->email ?? ''}}" class="form-control" placeholder="E-mail">
+                            </div>
+                            <div class="col-lg-6 form-group">
+                                <label class="sr-only">Phone</label>
+                                <input type="tel" name="phone_no" value="{{ old('phone_no') ?? auth()->user()->phone_no ?? '' }}" placeholder="Phone Number*" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="table-responsive">
+                                    <h4 class="text-green-500 font-bold">Details of Selected Plan</h4>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <td class="cart-product-name">
+                                                    <strong>Country</strong>
+                                                </td>
+                                                <td class="cart-product-name text-right">
+                                                    <span class="amount">{{$currency->location}}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="cart-product-name">
+                                                    <strong>Type</strong>
+                                                </td>
+                                                <td class="cart-product-name text-right">
+                                                    <span class="amount">
+                                                        @if($plan_type == 'combined')
+                                                        Printed and Digital
+                                                        @else
+                                                        Digital only
+                                                        @endif
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="cart-product-name">
+                                                    <strong>Quantity you will receive per Issue</strong>
+                                                </td>
+                                                <td class="cart-product-name  text-right">
+                                                    <span class="amount">{{$currency->quantity}}</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="cart-product-name">
+                                                    <strong>Amount to be Charged</strong>
+                                                </td>
+                                                <td class="cart-product-name text-right">
+                                                    <span class="amount color lead"><strong>{{$currency->currency()}}{{$amount}}</strong></span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <div class="flex flex-row text-xs text-green-700 pt-6 pb-5">
-                                    <span class="font-bold">Information</span>
-                                    <small class="text-gray-400 ml-1">></small>
-                                    <span class="text-gray-400 ml-1">Shopping</span>
-                                    <small class="text-green-700 ml-1">></small>
-                                    <span class="text-green-700 ml-1">Payment</span>
+                            </div>
+                            <div class="col-lg-12">
+                                <h4 class="text-green-500 font-bold">Choose Payment Method</h4>
+                                <div class="list-group">
+                                    <input type="radio" name="payment_method" value="ipay" id="Radio1" />
+                                    <label class="list-group-item text-yellow-700" for="Radio1">Mpesa,Airtel Money or Card</label>
+                                    <input type="radio" name="payment_method" value="paypal" id="Radio3" />
+                                    <label class="list-group-item" for="Radio3"><img width="90" alt="paypal" src="/storage/paypal.png"></label>
                                 </div>
-                                <!-- Validation Errors -->
-                                <x-auth-validation-errors class="mb-2" :errors="$errors" />
-                                <span class="text-green-700 font-semibold">Customer Information (If gift, input information of beneficiary)</span>
-                                <div class="pb-3">
-                                    <input type="text" name="email" value="{{ old('email') ?? auth()->user()->email ?? ''}}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="E-mail">
-                                </div>
-                                <span class="text-green-700 font-semibold">Shipping/Billing Information</span>
-                                <div class="grid md:gap-2">
-                                    <input type="text" name="name" value="{{ old('name') ?? auth()->user()->name ?? '' }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="Name*">
-                                </div>
-                                <input type="text" name="company" value="{{ old('company') ?? auth()->user()->company ?? '' }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="Company (optional)">
-                                <input type="text" name="address" value="{{ old('address') ?? auth()->user()->shippingInfo->address ?? '' }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="Address*">
-                                <input type="text" name="apartment" value="{{ old('apartment') ?? auth()->user()->shippingInfo->apartment ?? '' }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="Apartment, suite, etc. (optional)">
-                                <div class="grid md:grid-cols-3 md:gap-2">
-                                    <input type="text" name="zip_code" value="{{ old('zip_code') ?? auth()->user()->shippingInfo->zip_code ?? '' }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="Zipcode*">
-                                    <input type="text" name="city" value="{{ old('city') ?? auth()->user()->shippingInfo->city ?? '' }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="City*">
-                                    <input type="text" name="state" value="{{ old('state') ?? auth()->user()->shippingInfo->state ?? '' }}" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm" placeholder="State*">
-                                </div>
-
-                                <div class="mt-2">
-                                    <span class="text-green-700 font-semibold">Country</span>
-                                    <select name="country" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm">
-                                        <option value="">-- Select your country --</option>
-                                        @foreach($countries as $country)
-                                        <option value="{{$country->id}}">{{$country->country}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
-                                <div class="mt-2">
-                                    <span class="text-green-700 font-semibold">Phone Number</span>
-                                </div>
-                                <div class="mt-2">
-                                    <input type="tel" name="phone_no" value="{{ old('phone_no') ?? auth()->user()->phone_no ?? '' }}" placeholder="Phone Number*" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 text-sm">
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="flex justify-between items-center pt-4">
+                                    <a href="{{route('choose.plan')}}" class="h-12 w-24 text-blue-500 text-sm font-medium">Change Plan</a>
+                                    <x-button type="submit" class="bg-green-800 hover:bg-blue-700 text-white">Subscribe</x-button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="flex-1 px-5 py-5 mt-4 lg:mt-16">
-                <h2 class="mt-1 pb-1 font-bold text-xl text-green-700 border-b border-green-600">Selected Plan {{$currency->location}}</h2>
-
-                <div class="bg-gray-100 mt-4 dark:bg-gray-800 bg-opacity-95 border-opacity-60 | p-4 border-solid rounded-md border-2">
-                    <div>
-                        <p class="text-gray-900 dark:text-gray-300 font-semibold">Miti Magazine 1 Year Subscription</p>
-                        <p class="text-gray-900 dark:text-gray-300 text-sm mt-3">You will be charged</p>
-                        <p class="text-black dark:text-gray-100 text-justify font-bold mt-3">{{$currency->currency()}}{{$amount}}</p>
-                        <p class="text-gray-900 dark:text-gray-300 text-xs mt-3">After 1 Year, we will automatically renew your subscription </p>
-                    </div>
-                </div>
-
-                @livewire('payment-method')
-
+            </form>
+            <div class="seperator"><i class="fa fa-credit-card"></i>
             </div>
         </div>
-
-
-    </form>
+    </div>
 </section>
 
 @endsection

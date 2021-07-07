@@ -57,8 +57,14 @@ Route::view('/dashboard', 'dashboard')->middleware(['auth', 'useremail'])->name(
 //Unauth Pages
 Route::view('/', 'welcome')->name('landing.page');
 Route::get('/sage', 'PaymentController@sageTest'); //To be deleted
+Route::get('/', 'HomePageController@welcome')->name('landing.page');
+Route::get('/Previous-Issues', 'HomePageController@previous')->name('previous.issues');
+Route::post('/Add-to-Cart', 'HomePageController@cart')->name('cart.store');
+Route::post('/Remove-from-Cart', 'HomePageController@remove')->name('cart.remove');
 Route::view('/choose/plan', 'choose-plan')->name('choose.plan');
 Route::post('/subscribe/plan', 'SubscriptionController@store')->name('chosen.plan');
+Route::get('/checkout/Cart', 'SubscriptionController@checkout')->name('checkout.cart');
+Route::post('/checkout/Cart', 'ShippingController@checkout')->name('checkout.pay');
 Route::get('/subscribe/plan', 'SubscriptionController@index')->name('subscribe.plan');
 Route::post('/make/payment', 'ShippingController@store')->name('make.payment');
 

@@ -19,10 +19,14 @@ class CreatePaymentsTable extends Migration
             $table->string('currency');
             $table->string('amount');
             $table->string('reference');
+<<<<<<< HEAD
             $table->string('msisdn_id')->nullable();
             $table->string('msisdn_idnum')->nullable();
             $table->string('txncd')->nullable();
             $table->string('channel')->nullable();
+=======
+            $table->string('account')->nullable();
+>>>>>>> 00ae468b01239cae3be82e00613cd7743551043c
             $table->string('status')->default('unverified');
             $table->timestamps();
         });

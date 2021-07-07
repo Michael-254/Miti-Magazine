@@ -30,7 +30,7 @@
                                                                 <div class="form-group">
                                                                     <label class="font-bold text-green-600">Issue_no</label>
                                                                     <div>
-                                                                        <input type="text" name="issue_no" class="border-2 rounded-md form-control" placeholder="Issue number">
+                                                                        <input type="text" name="issue_no" class="rounded-md border-gray-400 form-control" placeholder="Issue number">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -39,7 +39,7 @@
                                                                 <div class="form-group">
                                                                     <label class="font-bold text-green-600">Title</label>
                                                                     <div>
-                                                                        <input type="text" name="title" class="border-2 rounded-md form-control" placeholder="Title of magazine">
+                                                                        <input type="text" name="title" class="rounded-md border-gray-400 form-control" placeholder="Title of magazine">
                                                                         <div class="form-control-position">
                                                                         </div>
                                                                     </div>
