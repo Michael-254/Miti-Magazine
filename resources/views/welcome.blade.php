@@ -13,7 +13,6 @@
                     <br /> providing specialist information beautifully presented. Since 2009.
                 </p>
                 <a class="btn btn-primary" href="{{route('choose.plan')}}">Start your Subscription Now</a>
-
             </div>
         </div>
     </div>
@@ -47,9 +46,9 @@
 
 <section class="bg-success text-center">
     <div class="container" data-animate="fadeInUp" data-animate-delay="0">
-            <h3 class="lead text-light">Wish to View Previous Issues and purchase each @ 250 KSH
-            </h3>
-            <a class="btn btn-primary" href="{{route('previous.issues')}}">View Now</a>
+        <h3 class="lead text-light">Wish to View Previous Issues and purchase each @ 250 KSH
+        </h3>
+        <a class="btn btn-primary" href="{{route('previous.issues')}}">View Now</a>
     </div>
 </section>
 @endsection

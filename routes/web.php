@@ -40,6 +40,10 @@ Route::prefix('user')->middleware(['auth', 'useremail'])->group(function () {
     Route::get('change-password', 'UserController@passwordChange')->name('change.password');
     Route::post('change-password', 'UserController@updatePassword')->name('update.password');
     Route::get('read/{slug}', 'MagazineController@show')->middleware(['viewissue']);
+    Route::get('payments', 'UserController@mypayments')->name('user.payments');
+    Route::get('invites', 'UserController@invite')->name('user.invite');
+    Route::post('invites', 'UserController@memberStore')->name('member.store');
+    Route::get('remove-member/{team}', 'UserController@memberdestroy')->name('member.destroy');
 });
 
 //Admin Links

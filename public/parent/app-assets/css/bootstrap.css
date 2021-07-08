@@ -2598,8 +2598,8 @@ a.btn.disabled, fieldset:disabled a.btn {
 }
 .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {
   color : #FFFFFF;
-  background-color : #4839EB;
-  border-color : #3E2DEA;
+  background-color : #06d117;
+  border-color : #06d117;
 }
 .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus, .show > .btn-primary.dropdown-toggle:focus {
   box-shadow : 0 0 0 0.2rem rgba(136, 126, 242, 0.5);
@@ -4044,7 +4044,7 @@ input[type='submit'].btn-block, input[type='reset'].btn-block, input[type='butto
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color : #FFFFFF;
-  background-color : #7367F0;
+  background-color : #037003;
 }
 
 .nav-fill .nav-item {

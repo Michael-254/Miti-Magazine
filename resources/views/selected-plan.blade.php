@@ -24,39 +24,39 @@
                             </div>
                             <div class="col-lg-12 form-group">
                                 <label class="sr-only">First Name</label>
-                                <input type="text" name="name" value="{{ old('name') ?? auth()->user()->name ?? '' }}" class="form-control" placeholder="Name*">
+                                <input type="text" name="name" value="{{ old('name') ?? auth()->user()->name ?? '' }}" class="form-control rounded-md border-gray-300" placeholder="Name*">
                             </div>
                             <div class="col-lg-12 form-group">
                                 <label class="sr-only">Company Name</label>
-                                <input type="text" name="company" value="{{ old('company') ?? auth()->user()->company ?? '' }}" class="form-control" placeholder="Company (optional)">
+                                <input type="text" name="company" value="{{ old('company') ?? auth()->user()->company ?? '' }}" class="form-control rounded-md border-gray-300" placeholder="Company (optional)">
                             </div>
                             <div class="col-lg-12 form-group">
                                 <label class="sr-only">Address</label>
-                                <input type="text" name="address" value="{{ old('address') ?? auth()->user()->shippingInfo->address ?? '' }}" class="form-control" placeholder="Address*">
+                                <input type="text" name="address" value="{{ old('address') ?? auth()->user()->shippingInfo->address ?? '' }}" class="form-control rounded-md border-gray-300" placeholder="Address*">
                             </div>
                             <div class="col-lg-6 form-group">
                                 <label class="sr-only">Apartment, suite, unit etc.</label>
-                                <input type="text" name="apartment" value="{{ old('apartment') ?? auth()->user()->shippingInfo->apartment ?? '' }}" class="form-control" placeholder="Apartment, suite, etc. (optional)">
+                                <input type="text" name="apartment" value="{{ old('apartment') ?? auth()->user()->shippingInfo->apartment ?? '' }}" class="form-control rounded-md border-gray-300" placeholder="Apartment, suite, etc. (optional)">
                             </div>
                             <div class="col-lg-6 form-group">
                                 <label class="sr-only">Town / City</label>
-                                <input type="text" name="city" value="{{ old('city') ?? auth()->user()->shippingInfo->city ?? '' }}" class="form-control" placeholder="City*">
+                                <input type="text" name="city" value="{{ old('city') ?? auth()->user()->shippingInfo->city ?? '' }}" class="form-control rounded-md border-gray-300" placeholder="City*">
                             </div>
                             <div class="col-lg-6 form-group">
                                 <label class="sr-only">State / County</label>
-                                <input type="text" name="state" value="{{ old('state') ?? auth()->user()->shippingInfo->state ?? '' }}" class="form-control" placeholder="State*">
+                                <input type="text" name="state" value="{{ old('state') ?? auth()->user()->shippingInfo->state ?? '' }}" class="form-control rounded-md border-gray-300" placeholder="State*">
                             </div>
                             <div class="col-lg-6 form-group">
                                 <label class="sr-only">Postcode / Zip</label>
-                                <input type="text" name="zip_code" value="{{ old('zip_code') ?? auth()->user()->shippingInfo->zip_code ?? '' }}" class="form-control" placeholder="Zipcode*">
+                                <input type="text" name="zip_code" value="{{ old('zip_code') ?? auth()->user()->shippingInfo->zip_code ?? '' }}" class="form-control rounded-md border-gray-300" placeholder="Zipcode*">
                             </div>
                             <div class="col-lg-6 form-group">
                                 <label class="sr-only">Email</label>
-                                <input type="text" name="email" value="{{ old('email') ?? auth()->user()->email ?? ''}}" class="form-control" placeholder="E-mail">
+                                <input type="text" name="email" value="{{ old('email') ?? auth()->user()->email ?? ''}}" class="form-control rounded-md border-gray-300" placeholder="E-mail">
                             </div>
                             <div class="col-lg-6 form-group">
                                 <label class="sr-only">Phone</label>
-                                <input type="tel" name="phone_no" value="{{ old('phone_no') ?? auth()->user()->phone_no ?? '' }}" placeholder="Phone Number*" class="form-control">
+                                <input type="tel" name="phone_no" value="{{ old('phone_no') ?? auth()->user()->phone_no ?? '' }}" placeholder="Phone Number*" class="form-control rounded-md border-gray-300">
                             </div>
                         </div>
                     </div>

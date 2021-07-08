@@ -12,8 +12,7 @@
     <link href="{{asset('temp/css/style.css')}}" rel="stylesheet">
 
     <link href="{{asset('temp/css/color-variations/green.html')}}" rel="stylesheet" type="text/css" media="screen">
-    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v1.9.4/dist/alpine.js" defer></script>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <!-- Scripts -->
     @livewireStyles
     @stack('styles')
@@ -26,8 +25,8 @@
     <div class="body-inner">
 
         <div id="topbar">
-            <div class="container">
-                <div class="row">
+            <div class="bg-black px-3">
+                <div class="row text-white">
                     <div class="col-md-6">
                         <ul class="top-menu">
                             <li><a href="#">Phone: +254 (0)20 3594200</a></li>
@@ -72,7 +71,7 @@
                                     <li class="dropdown"><a href="#">{{ Auth::user()->name }}</a>
                                         <ul class="dropdown-menu">
                                             <li><a href="{{route('profile.show')}}">My Profile</a></li>
-                                            <li><a href="widgets.html">My Subscription</a></li>
+                                            <li><a href="#">My Subscription</a></li>
                                             <li>
                                                 <form method="POST" action="{{ route('logout') }}">
                                                     @csrf
@@ -96,10 +95,11 @@
         </header>
 
         @yield('content')
+
         <footer id="footer">
             <div class="footer-content">
                 <div class="container">
-                    <div class="flex flex-wrap mx-auto max-w-7xl">
+                    <div class="row mx-auto max-w-7xl">
                         <div class="col-md-4">
                             <div class="icon-box effect small clean">
                                 <div class="icon">
@@ -118,7 +118,7 @@
                                 <p><strong>Address:</strong>
                                     <br> P.o Box 823-00606.
                                     <br> Nairobi Kenya.
-                                    <br> 
+                                    <br>
                                 </p>
                             </div>
                         </div>

@@ -15,7 +15,7 @@
         </div>
         @if(session()->has('message'))
         <div class="px-6 text-center">
-            <p>
+            <p class="text-green-500 font-bold">
                 {{ session()->get('message') }}
             </p>
         </div>
@@ -24,7 +24,7 @@
             @foreach($recentmagazines as $magazine)
             <div class="col-lg-3" data-animate="fadeInUp" data-animate-delay="0">
                 <div class="bg-white h-full p-8 flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
-                    <a href="{{ url('user/read/issue_47') }}" class="mt-2">
+                    <a href="#" class="mt-2">
                         <div class="border rounded-md px-2 py-2">
                             <img class="object-fill h-48 w-full" src="{{asset('files/magazines/cover/'.$magazine->image)}}">
                         </div>

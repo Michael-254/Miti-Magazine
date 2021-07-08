@@ -14,6 +14,7 @@ class Subscription extends Model
         'subscription_plan_id',
         'status',
         'reference',
+        'type',
         'start_date',
         'end_date',
     ];

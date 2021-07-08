@@ -38,6 +38,11 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <style>
+     .test {
+  background-color: green;
+}
+    </style>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -154,11 +159,11 @@
                         <ul class="dropdown-menu">
                             <li class="{{ (request()->is('user/profile')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="{{route('profile.show')}}" data-toggle="dropdown" data-i18n="Floating navbar">My profile</a>
                             </li>
-                            <li data-menu=""><a class="dropdown-item" href="sk-layout-2-columns.html" data-toggle="dropdown" data-i18n="2 columns">Invite Others</a>
+                            <li class="{{ (request()->is('user/invites')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="{{route('user.invite')}}" data-toggle="dropdown" data-i18n="2 columns">Invite Others</a>
                             </li>
                             <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Payment methods</a>
                             </li>
-                            <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">My payments and Invoices</a>
+                            <li  class="{{ (request()->is('user/payments')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="{{route('user.payments')}}" data-toggle="dropdown" data-i18n="Fixed navbar">My payments and Invoices</a>
                             </li>
                         </ul>
                     </li>

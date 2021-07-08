@@ -94,7 +94,7 @@ class ShippingController extends Controller
 
         Subscription::create([
             'user_id' => $customer->id, 'subscription_plan_id' => $plan_id, 'reference' => $referenceId,
-            'start_date' => Carbon::now()->format('Y-m-d'), 'end_date' => Carbon::now()->addYear()->format('Y-m-d')
+            'type' => $plan_type
         ]);
 
 
@@ -141,8 +141,8 @@ class ShippingController extends Controller
         ]);
 
         $referenceId = Carbon::now()->timestamp;
-        $currency = "KES";
-        $amount = "250";
+        $currency = "KSh";
+        $amount = Cart::getTotal();
         Session::put('referenceId', $referenceId);
         Session::put('currency', $currency);
         Session::put('amount', $amount);

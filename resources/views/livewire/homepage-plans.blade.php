@@ -28,21 +28,23 @@
         </div>
         <div class="plan-list text-green-700">
           <ul>
-            <li><i class="fas fa-globe-americas"></i>Unlimited Websites</li>
-            <li><i class="fa fa-thumbs-up"></i>Unlimited Storage</li>
-            <li><i class="fa fa-signal"></i>Unlimited Bandwidth</li>
-            <li><i class="fa fa-user"></i>1000 Email Addresses</li>
-            <li><i class="fa fa-star"></i>Free domain with annual plan</li>
-            <li><i class="fa fa-rocket"></i>4X Processing Power</li>
-            <li><i class="fa fa-server"></i>Premium DNS</li>
+            <li><i class="fas fa-check"></i>Digital access</li>
+            <li><i class="fas fa-check"></i>Download digital pdf</li>
+            <li class="text-gray-500"><i class="icon-x-circle"></i>Printed Copy</li>
+            <li class="{{$copies ==  '1' ? 'text-gray-500' : 'text-green-700' }}">
+              @if($copies == '1')<i class="icon-x-circle"></i>@else<i class="fas fa-check"></i>@endif
+              Invite other members 
+            </li>
+            <li><i class="fas fa-check"></i>Free shipping</li>
+            <li><i class="fas fa-check"></i>Cancel Subscription anytime</li>
           </ul>
           <div class="plan-button">
-          <form action="{{route('chosen.plan')}}" method="POST">
-            @csrf
-            <input type="hidden" name="plan_id" value="{{$plans->id}}">
-            <input type="hidden" name="plan_type" value="digital">
-            <x-button class="bg-green-600 hover:bg-blue-600">Choose Plan</x-button>
-          </form>
+            <form action="{{route('chosen.plan')}}" method="POST">
+              @csrf
+              <input type="hidden" name="plan_id" value="{{$plans->id}}">
+              <input type="hidden" name="plan_type" value="digital">
+              <x-button class="bg-green-600 hover:bg-blue-600">Choose Plan</x-button>
+            </form>
           </div>
         </div>
       </div>
@@ -56,13 +58,15 @@
         </div>
         <div class="plan-list text-green-700">
           <ul>
-            <li><i class="fas fa-globe-americas"></i>Unlimited Websites</li>
-            <li><i class="fa fa-thumbs-up"></i>Unlimited Storage</li>
-            <li><i class="fa fa-signal"></i>Unlimited Bandwidth</li>
-            <li><i class="fa fa-user"></i>1000 Email Addresses</li>
-            <li><i class="fa fa-star"></i>Free domain with annual plan</li>
-            <li><i class="fa fa-rocket"></i>4X Processing Power</li>
-            <li><i class="fa fa-server"></i>Premium DNS</li>
+            <li><i class="fas fa-check"></i>Digital access</li>
+            <li><i class="fas fa-check"></i>Download digital pdf</li>
+            <li><i class="fas fa-check"></i></i>Printed Copy</li>
+            <li class="{{$copies ==  '1' ? 'text-gray-500' : 'text-green-700' }}">
+              @if($copies == '1')<i class="icon-x-circle"></i>@else<i class="fas fa-check"></i>@endif
+              Invite other members
+            </li>
+            <li><i class="fas fa-check"></i>Free shipping</li>
+            <li><i class="fas fa-check"></i>Cancel Subscription anytime</li>
           </ul>
           <div class="plan-button">
             <form action="{{route('chosen.plan')}}" method="POST">

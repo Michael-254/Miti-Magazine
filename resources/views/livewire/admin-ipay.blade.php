@@ -31,6 +31,7 @@
                                                 <th>Customer Location</th>
                                                 <th>Customer Company</th>
                                                 <th>Customer Contacts</th>
+                                                <th>Channel Used</th>
                                                 <th>Amount Paid</th>
                                                 <th>Reference ID</th>
                                                 <th>Invoice</th>
@@ -45,6 +46,7 @@
                                                 <td>{{App\Models\Country::find($payment->user->country)->country}}</td>
                                                 <td>{{$payment->user->company}}</td>
                                                 <td>{{$payment->user->phone_no}}</td>
+                                                <td>{{$payment->channel}}</td>
                                                 <td>{{$payment->amount}}</td>
                                                 <td>{{$payment->reference}}</td>
                                                 <td><i class="fa fa-eye cursor-pointer text-green-600 hover:text-blue-700"></i></td>

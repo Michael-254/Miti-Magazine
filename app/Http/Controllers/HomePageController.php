@@ -38,6 +38,6 @@ class HomePageController extends Controller
     {
         Cart::remove($request->product);
 
-       return redirect('/Previous-Issues')->with('message', 'Successfully added');
+       return redirect('/Previous-Issues')->with('message', 'Successfully removed');
     }
 }
