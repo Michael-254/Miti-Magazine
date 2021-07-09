@@ -106,8 +106,8 @@
                                                         <select name="plan" id="plan" class="rounded-md border-gray-400 form-control" id="users-language-select2">
                                                             <option value="">-- Select Plan --</option>
                                                             @foreach($subscriptions as $sub)
-                                                            <option value="{{$sub->id}}">{{$sub->type}} 
-                                                                {{ $sub->subscriptionPlan?->quantity }} Copies
+                                                            <option value="{{$sub->id}}">{{$sub->location}} {{$sub->quantity}} 
+                                                                 Copies
                                                             </option>
                                                             @endforeach                                            
                                                         </select>

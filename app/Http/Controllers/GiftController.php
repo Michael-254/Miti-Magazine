@@ -16,7 +16,7 @@ class GiftController extends Controller
     public function gifts()
     {
         $members = Gift::with('members', 'subscriptionSize')->where('user_id', auth()->id())->latest()->paginate(8);
-        $subscriptions = Subscription::all();
+        $subscriptions = SubscriptionPlan::all();
         $issues = Magazine::all();
         return view('admin.gift', compact('members', 'subscriptions', 'issues'));
     }
@@ -44,17 +44,19 @@ class GiftController extends Controller
 
             //send email
         }
-
-        $referenceId = "GIFTED".auth()->user()->id();
+        
+        $quantity = SubscriptionPlan::findOrFail($request->plan)->quantity;
+        $referenceId = "GIFTED".auth()->id();
         $subscription = Subscription::create([
             'user_id' => $customer->id, 
             'subscription_plan_id' => $request->plan, 
             'reference' => $referenceId,
-            'type' => $request->type
+            'type' => $request->type,
+            'quantity' => $quantity
         ]);
 
         Gift::create([
-            'user_id' => auth()->user()->id(),
+            'user_id' => auth()->id(),
             'gifted_user_id' => $customer->id,
             'subscription_id' => $subscription->id
         ]);
