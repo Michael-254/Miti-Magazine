@@ -187,6 +187,8 @@
                             </li>
                             <li data-menu=""><a class="dropdown-item" href="sk-layout-2-columns.html" data-toggle="dropdown" data-i18n="2 columns">Inventory</a>
                             </li>
+                            <li class="{{ (request()->is('admin/gifts')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="{{route('admin.gift')}}" data-toggle="dropdown" data-i18n="2 columns">Gift Members</a>
+                            </li>
                         </ul>
                     </li>
                     <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="fa fa-cogs"></i><span data-i18n="Starter kit">System Administration</span></a>
@@ -196,8 +198,6 @@
                             <li data-menu="" class="{{ (request()->is('admin/subscription-plans')) ? 'active' : '' }}"><a class="dropdown-item" href="{{route('manage.plans')}}" data-toggle="dropdown" data-i18n="Fixed navbar">Subscription Plans</a>
                             </li>
                             <li data-menu="" class="{{ (request()->is('admin/file-manager')) ? 'active' : '' }}"><a class="dropdown-item" href="{{route('manage.magazines')}}" data-toggle="dropdown" data-i18n="2 columns">Manage Magazines</a>
-                            </li>
-                            <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Gifts</a>
                             </li>
                         </ul>
                     </li>

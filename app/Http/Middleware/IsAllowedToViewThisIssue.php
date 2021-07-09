@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Subscription;
 use App\Models\SelectedIssue;
 use App\Models\Magazine;
+use App\Models\Team;
 use Carbon\Carbon;
 
 class IsAllowedToViewThisIssue
@@ -24,11 +25,12 @@ class IsAllowedToViewThisIssue
         $userId = auth()->id();
         $selectedIssues = SelectedIssue::whereUserId($userId)->latest()->first();
         $subscription = Subscription::findOrFail($selectedIssues->subscription_id);
-        $isSubscriptionActive = Carbon::parse($subscription->end_date)->isFuture();
         $magazine = Magazine::whereSlug($request->slug)->whereIn('id', $selectedIssues->issues)->get();
+        //$isSubscriptionActive = Carbon::parse($subscription->end_date)->isFuture();
+        $isInvitedMember = Team::whereIn('issues', $selectedIssues->issues)->get();
 
         // Check if subscription is active and if the issue is among the selected
-        if($isSubscriptionActive && $magazine->count() > 0) {
+        if($isInvitedMember->count() > 0 || $magazine->count() > 0) {
             return $next($request);
         }
         else {

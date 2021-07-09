@@ -56,6 +56,9 @@ Route::prefix('admin')->middleware(['auth', 'useremail'])->group(function () {
     Route::get('Ipay-payments', 'ViewTransactionController@ipayTransaction')->name('ipay.admin');
     Route::get('Customers', 'CustomerController@index')->name('customers.view');
     Route::get('Customer-{customer}', 'CustomerController@customerInfo')->name('customer.info');
+    Route::get('gifts', 'GiftController@gifts')->name('admin.gift');
+    Route::post('gifts', 'GiftController@postGift')->name('gift.store');
+    Route::get('remove-gift/{gift}', 'GiftController@destroyGift')->name('gift.destroy');
 });
 
 Route::view('/dashboard', 'dashboard')->middleware(['auth', 'useremail'])->name('dashboard');
