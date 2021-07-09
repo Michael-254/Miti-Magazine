@@ -21,7 +21,7 @@ class IsAllowedToViewThisIssue
      */
     public function handle(Request $request, Closure $next)
     {
-        $userId = auth()->user()->id;
+        $userId = auth()->id();
         $selectedIssues = SelectedIssue::whereUserId($userId)->latest()->first();
         $subscription = Subscription::findOrFail($selectedIssues->subscription_id);
         $isSubscriptionActive = Carbon::parse($subscription->end_date)->isFuture();

@@ -12,5 +12,10 @@ class CartOrder extends Model
         'user_id',
         'status',
         'reference',
+        'issues',
+    ];
+
+    protected $casts = [
+        'issues' => 'array',
     ];
 }

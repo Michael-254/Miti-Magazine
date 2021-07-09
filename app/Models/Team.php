@@ -9,7 +9,10 @@ class Team extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id','team_member_id','subscription_id'];
+    protected $fillable = ['user_id','team_member_id','subscription_id','issues'];
+    protected $casts = [
+        'issues' => 'array',
+    ];
 
     public function members()
     {

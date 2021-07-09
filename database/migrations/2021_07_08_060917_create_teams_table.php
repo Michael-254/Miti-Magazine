@@ -18,6 +18,7 @@ class CreateTeamsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('team_member_id');
             $table->foreignId('subscription_id');
+            $table->json('issues');
             $table->timestamps();
         });
     }

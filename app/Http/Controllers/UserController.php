@@ -7,6 +7,7 @@ use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Country;
 use App\Models\Payment;
 use App\Models\Paypal;
+use App\Models\SelectedIssue;
 use App\Models\Shipping;
 use App\Models\Subscription;
 use App\Models\SubscriptionPlan;
@@ -68,7 +69,7 @@ class UserController extends Controller
     public function invite()
     {
         $members = Team::with('members', 'subscriptionSize')->where('user_id', auth()->id())->latest()->paginate(8);
-        $userSubscriptions = Subscription::where('user_id', auth()->id())->get();
+        $userSubscriptions = Subscription::where([['user_id', auth()->id()],['status','=','paid']])->get();
         return view('users.invite', compact('members','userSubscriptions'));
     }
 
@@ -84,8 +85,9 @@ class UserController extends Controller
             $Usersubscription = Subscription::findOrFail($request->plan)->subscription_plan_id;
             $invites = Team::where([['user_id', '=', auth()->id()], ['subscription_id', '=', $request->plan]])->count();
             $quantity = SubscriptionPlan::findOrFail($Usersubscription)->quantity;
+            $issues = SelectedIssue::where('subscription_id','=',$request->plan)->first()->issues;
 
-            if ($invites < $quantity) {
+            if ($invites < ($quantity - 1)) {
 
                 $findMember = User::where('email', '=', $request->email)->first();
                 if ($findMember) {
@@ -101,7 +103,8 @@ class UserController extends Controller
                     Team::create([
                         'user_id' => auth()->id(),
                         'team_member_id' => $member->id,
-                        'subscription_id' => $request->plan
+                        'subscription_id' => $request->plan,
+                        'issues' => $issues, 
                     ]);
 
                     //send email

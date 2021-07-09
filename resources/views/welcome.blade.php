@@ -33,7 +33,7 @@
                         <div class="border rounded-md px-2 py-2">
                             <img class="object-fill h-48 w-full" src="{{asset('files/magazines/cover/'.$magazine->image)}}">
                         </div>
-                        <div class="mt-4 font-bold">{{$magazine->issue_no}}</div>
+                        <div class="mt-4 font-bold">Issue {{$magazine->issue_no}}</div>
                         <div class="text-center mt-2 text-gray-600 text-sm">{{$magazine->title}}</div>
                     </div>
                 </a>

@@ -41,8 +41,9 @@ class MagazineController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'issue_no' => 'required',
+            'issue_no' => 'required|unique:magazines,issue_no',
             'title' => 'required',
+            'inventory' => 'required',
             'file' => 'required|mimes:pdf',
             'image' => 'required|mimes:jpeg,jpg,png,gif',
         ]);
@@ -65,6 +66,7 @@ class MagazineController extends Controller
         $magazine = Magazine::create([
             'issue_no' => $request->issue_no,
             'title' => $request->title,
+            'invetory' => $request->inventory,
             'slug' => $slug,
             'file' => $filename,
             'image' =>  $image_name,

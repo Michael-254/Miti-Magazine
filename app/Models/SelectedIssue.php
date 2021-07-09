@@ -15,6 +15,10 @@ class SelectedIssue extends Model
         'subscription_id'
     ];
 
+    protected $casts = [
+        'issues' => 'array',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -27,6 +27,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/css/components.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/vendors/css/vendors.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/vendors/css/tables/datatable/datatables.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/css/pages/invoice.css')}}">
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/css/core/menu/menu-types/horizontal-menu.css')}}">
@@ -171,7 +172,7 @@
                     <li class="nav-item"><a class="nav-link" href="#"><i class="feather icon-shopping-cart"></i><span>My orders</span></a></li>
 
                     @admin
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-users"></i><span>Customers</span></a></li>
+                    <li class="nav-item {{ (request()->is('admin/Customers')) ? 'active' : '' }}"><a class="nav-link" href="{{route('customers.view')}}"><i class="fa fa-users"></i><span>Customers</span></a></li>
                     <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="fa fa-money"></i><span data-i18n="Starter kit">Sales</span></a>
                         <ul class="dropdown-menu">
                             <li class="dropdown dropdown-submenu {{ (request()->is('admin/Paypal-payments')) || (request()->is('admin/Ipay-payments')) ? 'active' : '' }}" data-menu="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown" data-i18n="Menu Levels">Payments</a>
@@ -183,8 +184,6 @@
                                 </ul>
                             </li>
                             <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Orders</a>
-                            </li>
-                            <li data-menu=""><a class="dropdown-item" href="sk-layout-2-columns.html" data-toggle="dropdown" data-i18n="2 columns">Invoices</a>
                             </li>
                             <li data-menu=""><a class="dropdown-item" href="sk-layout-2-columns.html" data-toggle="dropdown" data-i18n="2 columns">Inventory</a>
                             </li>
@@ -273,6 +272,7 @@
     <script src="{{asset('parent/app-assets/js/core/app.js')}}"></script>
     <script src="{{asset('parent/app-assets/js/scripts/components.js')}}"></script>
     <script src="{{asset('parent/app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
+    <script src="{{asset('parent/app-assets/js/scripts/pages/invoice.js')}}"></script>
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->

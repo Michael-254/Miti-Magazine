@@ -67,4 +67,35 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Subscription::class);
     }
 
+    public function myTeam()
+    {
+        return $this->hasMany(Team::class);
+    }
+
+    public function myIssues()
+    {
+        return $this->hasMany(SelectedIssue::class);
+    }
+
+
+    public function scopeSearch($query, $term)
+    {
+        $term = "%$term%";
+        $query->where(function ($query) use ($term) {
+            $query->where('name', 'like', $term)
+                ->orWhere('email', 'like', $term)
+                ->orWhere('company', 'like', $term)
+                ->orWhere('phone_no', 'like', $term)
+                ->orWhereHas('shippingInfo', function ($query) use ($term) {
+                    $query->where('address', 'like', $term)
+                        ->orWhere('apartment', 'like', $term)
+                        ->orWhere('zip_code', 'like', $term)
+                        ->orWhere('city', 'like', $term);
+                })
+                ->orWhereHas('myCountry', function ($query) use ($term) {
+                    $query->where('country', 'like', $term);
+                });
+        });
+    }
+
 }

@@ -18,7 +18,7 @@ class CreateCartOrdersTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->string('status')->default('unverified');
             $table->string('reference');
-            $table->string('type')->default('digital');
+            $table->json('issues');
             $table->timestamps();
         });
     }

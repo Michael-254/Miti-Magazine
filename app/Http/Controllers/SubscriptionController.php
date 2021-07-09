@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Amount;
 use App\Models\Country;
+use App\Models\Magazine;
 use App\Models\Subscription;
 use App\Models\SubscriptionPlan;
 use Illuminate\Http\Request;
@@ -23,7 +24,8 @@ class SubscriptionController extends Controller
         $plan_type = Session::get('plan_type');
         $currency = SubscriptionPlan::findOrFail($plan_id);
         $amount = Amount::whereSubscriptionPlanId($plan_id)->value($plan_type);
-        return view('selected-plan', compact('amount','currency','countries','plan_type'));
+        $recentmagazines = Magazine::latest()->limit(4)->get();
+        return view('selected-plan', compact('amount','currency','countries','plan_type','recentmagazines'));
     }
 
     public function checkout()

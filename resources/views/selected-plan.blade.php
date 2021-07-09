@@ -110,6 +110,15 @@
                                 </div>
                             </div>
                             <div class="col-lg-12">
+                                <h4 class="text-green-500 font-bold">Select Issue you wish to Start your Subscription</h4>
+                                @foreach($recentmagazines as $recent)
+                                <div class="list-group">
+                                    <input type="radio" name="start_from" value="{{$recent->issue_no}}" id="{{$recent->id}}" />
+                                    <label class="list-group-item bg-blue-400 rounded-md py-1 text-black" for="{{$recent->id}}">Issue {{$recent->issue_no}}</label>
+                                </div>
+                                @endforeach
+                            </div>
+                            <div class="col-lg-12 mt-2">
                                 <h4 class="text-green-500 font-bold">Choose Payment Method</h4>
                                 <div class="list-group">
                                     <input type="radio" name="payment_method" value="ipay" id="Radio1" />

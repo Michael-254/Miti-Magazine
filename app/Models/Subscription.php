@@ -15,7 +15,13 @@ class Subscription extends Model
         'status',
         'reference',
         'type',
+        'quantity',
         'start_date',
         'end_date',
     ];
+
+    public function SubIssues()
+    {
+        return $this->hasOne(SelectedIssue::class,'subscription_id');
+    }
 }

@@ -107,7 +107,7 @@
                                                             <option value="">-- Select Plan --</option>
                                                             @foreach($userSubscriptions as $sub)
                                                             <option value="{{$sub->id}}">{{$sub->type}} 
-                                                                {{App\Models\SubscriptionPlan::findOrFail($sub->subscription_plan_id)->quantity}} Copies
+                                                                {{$sub->quantity}} Copies
                                                             </option>
                                                             @endforeach                                            
                                                         </select>

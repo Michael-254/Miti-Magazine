@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Amount;
 use App\Models\CartOrder;
 use App\Models\Order;
+use App\Models\SelectedIssue;
 use App\Models\Shipping;
 use App\Models\Subscription;
 use App\Models\SubscriptionPlan;
@@ -54,7 +55,8 @@ class ShippingController extends Controller
             'city' => 'required',
             'state' => 'required',
             'payment_method' => 'required',
-            'phone_no' => 'required'
+            'phone_no' => 'required',
+            'start_from' => 'required'
         ]);
 
         $random = Str::random(8);
@@ -84,6 +86,7 @@ class ShippingController extends Controller
         $referenceId = Carbon::now()->timestamp;
         Session::put('referenceId', $referenceId);
         $currency = SubscriptionPlan::findOrFail($plan_id)->currency();
+        $quantity =  SubscriptionPlan::findOrFail($plan_id)->quantity;
         $amount = Amount::whereSubscriptionPlanId($plan_id)->value($plan_type);
         Session::put('currency', $currency);
         Session::put('amount', $amount);
@@ -92,9 +95,18 @@ class ShippingController extends Controller
             'user_id' => $customer->id, 'subscription_plan_id' => $plan_id, 'reference' => $referenceId, 'type' => $plan_type
         ]);
 
-        Subscription::create([
+        $subscription = Subscription::create([
             'user_id' => $customer->id, 'subscription_plan_id' => $plan_id, 'reference' => $referenceId,
-            'type' => $plan_type
+            'type' => $plan_type,'quantity' => $quantity
+        ]);
+
+        $issues = [];
+        $issue_no = $request->start_from;
+        $a = $int = (int)$issue_no;
+        array_push($issues,$a,$a+1,$a+2,$a+3);
+
+        SelectedIssue::create([
+            'user_id' => $customer->id, 'subscription_id' => $subscription->id, 'issues' => $issues
         ]);
 
 
@@ -116,7 +128,7 @@ class ShippingController extends Controller
             'city' => 'required',
             'state' => 'required',
             'payment_method' => 'required',
-            'phone_no' => 'required'
+            'phone_no' => 'required',
         ]);
         $random = Str::random(8);
         $customer = User::updateOrCreate([
@@ -147,8 +159,12 @@ class ShippingController extends Controller
         Session::put('currency', $currency);
         Session::put('amount', $amount);
 
+        $issues = [];
+        foreach (Cart::getContent() as $cart) {
+            $issues[] =  [$cart->id => $cart->quantity];
+        }
         CartOrder::create([
-            'user_id' => $customer->id, 'reference' => $referenceId,
+            'user_id' => $customer->id, 'reference' => $referenceId, 'issues' => $issues
         ]);
 
 

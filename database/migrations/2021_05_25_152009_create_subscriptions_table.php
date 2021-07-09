@@ -20,6 +20,7 @@ class CreateSubscriptionsTable extends Migration
             $table->string('status')->default('unpaid');
             $table->string('reference');
             $table->string('type');
+            $table->string('quantity');
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
             $table->timestamps();
