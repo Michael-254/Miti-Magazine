@@ -18,4 +18,9 @@ class Subscription extends Model
         'start_date',
         'end_date',
     ];
+
+    public function subscriptionPlan()
+    {
+        return $this->belongsTo(Subscription::class,'subscription_plan_id');
+    }
 }

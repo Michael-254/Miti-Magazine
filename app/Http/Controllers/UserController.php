@@ -85,7 +85,7 @@ class UserController extends Controller
             $invites = Team::where([['user_id', '=', auth()->id()], ['subscription_id', '=', $request->plan]])->count();
             $quantity = SubscriptionPlan::findOrFail($Usersubscription)->quantity;
 
-            if ($invites < $quantity) {
+            if ($invites < ($quantity - 1)) {
 
                 $findMember = User::where('email', '=', $request->email)->first();
                 if ($findMember) {
