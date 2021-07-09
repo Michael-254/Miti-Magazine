@@ -17,7 +17,7 @@ class GiftController extends Controller
     {
         $members = Gift::with('members', 'subscriptionSize')->where('user_id', auth()->id())->latest()->paginate(8);
         $subscriptions = SubscriptionPlan::all();
-        $issues = Magazine::all();
+        $issues = Magazine::latest()->limit(4)->get();
         return view('admin.gift', compact('members', 'subscriptions', 'issues'));
     }
 
@@ -52,8 +52,9 @@ class GiftController extends Controller
             'subscription_plan_id' => $request->plan, 
             'reference' => $referenceId,
             'type' => $request->type,
-            'quantity' => $quantity
+            'quantity' => $quantity,
         ]);
+        $subscription->update(['status' => 'paid']);
 
         Gift::create([
             'user_id' => auth()->id(),
@@ -62,7 +63,7 @@ class GiftController extends Controller
         ]);
 
         $issues = [
-            $request->issue, 
+            (int)($request->issue), 
             ($request->issue + 1), 
             ($request->issue + 2), 
             ($request->issue + 3)

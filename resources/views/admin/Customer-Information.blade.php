@@ -59,9 +59,8 @@
                                     <td>
                                         @foreach($customer->myTeam as $team)
                                         @if($sub->id == $team->subscription_id)
-                                        <div class="mt-1">
+                                        <div class="mt-0.5">
                                         <p>{{$team->members->name}}</p>
-                                        <p>{{$team->members->email}}</p>
                                         </div>
                                         @endif
                                         @endforeach

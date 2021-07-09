@@ -133,14 +133,9 @@
                                                         <select name="issue" id="issue" class="rounded-md border-gray-400 form-control" id="users-language-select2">
                                                             <option value="">-- Select Issue --</option>
                                                             @foreach($issues as $issue)
-                                                                <option value="{{$issue->id}}">
+                                                                <option value="{{$issue->issue_no}}">
                                                                     {{ 'Issue '.$issue->issue_no }}
                                                                 </option>
-                                                                @if($loop->last)
-                                                                    <option value="{{$issue->id + 1}}">
-                                                                        {{ 'Issue '.($issue->issue_no + 1) }}
-                                                                    </option>
-                                                                @endif
                                                             @endforeach         
                                                         </select>
                                                     </div>
