@@ -38,7 +38,7 @@
                                     <!-- Success Message -->
                                     @include('partials.alertB')
                                     <hr>
-                                    @if(auth()->user()->subscriptions->count())
+                                    @if($userSubscriptions->count())
                                     <form novalidate>
                                         <div class="row">
                                             <div class="col-12">
@@ -90,7 +90,7 @@
                                     @endif
                                 </div>
                                 <div class="tab-pane fade " id="account-vertical-password" role="tabpanel" aria-labelledby="account-pill-password" aria-expanded="false">
-                                    @if(auth()->user()->subscriptions->count())
+                                    @if($userSubscriptions->count())
                                     <form action="{{route('member.store')}}" method="POST" novalidate>
                                         @csrf
                                         <div class="row">

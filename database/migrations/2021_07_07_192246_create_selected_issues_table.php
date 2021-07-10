@@ -16,8 +16,10 @@ class CreateSelectedIssuesTable extends Migration
         Schema::create('selected_issues', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->json('issues');
+            $table->string('issue_no');
             $table->foreignId('subscription_id');
+            $table->foreignId('order_id');
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

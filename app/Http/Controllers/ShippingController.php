@@ -91,24 +91,24 @@ class ShippingController extends Controller
         Session::put('currency', $currency);
         Session::put('amount', $amount);
 
-        Order::create([
+        $order = Order::create([
             'user_id' => $customer->id, 'subscription_plan_id' => $plan_id, 'reference' => $referenceId, 'type' => $plan_type
         ]);
 
         $subscription = Subscription::create([
             'user_id' => $customer->id, 'subscription_plan_id' => $plan_id, 'reference' => $referenceId,
-            'type' => $plan_type,'quantity' => $quantity
+            'type' => $plan_type, 'quantity' => $quantity
         ]);
 
         $issues = [];
-        $issue_no = $request->start_from;
-        $a = $int = (int)$issue_no;
-        array_push($issues,$a,$a+1,$a+2,$a+3);
+        $a = (int)$request->start_from;
+        $issues = [$a, $a + 1, $a + 2, $a + 3];
 
-        SelectedIssue::create([
-            'user_id' => $customer->id, 'subscription_id' => $subscription->id, 'issues' => $issues
-        ]);
-
+        foreach($issues as $issue){
+            SelectedIssue::create([
+                'user_id' => $customer->id, 'subscription_id' => $subscription->id, 'issue_no' => $issue, 'order_id' => $order->id
+            ]);
+        }
 
         if ($request->payment_method == 'paypal') {
             return redirect('paypal/checkout');
@@ -161,13 +161,15 @@ class ShippingController extends Controller
 
         $issues = [];
         foreach (Cart::getContent() as $cart) {
-            $issues[] =  [$cart->id => $cart->quantity];
+            $issues[] =  [$cart->quantity => $cart->name];
         }
+
+        $selectedIssue = (object)$issues;
         CartOrder::create([
-            'user_id' => $customer->id, 'reference' => $referenceId, 'issues' => $issues
+            'user_id' => $customer->id, 'reference' => $referenceId, 'issues' => $selectedIssue
         ]);
 
-
+        Cart::clear();
         if ($request->payment_method == 'paypal') {
             return redirect('paypal/checkout');
         } else {

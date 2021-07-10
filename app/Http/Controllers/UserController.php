@@ -85,7 +85,7 @@ class UserController extends Controller
             $Usersubscription = Subscription::findOrFail($request->plan)->subscription_plan_id;
             $invites = Team::where([['user_id', '=', auth()->id()], ['subscription_id', '=', $request->plan]])->count();
             $quantity = SubscriptionPlan::findOrFail($Usersubscription)->quantity;
-            $issues = SelectedIssue::where('subscription_id','=',$request->plan)->first()->issues;
+            $issues = SelectedIssue::where('subscription_id','=',$request->plan)->get();
 
             if ($invites < ($quantity - 1)) {
 
@@ -104,7 +104,6 @@ class UserController extends Controller
                         'user_id' => auth()->id(),
                         'team_member_id' => $member->id,
                         'subscription_id' => $request->plan,
-                        'issues' => $issues, 
                     ]);
 
                     //send email

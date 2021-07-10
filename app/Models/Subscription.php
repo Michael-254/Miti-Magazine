@@ -22,6 +22,6 @@ class Subscription extends Model
 
     public function SubIssues()
     {
-        return $this->hasOne(SelectedIssue::class,'subscription_id');
+        return $this->hasMany(SelectedIssue::class,'subscription_id');
     }
 }

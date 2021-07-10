@@ -11,13 +11,12 @@ class SelectedIssue extends Model
 
     protected $fillable = [
         'user_id',
-        'issues',
-        'subscription_id'
+        'status',
+        'subscription_id',
+        'issue_no',
+        'order_id',
     ];
 
-    protected $casts = [
-        'issues' => 'array',
-    ];
 
     public function user()
     {

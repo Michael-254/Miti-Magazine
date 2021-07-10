@@ -18,6 +18,7 @@ class AdminIpay extends Component
             'payments' => Payment::with('user')
             ->where('status','verified')
             ->search(trim($this->search))
+            ->latest()
             ->paginate(10),
         ]);
     }

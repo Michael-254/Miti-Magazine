@@ -54,13 +54,15 @@
                                     <td>{{$sub->updated_at->format('d-m-Y')}}</td>
                                     <td>{{$sub->quantity}}</td>
                                     <td>
-                                        {{implode(", ", $sub->SubIssues->issues)}}
+                                        @foreach($sub->SubIssues as $issue)
+                                        {{$issue->issue_no}}
+                                        @endforeach
                                     </td>
                                     <td>
                                         @foreach($customer->myTeam as $team)
                                         @if($sub->id == $team->subscription_id)
                                         <div class="mt-0.5">
-                                        <p>{{$team->members->name}}</p>
+                                            <p>{{$team->members->name}}</p>
                                         </div>
                                         @endif
                                         @endforeach

@@ -59,6 +59,8 @@ Route::prefix('admin')->middleware(['auth', 'useremail'])->group(function () {
     Route::get('gifts', 'GiftController@gifts')->name('admin.gift');
     Route::post('gifts', 'GiftController@postGift')->name('gift.store');
     Route::get('remove-gift/{gift}', 'GiftController@destroyGift')->name('gift.destroy');
+    Route::get('Cart-Orders', 'OrderController@CartOrder')->name('cart.orders');
+    Route::get('Subscription-Orders', 'OrderController@SubOrder')->name('subscription.orders');
 });
 
 Route::view('/dashboard', 'dashboard')->middleware(['auth', 'useremail'])->name('dashboard');

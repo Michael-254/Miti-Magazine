@@ -183,7 +183,13 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Orders</a>
+                            <li class="dropdown dropdown-submenu {{ (request()->is('admin/Cart-Orders')) || (request()->is('admin/Subscription-Orders')) ? 'active' : '' }}" data-menu="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown" data-i18n="Menu Levels">Orders</a>
+                                <ul class="dropdown-menu">
+                                    <li data-menu=""><a class="dropdown-item" href="{{route('cart.orders')}}" data-toggle="dropdown" data-i18n="Second Level">Cart Orders</a>
+                                    </li>
+                                    <li data-menu=""><a class="dropdown-item" href="{{route('subscription.orders')}}" data-toggle="dropdown" data-i18n="Second Level">Subscription Orders</a>
+                                    </li>
+                                </ul>
                             </li>
                             <li data-menu=""><a class="dropdown-item" href="sk-layout-2-columns.html" data-toggle="dropdown" data-i18n="2 columns">Inventory</a>
                             </li>
