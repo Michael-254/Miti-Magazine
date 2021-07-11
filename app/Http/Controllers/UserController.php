@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\CartOrder;
 use App\Models\Country;
+use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Paypal;
 use App\Models\SelectedIssue;
@@ -69,12 +71,16 @@ class UserController extends Controller
     public function invite()
     {
         $members = Team::with('members', 'subscriptionSize')->where('user_id', auth()->id())->latest()->paginate(8);
-        $userSubscriptions = Subscription::where([['user_id', auth()->id()],['status','=','paid']])->get();
-        return view('users.invite', compact('members','userSubscriptions'));
+        $userSubscriptions = Subscription::where([['user_id', auth()->id()], ['status', '=', 'paid']])->get();
+        return view('users.invite', compact('members', 'userSubscriptions'));
     }
 
     public function memberStore(Request $request)
     {
+        if ($request->email == auth()->user()->email) {
+            return redirect()->back()->with('error', 'Something went wrong wrong kindly retry again');
+        }
+
         $request->validate([
             'plan' => 'required',
             'email' => 'required',
@@ -85,7 +91,7 @@ class UserController extends Controller
             $Usersubscription = Subscription::findOrFail($request->plan)->subscription_plan_id;
             $invites = Team::where([['user_id', '=', auth()->id()], ['subscription_id', '=', $request->plan]])->count();
             $quantity = SubscriptionPlan::findOrFail($Usersubscription)->quantity;
-            $issues = SelectedIssue::where('subscription_id','=',$request->plan)->get();
+            $issues = SelectedIssue::where('subscription_id', '=', $request->plan)->get();
 
             if ($invites < ($quantity - 1)) {
 
@@ -121,5 +127,19 @@ class UserController extends Controller
     {
         $team->delete();
         return redirect('user/invites')->with('message', 'member removed');
+    }
+
+    public function mySubscription()
+    {
+        $subscriptions = Subscription::with('SubIssues')->where([['user_id', '=', auth()->id()], ['status', '=', 'paid']])->get();
+        $invites = Team::with('subscriptionSize')->where('team_member_id', '=', auth()->id())->get();
+        return view('users/my-subscription', compact('subscriptions', 'invites'));
+    }
+
+    public function Orders()
+    {
+        $Suborders = Order::with('selectedIssue')->where('status', '=', 'verified')->get();
+        $Cartorders = CartOrder::where('status', '!=', 'unverified')->get();
+        return view('users/orders', compact('Suborders', 'Cartorders'));
     }
 }

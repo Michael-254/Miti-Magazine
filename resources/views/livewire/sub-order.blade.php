@@ -30,7 +30,7 @@
                                                 <th>Customer Location</th>
                                                 <th>Reference</th>
                                                 <th>Type</th>
-                                                <th>Issues Selected and Quantity</th>
+                                                <th>Issues Selected and Status</th>
                                                 <th>Quantity</th>
                                                 <th>Action</th>
 
@@ -100,9 +100,11 @@
                                     <label class="text-green-600 font-bold">Issue no</label>
                                     <select wire:model="issueNo" class="form-control">
                                         <option value="">-- Select Issue --</option>
+                                        @if($order)
                                         @foreach($order->selectedIssue as $issue)
                                         <option value="{{$issue->id}}">{{$issue->issue_no}}</option>
                                         @endforeach
+                                        @endif
                                     </select>
                                 </div>
 

@@ -54,7 +54,7 @@ class MagazineController extends Controller
         $image = $request->image;
         $image_name = time() . '_' . $image->getClientOriginalName();
         $dir = public_path('files/magazines/cover');
-        $imgResize = Image::make($image->getRealPath())->resize(160, 200);
+        $imgResize = Image::make($image->getRealPath());
         $imgResize->save($dir . '/' . $image_name, 80);
 
         //file

@@ -28,6 +28,7 @@
     <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/vendors/css/vendors.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/vendors/css/tables/datatable/datatables.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/css/pages/invoice.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/css/pages/app-ecommerce-shop.css')}}">
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/css/core/menu/menu-types/horizontal-menu.css')}}">
@@ -40,9 +41,9 @@
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <style>
-     .test {
-  background-color: green;
-}
+        .test {
+            background-color: green;
+        }
     </style>
 
     <!-- Scripts -->
@@ -164,12 +165,12 @@
                             </li>
                             <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Payment methods</a>
                             </li>
-                            <li  class="{{ (request()->is('user/payments')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="{{route('user.payments')}}" data-toggle="dropdown" data-i18n="Fixed navbar">My payments and Invoices</a>
+                            <li class="{{ (request()->is('user/payments')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="{{route('user.payments')}}" data-toggle="dropdown" data-i18n="Fixed navbar">My payments and Invoices</a>
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-newspaper-o"></i><span>My Subscription</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="feather icon-shopping-cart"></i><span>My orders</span></a></li>
+                    <li class="nav-item {{ (request()->is('user/MySubscription')) ? 'active' : '' }}"><a class="nav-link" href="{{route('user.subscriptions')}}"><i class="fa fa-newspaper-o"></i><span>My Subscription</span></a></li>
+                    <li class="nav-item {{ (request()->is('user/MyOrders')) ? 'active' : '' }}"><a class="nav-link" href="{{route('user.orders')}}"><i class="feather icon-shopping-cart"></i><span>My orders</span></a></li>
 
                     @admin
                     <li class="nav-item {{ (request()->is('admin/Customers')) ? 'active' : '' }}"><a class="nav-link" href="{{route('customers.view')}}"><i class="fa fa-users"></i><span>Customers</span></a></li>
@@ -283,6 +284,8 @@
 
     <!-- BEGIN: Page JS-->
     <script src="{{asset('parent/app-assets/js/scripts/forms/form-tooltip-valid.js')}}"></script>
+    <!-- BEGIN: Page JS-->
+    <script src="{{asset('parent/app-assets/js/scripts/pages/app-ecommerce-shop.js')}}"></script>
     <!-- END: Page JS-->
     @yield('scripts')
 

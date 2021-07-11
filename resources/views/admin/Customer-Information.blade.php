@@ -47,7 +47,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($customer->subscriptions as $sub)
+                                @foreach($customer->subscriptions as $sub)
                                 @if($sub->status == 'paid')
                                 <tr>
                                     <td>{{$sub->type}}</td>
@@ -68,14 +68,14 @@
                                         @endforeach
                                     </td>
                                 </tr>
-                                @endif
-                                @empty
+                                @else
                                 <tr>
                                     <td>
                                         Customer has no active subscription
                                     </td>
                                 </tr>
-                                @endforelse
+                                @endif
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

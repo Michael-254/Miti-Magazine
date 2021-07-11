@@ -38,7 +38,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach($payments as $payment)
+                                            @forelse($payments as $payment)
                                             <tr>
                                                 <td>{{$loop->iteration}}</td>
                                                 <td>{{$payment->user->name}}</td>
@@ -49,7 +49,13 @@
                                                 <td>{{$payment->reference}}</td>
                                                 <td><i class="fa fa-eye cursor-pointer text-green-600 hover:text-blue-700"></i></td>
                                             </tr>
-                                            @endforeach
+                                            @empty
+                                            <tr>
+                                                <td>
+                                                    No Payments yet
+                                                </td>
+                                            </tr>
+                                            @endforelse
                                         </tbody>
                                     </table>
                                 </div>

@@ -18,7 +18,7 @@ class CreateSelectedIssuesTable extends Migration
             $table->foreignId('user_id');
             $table->string('issue_no');
             $table->foreignId('subscription_id');
-            $table->foreignId('order_id');
+            $table->foreignId('order_id')->nullable();
             $table->string('status')->default('pending');
             $table->timestamps();
         });

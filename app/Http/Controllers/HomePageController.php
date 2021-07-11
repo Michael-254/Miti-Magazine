@@ -17,7 +17,8 @@ class HomePageController extends Controller
     public function previous()
     {
         $recentmagazines = Magazine::latest()->limit(4)->get();
-        $previousmagazines= Magazine::whereNotIn('id', $recentmagazines->pluck('id'))->get();
+        //$previousmagazines= Magazine::whereNotIn('id', $recentmagazines->pluck('id'))->get();
+          $previousmagazines= Magazine::all();
         return view('previous-issue',compact('previousmagazines'));
     }
 

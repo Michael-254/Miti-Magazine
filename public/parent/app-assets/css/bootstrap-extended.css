@@ -1369,7 +1369,7 @@ button, html [type='button'], [type='reset'], [type='submit'] {
 
 .dropdown .btn.dropdown-toggle.dropdown-toggle-split {
   padding : 0.85rem 1rem;
-  border-left-color : rgba(255, 255, 255, 0.2) !important;
+  border-left-color : #006400 !important;
   border-top-left-radius : 0;
   border-bottom-left-radius : 0;
 }
@@ -1430,7 +1430,7 @@ button, html [type='button'], [type='reset'], [type='submit'] {
 }
 .dropdown .dropdown-menu .dropdown-item:active {
   background-color : transparent;
-  color : #212529;
+  color : #006400;
 }
 
 .dropdown i {
@@ -2012,7 +2012,7 @@ button, html [type='button'], [type='reset'], [type='submit'] {
   line-height : 1;
 }
 .navbar-light .navbar-nav .active.nav-link {
-  background-color : rgba(0, 0, 0, 0.03);
+  background-color : #006400;
 }
 .navbar-light .navbar-nav .disabled.nav-link {
   color : #6C757D;

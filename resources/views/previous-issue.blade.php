@@ -22,7 +22,7 @@
         @endif
         <div class="row">
             @foreach($previousmagazines as $magazine)
-            <div class="col-lg-3" data-animate="fadeInUp" data-animate-delay="0">
+            <div class="col-lg-2" data-animate="fadeInUp" data-animate-delay="0">
                 <div class="bg-white h-full p-8 flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
                     <a href="#" class="mt-2">
                         <div class="border rounded-md px-2 py-2">

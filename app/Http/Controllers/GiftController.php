@@ -68,11 +68,14 @@ class GiftController extends Controller
             ($request->issue + 2), 
             ($request->issue + 3)
         ];
-        SelectedIssue::create([
-            'user_id' => $customer->id,
-            'subscription_id' => $subscription->id,
-            'issues' => $issues
-        ]);
+
+        foreach ($issues as $issue) {
+            SelectedIssue::create([
+                'user_id' => $customer->id,
+                'subscription_id' => $subscription->id,
+                'issue_no' => $issue,
+            ]);
+        }
         
         return redirect()->back()->with('message', 'Member gifted successfully!');
     }

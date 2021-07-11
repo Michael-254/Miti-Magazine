@@ -44,6 +44,8 @@ Route::prefix('user')->middleware(['auth', 'useremail'])->group(function () {
     Route::get('invites', 'UserController@invite')->name('user.invite');
     Route::post('invites', 'UserController@memberStore')->name('member.store');
     Route::get('remove-member/{team}', 'UserController@memberdestroy')->name('member.destroy');
+    Route::get('MySubscription', 'UserController@mySubscription')->name('user.subscriptions');
+    Route::get('MyOrders', 'UserController@Orders')->name('user.orders');
 });
 
 //Admin Links
