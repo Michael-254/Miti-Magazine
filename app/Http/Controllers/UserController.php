@@ -88,9 +88,8 @@ class UserController extends Controller
         ]);
         $myPlans = auth()->user()->subscriptions;
         if ($myPlans->contains('id', $request->plan)) {
-            $Usersubscription = Subscription::findOrFail($request->plan)->subscription_plan_id;
             $invites = Team::where([['user_id', '=', auth()->id()], ['subscription_id', '=', $request->plan]])->count();
-            $quantity = SubscriptionPlan::findOrFail($Usersubscription)->quantity;
+            $quantity = Subscription::findOrFail($request->plan)->quantity;
             $issues = SelectedIssue::where('subscription_id', '=', $request->plan)->get();
 
             if ($invites < ($quantity - 1)) {
@@ -138,7 +137,7 @@ class UserController extends Controller
 
     public function Orders()
     {
-        $Suborders = Order::with('selectedIssue')->where('status', '=', 'verified')->get();
+        $Suborders = Order::with('selectedIssue')->where([['status', '=', 'verified'], ['type', '=', 'combined']])->get();
         $Cartorders = CartOrder::where('status', '!=', 'unverified')->get();
         return view('users/orders', compact('Suborders', 'Cartorders'));
     }
