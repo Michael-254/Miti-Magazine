@@ -102,7 +102,6 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="{{route('profile.show')}}"><i class="feather icon-user"></i> Edit Profile</a>
-                                <a class="dropdown-item" href="#"><i class="feather icon-mail"></i> My Subscription</a>
                                 <div class="dropdown-divider"></div>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
