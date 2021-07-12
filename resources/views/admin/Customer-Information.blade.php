@@ -39,7 +39,7 @@
                         <table class="table table-borderless">
                             <thead>
                                 <tr>
-                                    <th>Subacription Name</th>
+                                    <th>Subscription Name</th>
                                     <th>Date purchased</th>
                                     <th>Quantity received per Issue</th>
                                     <th>Selected Issues</th>
@@ -47,7 +47,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($customer->subscriptions as $sub)
+                                @forelse($customer->subscriptions as $sub)
                                 @if($sub->status == 'paid')
                                 <tr>
                                     <td>{{$sub->type}}</td>
@@ -68,14 +68,14 @@
                                         @endforeach
                                     </td>
                                 </tr>
-                                @else
+                                @endif
+                                @empty
                                 <tr>
                                     <td>
                                         Customer has no active subscription
                                     </td>
                                 </tr>
-                                @endif
-                                @endforeach
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

@@ -40,11 +40,6 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <style>
-        .test {
-            background-color: green;
-        }
-    </style>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -97,17 +92,6 @@
                             <a class="nav-link nav-link-expand">
                                 <i class="ficon feather icon-maximize"></i>
                             </a>
-                        </li>
-                        <li class="nav-item nav-search">
-                            <a class="nav-link nav-link-search">
-                                <i class="ficon feather icon-search"></i>
-                            </a>
-                            <div class="search-input">
-                                <div class="search-input-icon"><i class="feather icon-search primary"></i></div>
-                                <input class="input" type="text" placeholder="Explore Miti Magazine........" tabindex="-1" data-search="starter-list">
-                                <div class="search-input-close"><i class="feather icon-x"></i></div>
-                                <ul class="search-list search-list-main"></ul>
-                            </div>
                         </li>
                         <li class="dropdown dropdown-user nav-item">
                             <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">

@@ -96,6 +96,21 @@
                             </div>
                             <div class="modal-body">
 
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="card-body">
+                                            <h5 class="font-bold text-blue-600">Shipping Information</h5>
+                                            @if($shipping)
+                                            <div class="recipient-info my-2">
+                                                <p>Apartment: {{$shipping->apartment}}</p>
+                                                <p>State/City: {{$shipping->state}}, {{$shipping->city}}</p>
+                                                <p>Address: {{$shipping->address}},{{$shipping->zip_code}}</p>
+                                            </div>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="form-group">
                                     <label class="text-green-600 font-bold">Issue no</label>
                                     <select wire:model="issueNo" class="form-control">
@@ -117,6 +132,7 @@
                                         <option value="cancelled">cancelled</option>
                                     </select>
                                 </div>
+
 
                             </div>
                             <div class="modal-footer">

@@ -12,11 +12,12 @@ class AdminCartOrder extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $search;
-    public $status, $order;
+    public $status, $order,$shipping;
 
     public function Order($id)
     {
         $this->order = CartOrder::findOrFail($id);
+        $this->shipping = $this->order->user->shippingInfo;
     }
 
     public function update()
