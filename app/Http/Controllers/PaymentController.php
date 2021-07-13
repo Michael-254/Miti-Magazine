@@ -141,9 +141,9 @@ class PaymentController extends Controller
             $msisdn_idnum = isset($request->msisdn_idnum) ? $request->msisdn_idnum : null; 
             $payment = Payment::where('reference', $orderId)->update(['msisdn_id' => $msisdn_id, 'msisdn_idnum' => $msisdn_idnum, 'txncd' => $request->txncd, 'channel' => $request->channel, 'status' => 'VERIFIED']);
 
-            Order::where('reference', $orderId)->update(['status' => 'VERIFIED']);
+            Order::where('reference', $orderId)->update(['status' => 'verified']);
 
-            Subscription::where('reference', $orderId)->update(['status' => 'VERIFIED']);
+            Subscription::where('reference', $orderId)->update(['status' => 'paid']);
 
             // Handle Sage
             /* $this->contact    = (new Contact($this->api, [

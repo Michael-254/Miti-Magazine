@@ -39,7 +39,7 @@
                                                                     <img class="card-img-top img-fluid" src="{{asset('files/magazines/cover/'.$issuefound->image)}}" alt="Card image cap">
                                                                     <h5 class="my-1 font-bold text-blue-600">Issue {{$issue->issue_no}} {{$issuefound->title}}</h5>
                                                                     <div class="card-btns d-flex justify-content-between">
-                                                                        <a href="{{ url('user/read/issue_47') }}" class="btn btn-primary btn-sm float-right">Read/Download</a>
+                                                                        <a href="{{ url('user/read/'.$issuefound->slug) }}" class="btn btn-primary btn-sm float-right">Read/Download</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -84,7 +84,7 @@
                                                                     <img class="card-img-top img-fluid" src="{{asset('files/magazines/cover/'.$issuefound->image)}}" alt="Card image cap">
                                                                     <h5 class="my-1 font-bold text-blue-600">Issue {{$issue->issue_no}} {{$issuefound->title}}</h5>
                                                                     <div class="card-btns d-flex justify-content-between">
-                                                                        <a href="{{ url('user/read/issue_47') }}" class="btn btn-primary btn-sm float-right">Read/Download</a>
+                                                                        <a href="{{ url('user/read/'.$issuefound->slug) }}" class="btn btn-primary btn-sm float-right">Read/Download</a>
                                                                     </div>
                                                                 </div>
                                                             </div>
