@@ -106,8 +106,8 @@
                                                         <select name="plan" id="plan" class="rounded-md border-gray-400 form-control" id="users-language-select2">
                                                             <option value="">-- Select Plan --</option>
                                                             @foreach($subscriptions as $sub)
-                                                            <option value="{{$sub->id}}">{{$sub->type}} 
-                                                                {{ $sub->subscriptionPlan->quantity }} Copies
+                                                            <option value="{{$sub->id}}">{{$sub->location}} {{$sub->quantity}} 
+                                                                 Copies
                                                             </option>
                                                             @endforeach                                            
                                                         </select>
@@ -133,14 +133,9 @@
                                                         <select name="issue" id="issue" class="rounded-md border-gray-400 form-control" id="users-language-select2">
                                                             <option value="">-- Select Issue --</option>
                                                             @foreach($issues as $issue)
-                                                                <option value="{{$issue->id}}">
+                                                                <option value="{{$issue->issue_no}}">
                                                                     {{ 'Issue '.$issue->issue_no }}
                                                                 </option>
-                                                                @if($loop->last())
-                                                                    <option value="{{$issue->id + 1}}">
-                                                                        {{ 'Issue '.($issue->issue_no + 1) }}
-                                                                    </option>
-                                                                @endif
                                                             @endforeach         
                                                         </select>
                                                     </div>

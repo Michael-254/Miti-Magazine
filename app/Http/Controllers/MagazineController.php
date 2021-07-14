@@ -42,8 +42,9 @@ class MagazineController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'issue_no' => 'required',
+            'issue_no' => 'required|unique:magazines,issue_no',
             'title' => 'required',
+            'inventory' => 'required',
             'file' => 'required|mimes:pdf',
             'image' => 'required|mimes:jpeg,jpg,png,gif',
         ]);
@@ -54,7 +55,7 @@ class MagazineController extends Controller
         $image = $request->image;
         $image_name = time() . '_' . $image->getClientOriginalName();
         $dir = public_path('files/magazines/cover');
-        $imgResize = Image::make($image->getRealPath())->resize(160, 200);
+        $imgResize = Image::make($image->getRealPath());
         $imgResize->save($dir . '/' . $image_name, 80);
 
         //file
@@ -74,6 +75,7 @@ class MagazineController extends Controller
             'item_code' => $response,
             'issue_no' => $code,
             'title' => $request->title,
+            'invetory' => $request->inventory,
             'slug' => $slug,
             'file' => $filename,
             'image' =>  $image_name,

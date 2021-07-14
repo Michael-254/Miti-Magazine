@@ -11,9 +11,12 @@ class SelectedIssue extends Model
 
     protected $fillable = [
         'user_id',
-        'issues',
-        'subscription_id'
+        'status',
+        'subscription_id',
+        'issue_no',
+        'order_id',
     ];
+
 
     public function user()
     {

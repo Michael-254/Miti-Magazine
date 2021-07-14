@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Amount;
 use App\Models\CartOrder;
 use App\Models\Order;
+use App\Models\SelectedIssue;
 use App\Models\Shipping;
 use App\Models\Subscription;
 use App\Models\SubscriptionPlan;
@@ -55,7 +56,8 @@ class ShippingController extends Controller
             'city' => 'required',
             'state' => 'required',
             'payment_method' => 'required',
-            'phone_no' => 'required'
+            'phone_no' => 'required',
+            'start_from' => 'required'
         ]);
 
         $random = Str::random(8);
@@ -115,18 +117,29 @@ class ShippingController extends Controller
         $referenceId = Carbon::now()->timestamp;
         Session::put('referenceId', $referenceId);
         $currency = SubscriptionPlan::findOrFail($plan_id)->currency();
+        $quantity =  SubscriptionPlan::findOrFail($plan_id)->quantity;
         $amount = Amount::whereSubscriptionPlanId($plan_id)->value($plan_type);
         Session::put('currency', $currency);
         Session::put('amount', $amount);
 
-        Order::create([
+        $order = Order::create([
             'user_id' => $customer->id, 'subscription_plan_id' => $plan_id, 'reference' => $referenceId, 'type' => $plan_type
         ]);
 
-        Subscription::create([
-            'user_id' => $customer->id, 'subscription_plan_id' => $plan_id, 'reference' => $referenceId, 'type' => $plan_type
+        $subscription = Subscription::create([
+            'user_id' => $customer->id, 'subscription_plan_id' => $plan_id, 'reference' => $referenceId,
+            'type' => $plan_type, 'quantity' => $quantity
         ]);
 
+        $issues = [];
+        $a = (int)$request->start_from;
+        $issues = [$a, $a + 1, $a + 2, $a + 3];
+
+        foreach($issues as $issue){
+            SelectedIssue::create([
+                'user_id' => $customer->id, 'subscription_id' => $subscription->id, 'issue_no' => $issue, 'order_id' => $order->id
+            ]);
+        }
 
         if ($request->payment_method == 'paypal') {
             return redirect('paypal/checkout');
@@ -158,7 +171,7 @@ class ShippingController extends Controller
             'city' => 'required',
             'state' => 'required',
             'payment_method' => 'required',
-            'phone_no' => 'required'
+            'phone_no' => 'required',
         ]);
         $random = Str::random(8);
         $customer = User::updateOrCreate([
@@ -189,11 +202,17 @@ class ShippingController extends Controller
         Session::put('currency', $currency);
         Session::put('amount', $amount);
 
+        $issues = [];
+        foreach (Cart::getContent() as $cart) {
+            $issues[] =  [$cart->quantity => $cart->name];
+        }
+
+        $selectedIssue = (object)$issues;
         CartOrder::create([
-            'user_id' => $customer->id, 'reference' => $referenceId,
+            'user_id' => $customer->id, 'reference' => $referenceId, 'issues' => $selectedIssue
         ]);
 
-
+        Cart::clear();
         if ($request->payment_method == 'paypal') {
             return redirect('paypal/checkout');
         } else {

@@ -44,19 +44,25 @@ Route::prefix('user')->middleware(['auth', 'useremail'])->group(function () {
     Route::get('invites', 'UserController@invite')->name('user.invite');
     Route::post('invites', 'UserController@memberStore')->name('member.store');
     Route::get('remove-member/{team}', 'UserController@memberdestroy')->name('member.destroy');
+    Route::get('MySubscription', 'UserController@mySubscription')->name('user.subscriptions');
+    Route::get('MyOrders', 'UserController@Orders')->name('user.orders');
 });
 
 //Admin Links
-Route::prefix('admin')->middleware(['auth', 'useremail'])->group(function () {
+Route::prefix('admin')->middleware(['auth', 'useremail','AdminAccess'])->group(function () {
     Route::get('file-manager', 'FileManagerController@index')->name('manage.magazines');
     Route::view('subscription-plans', 'admin.subscription-plans')->name('manage.plans');
     Route::view('upload-magazine', 'admin.magazine-upload')->name('upload.magazine');
     Route::post('post-magazine', 'MagazineController@store')->name('magazine.upload');
     Route::get('Paypal-payments', 'ViewTransactionController@paypalTransaction')->name('paypal.admin');
     Route::get('Ipay-payments', 'ViewTransactionController@ipayTransaction')->name('ipay.admin');
+    Route::get('Customers', 'CustomerController@index')->name('customers.view');
+    Route::get('Customer-{customer}', 'CustomerController@customerInfo')->name('customer.info');
     Route::get('gifts', 'GiftController@gifts')->name('admin.gift');
     Route::post('gifts', 'GiftController@postGift')->name('gift.store');
     Route::get('remove-gift/{gift}', 'GiftController@destroyGift')->name('gift.destroy');
+    Route::get('Cart-Orders', 'OrderController@CartOrder')->name('cart.orders');
+    Route::get('Subscription-Orders', 'OrderController@SubOrder')->name('subscription.orders');
 });
 
 Route::view('/dashboard', 'dashboard')->middleware(['auth', 'useremail'])->name('dashboard');

@@ -27,16 +27,17 @@
         </div>
         <div class="row">
             @foreach($recentmagazines as $magazine)
-            <div class="col-lg-3" data-animate="fadeInUp" data-animate-delay="0">
-                <a href="{{ url('user/read/issue_47') }}" class="mt-2">
-                    <div class="bg-white h-full p-8 flex flex-col items-center sm:mx-2 sm:p-3 md:p-8">
-                        <div class="border rounded-md px-2 py-2">
-                            <img class="object-fill h-48 w-full" src="{{asset('files/magazines/cover/'.$magazine->image)}}">
-                        </div>
-                        <div class="mt-4 font-bold">{{$magazine->issue_no}}</div>
-                        <div class="text-center mt-2 text-gray-600 text-sm">{{$magazine->title}}</div>
+            <div class="col-xl-3 col-md-6 col-sm-12 mt-2" data-animate="fadeInUp" data-animate-delay="0">
+                <div class="card">
+                    <div class="card-content">
+                        <a href="{{ url('user/read/'.$magazine->slug)}}" class="mt-2">
+                            <div class="card-body">
+                                <img class="card-img-top img-fluid" src="{{asset('files/magazines/cover/'.$magazine->image)}}" alt="Card image cap">
+                                <h5 class="my-1 font-bold text-blue-600">Issue {{$magazine->issue_no}} ({{$magazine->title}})</h5>
+                            </div>
+                        </a>
                     </div>
-                </a>
+                </div>
             </div>
             @endforeach
         </div>

@@ -27,6 +27,8 @@
     <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/css/components.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/vendors/css/vendors.min.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/vendors/css/tables/datatable/datatables.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/css/pages/invoice.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/css/pages/app-ecommerce-shop.css')}}">
 
     <!-- BEGIN: Page CSS-->
     <link rel="stylesheet" type="text/css" href="{{asset('parent/app-assets/css/core/menu/menu-types/horizontal-menu.css')}}">
@@ -38,11 +40,6 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <style>
-     .test {
-  background-color: green;
-}
-    </style>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -96,17 +93,6 @@
                                 <i class="ficon feather icon-maximize"></i>
                             </a>
                         </li>
-                        <li class="nav-item nav-search">
-                            <a class="nav-link nav-link-search">
-                                <i class="ficon feather icon-search"></i>
-                            </a>
-                            <div class="search-input">
-                                <div class="search-input-icon"><i class="feather icon-search primary"></i></div>
-                                <input class="input" type="text" placeholder="Explore Miti Magazine........" tabindex="-1" data-search="starter-list">
-                                <div class="search-input-close"><i class="feather icon-x"></i></div>
-                                <ul class="search-list search-list-main"></ul>
-                            </div>
-                        </li>
                         <li class="dropdown dropdown-user nav-item">
                             <a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                                 <div class="user-nav d-sm-flex d-none">
@@ -116,7 +102,6 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="{{route('profile.show')}}"><i class="feather icon-user"></i> Edit Profile</a>
-                                <a class="dropdown-item" href="#"><i class="feather icon-mail"></i> My Subscription</a>
                                 <div class="dropdown-divider"></div>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
@@ -163,15 +148,15 @@
                             </li>
                             <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Payment methods</a>
                             </li>
-                            <li  class="{{ (request()->is('user/payments')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="{{route('user.payments')}}" data-toggle="dropdown" data-i18n="Fixed navbar">My payments and Invoices</a>
+                            <li class="{{ (request()->is('user/payments')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="{{route('user.payments')}}" data-toggle="dropdown" data-i18n="Fixed navbar">My payments and Invoices</a>
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-newspaper-o"></i><span>My Subscription</span></a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="feather icon-shopping-cart"></i><span>My orders</span></a></li>
+                    <li class="nav-item {{ (request()->is('user/MySubscription')) ? 'active' : '' }}"><a class="nav-link" href="{{route('user.subscriptions')}}"><i class="fa fa-newspaper-o"></i><span>My Subscription</span></a></li>
+                    <li class="nav-item {{ (request()->is('user/MyOrders')) ? 'active' : '' }}"><a class="nav-link" href="{{route('user.orders')}}"><i class="feather icon-shopping-cart"></i><span>My orders</span></a></li>
 
                     @admin
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-users"></i><span>Customers</span></a></li>
+                    <li class="nav-item {{ (request()->is('admin/Customers')) ? 'active' : '' }}"><a class="nav-link" href="{{route('customers.view')}}"><i class="fa fa-users"></i><span>Customers</span></a></li>
                     <li class="dropdown nav-item" data-menu="dropdown"><a class="dropdown-toggle nav-link" href="#" data-toggle="dropdown"><i class="fa fa-money"></i><span data-i18n="Starter kit">Sales</span></a>
                         <ul class="dropdown-menu">
                             <li class="dropdown dropdown-submenu {{ (request()->is('admin/Paypal-payments')) || (request()->is('admin/Ipay-payments')) ? 'active' : '' }}" data-menu="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown" data-i18n="Menu Levels">Payments</a>
@@ -182,9 +167,13 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Orders</a>
-                            </li>
-                            <li data-menu=""><a class="dropdown-item" href="sk-layout-2-columns.html" data-toggle="dropdown" data-i18n="2 columns">Invoices</a>
+                            <li class="dropdown dropdown-submenu {{ (request()->is('admin/Cart-Orders')) || (request()->is('admin/Subscription-Orders')) ? 'active' : '' }}" data-menu="dropdown-submenu"><a class="dropdown-item dropdown-toggle" href="#" data-toggle="dropdown" data-i18n="Menu Levels">Orders</a>
+                                <ul class="dropdown-menu">
+                                    <li data-menu=""><a class="dropdown-item" href="{{route('cart.orders')}}" data-toggle="dropdown" data-i18n="Second Level">Cart Orders</a>
+                                    </li>
+                                    <li data-menu=""><a class="dropdown-item" href="{{route('subscription.orders')}}" data-toggle="dropdown" data-i18n="Second Level">Subscription Orders</a>
+                                    </li>
+                                </ul>
                             </li>
                             <li data-menu=""><a class="dropdown-item" href="sk-layout-2-columns.html" data-toggle="dropdown" data-i18n="2 columns">Inventory</a>
                             </li>
@@ -199,8 +188,6 @@
                             <li data-menu="" class="{{ (request()->is('admin/subscription-plans')) ? 'active' : '' }}"><a class="dropdown-item" href="{{route('manage.plans')}}" data-toggle="dropdown" data-i18n="Fixed navbar">Subscription Plans</a>
                             </li>
                             <li data-menu="" class="{{ (request()->is('admin/file-manager')) ? 'active' : '' }}"><a class="dropdown-item" href="{{route('manage.magazines')}}" data-toggle="dropdown" data-i18n="2 columns">Manage Magazines</a>
-                            </li>
-                            <li data-menu=""><a class="dropdown-item" href="#" data-toggle="dropdown" data-i18n="Fixed navbar">Gifts</a>
                             </li>
                         </ul>
                     </li>
@@ -275,10 +262,13 @@
     <script src="{{asset('parent/app-assets/js/core/app.js')}}"></script>
     <script src="{{asset('parent/app-assets/js/scripts/components.js')}}"></script>
     <script src="{{asset('parent/app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
+    <script src="{{asset('parent/app-assets/js/scripts/pages/invoice.js')}}"></script>
     <!-- END: Theme JS-->
 
     <!-- BEGIN: Page JS-->
     <script src="{{asset('parent/app-assets/js/scripts/forms/form-tooltip-valid.js')}}"></script>
+    <!-- BEGIN: Page JS-->
+    <script src="{{asset('parent/app-assets/js/scripts/pages/app-ecommerce-shop.js')}}"></script>
     <!-- END: Page JS-->
     @yield('scripts')
 

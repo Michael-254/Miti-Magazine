@@ -30,6 +30,13 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @if($ipaypayments->isEmpty() && $paypalpayments->isEmpty())
+                                               <tr>
+                                                   <td>
+                                                       You have no Purchases yet
+                                                   </td>
+                                               </tr>
+                                            @else
                                             @foreach($paypalpayments as $payment)
                                             <tr>
                                                 <td>{{$payment->updated_at->format('d-m-Y')}}</td>
@@ -48,6 +55,7 @@
                                                 <td><i class="fa fa-download cursor-pointer text-green-600 hover:text-blue-700"></i></td>
                                             </tr>
                                             @endforeach
+                                            @endif
                                         </tbody>
                                     </table>
                                 </div>

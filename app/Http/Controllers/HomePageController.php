@@ -18,7 +18,7 @@ class HomePageController extends Controller
     {
         $recentmagazines = Magazine::latest()->limit(4)->get();
         $previousmagazines= Magazine::whereNotIn('id', $recentmagazines->pluck('id'))->get();
-        return view('previous-issue',compact('recentmagazines'));
+        return view('previous-issue',compact('previousmagazines'));
     }
 
     public function cart(Request $request)

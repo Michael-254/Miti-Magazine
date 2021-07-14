@@ -38,6 +38,7 @@
                                     <!-- Success Message -->
                                     @include('partials.alertB')
                                     <hr>
+                                    @if($userSubscriptions->count())
                                     <form novalidate>
                                         <div class="row">
                                             <div class="col-12">
@@ -60,7 +61,7 @@
                                                                 <td>{{$member->members->name}}</td>
                                                                 <td>{{$member->members->email}}</td>
                                                                 <td>{{$member->subscriptionSize->type}}
-                                                                {{App\Models\SubscriptionPlan::findOrFail($member->subscriptionSize->subscription_plan_id)->quantity}} Copies
+                                                                    {{App\Models\SubscriptionPlan::findOrFail($member->subscriptionSize->subscription_plan_id)->quantity}} Copies
                                                                 </td>
                                                                 <td>
                                                                     <a href="{{route('member.destroy',$member)}}">
@@ -78,8 +79,18 @@
                                             </div>
                                         </div>
                                     </form>
+                                    @else
+                                    <div class="alert alert-info flex items-center mt-1">
+                                        <p class="mb-0">
+                                            You currently have no subscription  
+                                            <a href="{{route('choose.plan')}}" class="font-bold text-blue-600 hover:text-blue-800">Subscribe Now</a> 
+                                            to Invite other members                                          
+                                        </p>
+                                    </div>
+                                    @endif
                                 </div>
                                 <div class="tab-pane fade " id="account-vertical-password" role="tabpanel" aria-labelledby="account-pill-password" aria-expanded="false">
+                                    @if($userSubscriptions->count())
                                     <form action="{{route('member.store')}}" method="POST" novalidate>
                                         @csrf
                                         <div class="row">
@@ -106,10 +117,10 @@
                                                         <select name="plan" class="rounded-md border-gray-400 form-control" id="users-language-select2">
                                                             <option value="">-- Select Plan --</option>
                                                             @foreach($userSubscriptions as $sub)
-                                                            <option value="{{$sub->id}}">{{$sub->type}} 
-                                                                {{App\Models\SubscriptionPlan::findOrFail($sub->subscription_plan_id)->quantity}} Copies
+                                                            <option value="{{$sub->id}}">{{$sub->type}}
+                                                                {{$sub->quantity}} Copies
                                                             </option>
-                                                            @endforeach                                            
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
@@ -120,6 +131,15 @@
                                             </div>
                                         </div>
                                     </form>
+                                    @else
+                                    <div class="alert alert-info flex items-center">
+                                        <p class="mb-0">
+                                            You currently have no subscription  
+                                            <a href="{{route('choose.plan')}}" class="font-bold text-blue-600 hover:text-blue-800">Subscribe Now</a> 
+                                            to Invite other members                                          
+                                        </p>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

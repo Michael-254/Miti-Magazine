@@ -22,20 +22,24 @@ class IsAllowedToViewThisIssue
      */
     public function handle(Request $request, Closure $next)
     {
-        dd($request->route('slug'));
-		$slug = $request->route('slug');
-        $userId = auth()->user()->id;
-        $selectedIssues = SelectedIssue::whereUserId($userId)->latest()->first();
-        $subscription = Subscription::findOrFail($selectedIssues->subscription_id);
-        $magazine = Magazine::whereSlug($slug)->whereIn('id', $selectedIssues->issues)->get();
-        //$isSubscriptionActive = Carbon::parse($subscription->end_date)->isFuture();
-        $isInvitedMember = Team::whereIn('issues', $selectedIssues->issues)->get();
+        $userId = auth()->id();
+        $subscriptions = Subscription::where([['user_id', '=', $userId], ['status', '=', 'paid']])->get();
+        foreach ($subscriptions as $subscription) {
+            $selectedIssues = SelectedIssue::whereSubscriptionId($subscription->id)->pluck('issue_no')->toArray();
+        }
+        $magazine = Magazine::whereSlug($request->route('slug'))->whereIn('issue_no', $selectedIssues)->get();
+
+        $isInvitedSubscription = Team::where('team_member_id', '=', $userId)->pluck('subscription_id');
+        foreach ($isInvitedSubscription as $subscription) {
+            $invitedSub = Subscription::findOrFail($subscription);
+            $invitedIssues = $invitedSub->SubIssues->pluck('issue_no')->toArray();
+        }
+        $Invitedmagazine = Magazine::whereSlug($request->route('slug'))->whereIn('issue_no', $invitedIssues)->get();
 
         // Check if subscription is active and if the issue is among the selected
-        if($isInvitedMember->count() > 0 || $magazine->count() > 0) {
+        if ($Invitedmagazine->count() > 0 || $magazine->count() > 0) {
             return $next($request);
-        }
-        else {
+        } else {
             return redirect()->route('choose.plan');
         }
     }

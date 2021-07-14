@@ -15,12 +15,13 @@ class Subscription extends Model
         'status',
         'reference',
         'type',
+        'quantity',
         'start_date',
         'end_date',
     ];
 
-    public function subscriptionPlan()
+    public function SubIssues()
     {
-        return $this->belongsTo(Subscription::class,'subscription_plan_id');
+        return $this->hasMany(SelectedIssue::class,'subscription_id');
     }
 }

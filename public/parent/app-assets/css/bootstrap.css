@@ -18,12 +18,12 @@
   --red : #EA5455;
   --orange : #FF9F43;
   --yellow : #FFC107;
-  --green : #28C76F;
+  --green : #006400;
   --teal : #20C997;
   --cyan : #006400;
   --white : #FFFFFF;
   --gray : #B8C2CC;
-  --gray-dark : #1E1E1E;
+  --gray-dark : #006400;
   --primary : #006400;
   --secondary : #B8C2CC;
   --success : #28C76F;
@@ -2598,8 +2598,8 @@ a.btn.disabled, fieldset:disabled a.btn {
 }
 .btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {
   color : #FFFFFF;
-  background-color : #06d117;
-  border-color : #06d117;
+  background-color : #006400;
+  border-color : #006400;
 }
 .btn-primary:not(:disabled):not(.disabled):active:focus, .btn-primary:not(:disabled):not(.disabled).active:focus, .show > .btn-primary.dropdown-toggle:focus {
   box-shadow : 0 0 0 0.2rem rgba(136, 126, 242, 0.5);
@@ -3276,7 +3276,7 @@ input[type='submit'].btn-block, input[type='reset'].btn-block, input[type='butto
   border : 0;
 }
 .dropdown-item:hover, .dropdown-item:focus {
-  color : #1E2122;
+  color : #006400;
   text-decoration : none;
   background-color : #F8F8F8;
 }
@@ -4028,9 +4028,9 @@ input[type='submit'].btn-block, input[type='reset'].btn-block, input[type='butto
   border-color : transparent;
 }
 .nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
-  color : #002900;
-  background-color : #002900;
-  border-color : #002900 #002900 #002900;
+  color : #006400;
+  background-color : #006400;
+  border-color : #006400 #006400 #006400;
 }
 .nav-tabs .dropdown-menu {
   margin-top : -1px;
@@ -4044,7 +4044,7 @@ input[type='submit'].btn-block, input[type='reset'].btn-block, input[type='butto
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
   color : #FFFFFF;
-  background-color : #037003;
+  background-color : #006400;
 }
 
 .nav-fill .nav-item {

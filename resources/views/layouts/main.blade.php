@@ -71,7 +71,7 @@
                                     <li class="dropdown"><a href="#">{{ Auth::user()->name }}</a>
                                         <ul class="dropdown-menu">
                                             <li><a href="{{route('profile.show')}}">My Profile</a></li>
-                                            <li><a href="#">My Subscription</a></li>
+                                            <li><a href="{{route('user.subscriptions')}}">My Subscription</a></li>
                                             <li>
                                                 <form method="POST" action="{{ route('logout') }}">
                                                     @csrf
