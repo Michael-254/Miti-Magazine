@@ -22,10 +22,12 @@ class IsAllowedToViewThisIssue
      */
     public function handle(Request $request, Closure $next)
     {
+        dd($request->route('slug'));
+		$slug = $request->route('slug');
         $userId = auth()->user()->id;
         $selectedIssues = SelectedIssue::whereUserId($userId)->latest()->first();
         $subscription = Subscription::findOrFail($selectedIssues->subscription_id);
-        $magazine = Magazine::whereSlug($request->slug)->whereIn('id', $selectedIssues->issues)->get();
+        $magazine = Magazine::whereSlug($slug)->whereIn('id', $selectedIssues->issues)->get();
         //$isSubscriptionActive = Carbon::parse($subscription->end_date)->isFuture();
         $isInvitedMember = Team::whereIn('issues', $selectedIssues->issues)->get();
 

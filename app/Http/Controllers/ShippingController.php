@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use Delights\Sage\SageEvolution;
 use Cart;
 
 class ShippingController extends Controller
@@ -58,15 +59,45 @@ class ShippingController extends Controller
         ]);
 
         $random = Str::random(8);
-        $customer = User::updateOrCreate([
-            'email' => $request->email,
-        ], [
-            'name' => $request->name,
-            'phone_no' => $request->phone_no,
-            'country' => $request->country,
-            'company' => $request->company,
-            'password' => bcrypt($random),
-        ]);
+        $customerCode = "";
+        $names = $request->name;
+        $email = $request->email;
+        $customer = User::whereEmail($email)->first();
+        if($customer != null) {
+            $customerCode = $customer->customer_code;
+            
+            $customer->update(['customer_code' => $customerCode, 'name' => $names, 'phone_no' => $request->phone_no, 'country' => $request->country, 'company' => $request->company, 'password' => bcrypt($random)]);
+        }
+        else {
+            $customerCode = $this->getCustomerCode($names);
+
+            $customer = new User;
+            $customer->customer_code = $customerCode;
+            $customer->name = $names;
+            $customer->email = $email;
+            $customer->phone_no = $request->phone_no;
+            $customer->country = $request->country;
+            $customer->company = $request->company;
+            $customer->password = bcrypt($random);
+            $customer->save();
+
+            $sage = new SageEvolution();
+            $customerExists = $sage->getTransaction('CustomerExists?Code='.$customerCode);
+            if($customerExists == "true") {
+                $customerFind = $sage->getTransaction('CustomerFind?Code='.$customerCode);
+                $response = json_decode($customerFind, true);
+                if($response["Description"] != $names) {
+                    $customerCode = $this->getCustomerCode($names);
+                
+                    $customer->update(['customer_code' => $customerCode, 'name' => $names, 'phone_no' => $request->phone_no, 'country' => $request->country, 'company' => $request->company, 'password' => bcrypt($random)]);
+
+                    $customerInsert = $sage->postTransaction('CustomerInsert', (object)["client" => ["Active" => true, "Description" => $names, "ChargeTax" => false, "Code" => $customerCode]]);
+                }
+            }
+            else {
+                $customerInsert = $sage->postTransaction('CustomerInsert', (object)["client" => ["Active" => true, "Description" => $names, "ChargeTax" => false, "Code" => $customerCode]]);
+            }
+        }
         Session::put('customer_id', $customer->id);
 
         $address = Shipping::updateOrCreate([
@@ -93,8 +124,7 @@ class ShippingController extends Controller
         ]);
 
         Subscription::create([
-            'user_id' => $customer->id, 'subscription_plan_id' => $plan_id, 'reference' => $referenceId,
-            'type' => $plan_type
+            'user_id' => $customer->id, 'subscription_plan_id' => $plan_id, 'reference' => $referenceId, 'type' => $plan_type
         ]);
 
 
@@ -103,6 +133,18 @@ class ShippingController extends Controller
         } else {
             return redirect('ipay/checkout');
         }
+    }
+
+    private function getCustomerCode($names)
+    {
+        $name_array = explode(' ',trim($names));
+        $firstWord = $name_array[0];
+        $lastWord = $name_array[count($name_array)-1];
+        $initials = $firstWord[0]."".$lastWord[0];
+
+        $digits = 3;
+        $code = str_pad(rand(0, pow(10, $digits)-1), $digits, '0', STR_PAD_LEFT);
+        return $initials."".$code;
     }
 
     public function checkout(Request $request)
