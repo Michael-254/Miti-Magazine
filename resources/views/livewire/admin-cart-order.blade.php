@@ -45,7 +45,9 @@
                                                 <td>{{$order->status}}</td>
                                                 <td>{{$order->reference}}</td>
                                                 <td>
-
+                                                   @foreach($order->items as $item)
+                                                  <p>Issue: {{$item->issue_no}}  Quantity: {{$item->quantity}}</p> 
+                                                   @endforeach
                                                 </td>
                                                 <td>
                                                     <div class="flex space-x-2">

@@ -139,7 +139,7 @@ class UserController extends Controller
     {
         $Suborders = Order::with('selectedIssue')->where([['status', '=', 'verified'], 
                      ['type', '=', 'combined'], ['user_id', '=', auth()->id()]])->get();
-        $Cartorders = CartOrder::where([['status', '!=', 'unverified'],['user_id', '=', auth()->id()]])->get();
+        $Cartorders = CartOrder::with('items')->where([['status', '!=', 'unverified'],['user_id', '=', auth()->id()]])->get();
         return view('users/orders', compact('Suborders', 'Cartorders'));
     }
 }

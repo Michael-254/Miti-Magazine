@@ -86,7 +86,9 @@
                                                 <td>{{$order->created_at->format('d-m-Y')}}</td>
                                                 <td>{{$order->reference}}</td>
                                                 <td>
-
+                                                    @foreach($order->items as $item)
+                                                    <p>Issue: {{$item->issue_no}} Quantity: {{$item->quantity}}</p>
+                                                    @endforeach
                                                 </td>
                                                 <td>
                                                     <p class="badge rounded-md {{$order->status == 'dispached' ? 'badge-success' : 'bg-blue-600'}}">

@@ -33,7 +33,7 @@ class AdminCartOrder extends Component
     }
     public function render()
     {
-        $orders = CartOrder::with('user')
+        $orders = CartOrder::with('user','items')
             ->where('status', '!=', 'unverified')
             ->latest()
             ->search(trim($this->search))
