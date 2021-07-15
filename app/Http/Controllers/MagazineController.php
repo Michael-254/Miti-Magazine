@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Magazine;
 use Brian2694\Toastr\Facades\Toastr;
+use Delights\Sage\SageEvolution;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -63,13 +64,22 @@ class MagazineController extends Controller
         $destinationPath = public_path() . '/files/magazines';
         $file->move($destinationPath, $filename);
 
+        // check sage
+        $digits = 4;
+        $code = str_pad($request->issue_no, $digits, '0', STR_PAD_LEFT);
+        $sage = new SageEvolution();
+        $inventoryItemFind = $sage->getTransaction('InventoryItemFind?Code=ISS'.$code);
+        $response = json_decode($inventoryItemFind, true);
+
         $magazine = Magazine::create([
-            'issue_no' => $request->issue_no,
+            'item_code' => $response,
+            'issue_no' => $code,
             'title' => $request->title,
             'invetory' => $request->inventory,
             'slug' => $slug,
             'file' => $filename,
             'image' =>  $image_name,
+            'quantity' =>  $response["QtyOnHand"],
         ]);
 
         return redirect('admin/file-manager')->with('message','Uploaded successfully');

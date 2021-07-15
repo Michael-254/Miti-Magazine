@@ -9,6 +9,7 @@ use App\Models\SubscriptionPlan;
 use App\Models\Shipping;
 use App\Models\Amount;
 use App\Models\Order;
+use App\Models\CartOrder;
 use App\Models\User;
 use App\Models\Role;
 use Carbon\Carbon;
@@ -124,73 +125,6 @@ class PaypalController extends Controller
         $paypalToken = $request->get('token');
         $PayerID = $request->get('PayerID');
         $payment = Payment::where('paypal_order_id', $order_id)->update(['token' => $paypalToken, 'PayerId' => $PayerID]);
-
-        // Handle Sage
-        /* $this->contact    = (new Contact($this->api, [
-            "name"             => "John Doe",
-            "contact_type_ids" => ["CUSTOMER"],
-        ]))->create();
-
-        $ledgerAccount = (new LedgerAccount($this->api))
-            ->where("ledger_account_type_id=SALES")->where("items_per_page=100")->where("ledger_account_classification=KE_SALES_AND_INCOMES")
-            ->get()->first(function ($ledgerAccount) {
-                return str_contains($ledgerAccount->displayed_as, '70500000');
-            });
-
-        $bankAccount = (new BankAccount($this->api))
-            ->get()->first(function ($bankAccount) {
-                return str_contains($bankAccount->displayed_as, '57200000');
-            });
-
-        $invoiceResource = (new SalesInvoice($this->api));
-        $invoices_count  = $invoiceResource->count();
-
-        $invoice = (new SalesInvoice($this->api, [
-            "contact_id"        => $this->contact->id,
-            "date"              => Carbon::now()->toDateString(),
-            "invoice_number"    => $invoices_count + 1,
-            "main_address"      => [
-                "name"              => "Main Address",
-                "address_line_1"    => "Moi Avenue",
-                "address_line_2"    => "",
-                "city"              => "Nairobi",
-                "region"            => "Kenya",
-                "postal_code"       => "00100",
-                "country_id"        => "KE"
-            ], "invoice_lines"      => [
-                [
-                    "description" => "Line 1",
-                    "ledger_account_id" => $ledgerAccount->id,
-                    "quantity" => 2,
-                    "unit_price" => 55,
-                    "tax_rate_id" => "KE_NO_TAX",
-                ],
-            ],
-        ]))->create();
-        $contactPayment = (new ContactPayment($this->api, [
-            "transaction_type_id" => "CUSTOMER_RECEIPT",
-            "contact_id" => $this->contact->id,
-            "bank_account_id" => $bankAccount->id,
-            "date" => Carbon::now()->toDateString(),
-            "total_amount"  => 110.00,
-            "allocated_artefacts" =>  [
-                [ 
-                    'artefact_id'   =>  $invoice->id,
-                    'amount'        => 110.00
-                ]
-            ]
-        ]))->create();
-
-        $this->assertNotFalse($invoice->id);
-        $freshInvoice = $invoiceResource->find($invoice->id);
-
-        $this->assertNotFalse($contactPayment->id);
-        $this->assertEquals($this->contact->id, $freshInvoice->contact["id"]);
-        $this->assertEquals(Carbon::now()->toDateString(), $freshInvoice->date);
-        $this->assertCount(1, $freshInvoice->invoice_lines);
-        $this->assertEquals($invoices_count + 1, $invoiceResource->count());
-        $this->assertEquals("PAID", $freshInvoice->status["id"]);
-        $this->assertEquals(110.0, $freshInvoice->total_paid); */
 		
         // Login the user
         Auth::login($customer);
@@ -237,14 +171,16 @@ class PaypalController extends Controller
         $payment = Payment::whereToken($paypalToken)->update(['payload' => json_encode($post), 'status' => $response]);
 
         if ($response == 'VERIFIED') {
-            Order::where('reference', $$payment->reference)->update(['status' => 'VERIFIED']);
+            Order::where('reference', $$payment->reference)->update(['status' => 'verified']);
 
-            Subscription::where('reference', $$payment->reference)->update(['status' => 'VERIFIED']);
+            Subscription::where('reference', $$payment->reference)->update(['status' => 'paid']);
+
+            CartOrder::where('reference', $$payment->reference)->update(['status' => 'paid']);
         }
         else {
-            Order::where('reference', $payment->reference)->update(['status' => 'FAILED']);
+            Order::where('reference', $payment->reference)->update(['status' => 'failed']);
 
-            Subscription::where('reference', $$payment->reference)->update(['status' => 'FAILED']);
+            Subscription::where('reference', $$payment->reference)->update(['status' => 'failed']);
         }
     }
 }

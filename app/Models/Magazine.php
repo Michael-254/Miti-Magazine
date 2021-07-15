@@ -9,5 +9,5 @@ class Magazine extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['issue_no','title','slug','file','image','invetory'];
+    protected $fillable = ['item_code','issue_no','title','slug','file','image','inventory','quantity'];
 }
