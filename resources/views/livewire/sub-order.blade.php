@@ -28,6 +28,7 @@
                                                 <th>Customer Name</th>
                                                 <th>Customer Email</th>
                                                 <th>Customer Location</th>
+                                                <th>Status</th>
                                                 <th>Reference</th>
                                                 <th>Type</th>
                                                 <th>Issues Selected and Status</th>
@@ -43,18 +44,27 @@
                                                 <td>{{$order->user->name}}</td>
                                                 <td>{{$order->user->email}}</td>
                                                 <td>{{$order->user->myCountry->country}}</td>
+                                                <td>
+                                                    <p class="badge rounded-md {{$order->status == 'failed' ? 'bg-red-600' : 'bg-green-500'}}">
+                                                        {{$order->status}}
+                                                    </p>
+                                                </td>
                                                 <td>{{$order->reference}}</td>
                                                 <td>{{$order->type}}</td>
                                                 <td>
                                                     @foreach($order->selectedIssue as $issue)
-                                                    <p>{{$issue->issue_no}} {{$issue->status}}</p>
+                                                    <p>{{$issue->issue_no}} @if($order->status != 'failed')
+                                                        {{$issue->status}} @else {{$order->status}} @endif
+                                                    </p>
                                                     @endforeach
                                                 </td>
                                                 <td>{{$order->subPlan->quantity}}</td>
                                                 <td>
+                                                    @if($order->status != 'failed')
                                                     <div class="flex space-x-2">
                                                         <i wire:click="Order({{$order->id}})" data-toggle="modal" data-target="#default" class="fa fa-pencil-square-o cursor-pointer text-blue-500 hover:text-blue-700"></i>
                                                     </div>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @empty

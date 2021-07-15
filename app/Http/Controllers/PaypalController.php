@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Models\CartOrder;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Subscription;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -175,7 +176,7 @@ class PaypalController extends Controller
 
             Subscription::where('reference', $$payment->reference)->update(['status' => 'paid']);
 
-            CartOrder::where('reference', $$payment->reference)->update(['status' => 'paid']);
+            CartOrder::where('reference', $$payment->reference)->update(['status' => 'verified']);
         }
         else {
             Order::where('reference', $payment->reference)->update(['status' => 'failed']);

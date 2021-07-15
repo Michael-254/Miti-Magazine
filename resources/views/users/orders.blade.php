@@ -44,6 +44,11 @@
                                                 <td>{{$order->updated_at->format('d-m-Y')}}</td>
                                                 <td>{{$order->reference}}</td>
                                                 <td>
+                                                    @if($order->status == 'failed')
+                                                    @foreach($order->selectedIssue as $issue)
+                                                    <p class="badge rounded-md bg-red-600">{{$issue->issue_no}} {{$order->status}}</p>
+                                                    @endforeach
+                                                    @else
                                                     @foreach($order->selectedIssue as $issue)
                                                     @php
                                                     if($issue->status == 'dispached') { $color="badge-success" ; }
@@ -52,6 +57,7 @@
                                                     @endphp
                                                     <p class="badge rounded-md {{$color}}">{{$issue->issue_no}} {{$issue->status}}</p>
                                                     @endforeach
+                                                    @endif
                                                 </td>
                                                 <td>{{$order->subPlan->quantity}}</td>
                                             </tr>
@@ -91,7 +97,12 @@
                                                     @endforeach
                                                 </td>
                                                 <td>
-                                                    <p class="badge rounded-md {{$order->status == 'dispached' ? 'badge-success' : 'bg-blue-600'}}">
+                                                    @php
+                                                    if($order->status == 'dispached') { $color="badge-success" ; }
+                                                    elseif($order->status == 'pending') { $color="bg-blue-600" ; }
+                                                    else{ $color="bg-red-600" ; }
+                                                    @endphp
+                                                    <p class="badge rounded-md {{$color}}">
                                                         {{$order->status}}
                                                     </p>
                                                 </td>

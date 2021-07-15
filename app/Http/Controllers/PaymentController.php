@@ -146,7 +146,7 @@ class PaymentController extends Controller
 
             Subscription::where('reference', $orderId)->update(['status' => 'paid']);
 
-            CartOrder::where('reference', $$payment->reference)->update(['status' => 'paid']);
+            CartOrder::where('reference', $$payment->reference)->update(['status' => 'verified']);
 
             // Login the user
             Auth::login($customer);
