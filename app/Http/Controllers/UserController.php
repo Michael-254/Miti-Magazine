@@ -138,9 +138,9 @@ class UserController extends Controller
 
     public function Orders()
     {
-        $Suborders = Order::with('selectedIssue')->where([['status', '=', 'verified'], 
+        $Suborders = Order::with('selectedIssue')->where([['status', '!=', 'unverified'], 
                      ['type', '=', 'combined'], ['user_id', '=', auth()->id()]])->get();
-        $Cartorders = CartOrder::where([['status', '!=', 'unverified'],['user_id', '=', auth()->id()]])->get();
+        $Cartorders = CartOrder::with('items')->where([['status', '!=', 'unverified'],['user_id', '=', auth()->id()]])->get();
         return view('users/orders', compact('Suborders', 'Cartorders'));
     }
 }

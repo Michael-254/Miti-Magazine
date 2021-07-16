@@ -146,7 +146,7 @@ class PaymentController extends Controller
 
             Subscription::where('reference', $orderId)->update(['status' => 'paid']);
 
-            CartOrder::where('reference', $$payment->reference)->update(['status' => 'paid']);
+            CartOrder::where('reference', $$payment->reference)->update(['status' => 'verified']);
 
             $sage = new SageEvolution();
             $response = $sage->postTransaction('SalesOrderProcessInvoice', '{"salesOrder":{"CustomerAccountCode":'.$customer->customer_code.',"OrderDate":'.Carbon::now()->format('m/d/Y').',"InvoiceDate":'.Carbon::now()->format('m/d/Y').',"DocumentLines":[{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00},{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00},{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00},{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00}],"DocumentFinancialLines":[{"AccountCode":"Rent","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00}]}}');
@@ -177,6 +177,8 @@ class PaymentController extends Controller
      */
     public function sageTest(Request $request)
     {
+        $subscription = Subscription::where('reference', '1624873615')->update(['status' => 'paid']);
+        dd($subscription);
         $sage = new SageEvolution();
         // $response = $sage->getTransaction('CustomerFind?Code=CASH');
         // $response = $sage->getTransaction('CustomerExists?Code=CASH');

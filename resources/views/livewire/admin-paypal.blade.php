@@ -47,7 +47,7 @@
                                                 <td>{{$payment->user->phone_no}}</td>
                                                 <td>{{$payment->amount}}</td>
                                                 <td>{{$payment->reference}}</td>
-                                                <td><i class="fa fa-eye cursor-pointer text-green-600 hover:text-blue-700"></i></td>
+                                                <td><i class="fa fa-download cursor-pointer text-green-600 hover:text-blue-700"></i></td>
                                             </tr>
                                             @empty
                                             <tr>

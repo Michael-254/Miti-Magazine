@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Amount;
+use App\Models\CartItem;
 use App\Models\CartOrder;
 use App\Models\Order;
 use App\Models\SelectedIssue;
@@ -135,7 +136,7 @@ class ShippingController extends Controller
         $a = (int)$request->start_from;
         $issues = [$a, $a + 1, $a + 2, $a + 3];
 
-        foreach($issues as $issue){
+        foreach ($issues as $issue) {
             SelectedIssue::create([
                 'user_id' => $customer->id, 'subscription_id' => $subscription->id, 'issue_no' => $issue, 'order_id' => $order->id
             ]);
@@ -202,15 +203,15 @@ class ShippingController extends Controller
         Session::put('currency', $currency);
         Session::put('amount', $amount);
 
-        $issues = [];
-        foreach (Cart::getContent() as $cart) {
-            $issues[] =  [$cart->quantity => $cart->name];
-        }
-
-        $selectedIssue = (object)$issues;
-        CartOrder::create([
-            'user_id' => $customer->id, 'reference' => $referenceId, 'issues' => $selectedIssue
+        $order = CartOrder::create([
+            'user_id' => $customer->id, 'reference' => $referenceId
         ]);
+
+        foreach (Cart::getContent() as $cart) {
+            CartItem::create([
+                'cart_order_id' => $order->id, 'quantity' => $cart->quantity, 'issue_no' => $cart->name
+            ]);
+        }
 
         Cart::clear();
         if ($request->payment_method == 'paypal') {

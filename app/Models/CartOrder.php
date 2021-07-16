@@ -15,13 +15,15 @@ class CartOrder extends Model
         'issues',
     ];
 
-    protected $casts = [
-        'issues' => 'array',
-    ];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function items()
+    {
+        return $this->hasMany(CartItem::class);
     }
 
     public function scopeSearch($query, $term)

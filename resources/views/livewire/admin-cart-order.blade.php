@@ -42,15 +42,26 @@
                                                 <td>{{$order->user->name}}</td>
                                                 <td>{{$order->user->email}}</td>
                                                 <td>{{$order->user->myCountry->country}}</td>
-                                                <td>{{$order->status}}</td>
+                                                <td>
+                                                    @php
+                                                    if($order->status == 'dispached') { $color="badge-success" ; }
+                                                    elseif($order->status == 'pending') { $color="bg-blue-600" ; }
+                                                    else{ $color="bg-red-600" ; }
+                                                    @endphp
+                                                    <p class="badge rounded-md {{$color}}">{{$order->status}}</p>
+                                                </td>
                                                 <td>{{$order->reference}}</td>
                                                 <td>
-
+                                                    @foreach($order->items as $item)
+                                                    <p>Issue: {{$item->issue_no}} Quantity: {{$item->quantity}}</p>
+                                                    @endforeach
                                                 </td>
                                                 <td>
+                                                    @if($order->status != 'failed')
                                                     <div class="flex space-x-2">
                                                         <i wire:click="Order({{$order->id}})" data-toggle="modal" data-target="#default" class="fa fa-pencil-square-o cursor-pointer text-blue-500 hover:text-blue-700"></i>
                                                     </div>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @empty

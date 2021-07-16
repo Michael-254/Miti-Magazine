@@ -12,6 +12,7 @@ use App\Models\Order;
 use App\Models\CartOrder;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Subscription;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -175,7 +176,7 @@ class PaypalController extends Controller
 
             Subscription::where('reference', $$payment->reference)->update(['status' => 'paid']);
 
-            CartOrder::where('reference', $$payment->reference)->update(['status' => 'paid']);
+            CartOrder::where('reference', $$payment->reference)->update(['status' => 'verified']);
 
             $sage = new SageEvolution();
             $response = $sage->postTransaction('SalesOrderProcessInvoice', '{"salesOrder":{"CustomerAccountCode":'.$customer->customer_code.',"OrderDate":'.Carbon::now()->format('m/d/Y').',"InvoiceDate":'.Carbon::now()->format('m/d/Y').',"DocumentLines":[{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00},{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00},{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00},{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00}],"DocumentFinancialLines":[{"AccountCode":"Rent","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00}]}}');
