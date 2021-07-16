@@ -10,9 +10,11 @@ use App\Models\Shipping;
 use App\Models\Amount;
 use App\Models\Order;
 use App\Models\CartOrder;
+use App\Models\CartItem;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Subscription;
+use App\Models\SelectedIssue;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
@@ -172,14 +174,29 @@ class PaypalController extends Controller
         $payment = Payment::whereToken($paypalToken)->update(['payload' => json_encode($post), 'status' => $response]);
 
         if ($response == 'VERIFIED') {
-            Order::where('reference', $$payment->reference)->update(['status' => 'verified']);
+            Order::where('reference', $payment->reference)->update(['status' => 'verified']);
 
-            Subscription::where('reference', $$payment->reference)->update(['status' => 'paid']);
+            Subscription::where('reference', $payment->reference)->update(['status' => 'paid']);
 
-            CartOrder::where('reference', $$payment->reference)->update(['status' => 'verified']);
+            CartOrder::where('reference', $payment->reference)->update(['status' => 'verified']);
 
+            $amounts = [];
+            $issues = [];
+            $quantity = [];
+            $subscription = Subscription::where('reference', $payment->reference)->first();
+            $cartOrder = CartOrder::where('reference', $payment->reference)->first();
+            if($cartOrder != null) {
+                $amounts = $cartOrder->SubIssuesAmount();
+                $issues = $cartOrder->SubIssuesItemCode();
+                $quantity = $cartOrder->SubIssuesQuantity();
+            }
+            else {
+                $amounts = $subscription->SubIssuesAmount();
+                $issues = $subscription->SubIssuesItemCode();
+                $quantity = $subscription->SubIssuesQuantity();
+            }
             $sage = new SageEvolution();
-            $response = $sage->postTransaction('SalesOrderProcessInvoice', '{"salesOrder":{"CustomerAccountCode":'.$customer->customer_code.',"OrderDate":'.Carbon::now()->format('m/d/Y').',"InvoiceDate":'.Carbon::now()->format('m/d/Y').',"DocumentLines":[{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00},{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00},{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00},{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00}],"DocumentFinancialLines":[{"AccountCode":"Rent","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00}]}}');
+            $response = $sage->postTransaction('SalesOrderProcessInvoice', '{"salesOrder":{"CustomerAccountCode":'.$customer->customer_code.',"OrderDate":'.Carbon::now()->format('m/d/Y').',"InvoiceDate":'.Carbon::now()->format('m/d/Y').',"DocumentLines":[{"StockCode":'.(string)$issues[0].',"TaxCode":"1","Quantity":'.(double)$quantity[0].',"ToProcess":'.(double)$quantity[0].',"UnitPrice":'.(double)$amounts[0].'},{"StockCode":'.(string)$issues[1].',"TaxCode":"1","Quantity":'.(double)$quantity[1].',"ToProcess":'.(double)$quantity[1].',"UnitPrice":'.(double)$amounts[1].'},{"StockCode":'.(string)$issues[2].',"TaxCode":"1","Quantity":'.(double)$quantity[2].',"ToProcess":'.(double)$quantity[2].',"UnitPrice":'.(double)$amounts[2].'},{"StockCode":'.(string)$issues[3].',"TaxCode":"1","Quantity":'.(double)$quantity[3].',"ToProcess":'.(double)$quantity[3].',"UnitPrice":'.(double)$amounts[3].'}]}}');
 
             // Send email with invoice
         }

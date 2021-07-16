@@ -43,4 +43,35 @@ class CartOrder extends Model
                 });
         });
     }
+
+    public function SubIssuesItemCode()
+    {
+        $itemCodes = [];
+        foreach($this->items as $item) {
+            $magazine = Magazine::whereIssueNo($item->issue_no)->value('item_code');
+            array_push($itemCodes, $magazine);
+        }
+
+        return $itemCodes;
+    }
+
+    public function SubIssuesAmount()
+    {
+        $amounts = [];
+        foreach($this->items as $item) {
+            array_push($amounts, "250");
+        }
+
+        return $amounts;
+    }
+
+    public function SubIssuesQuantity()
+    {
+        $quantities = [];
+        foreach($this->items as $item) {
+            array_push($quantities, $item->quantity);
+        }
+
+        return $quantities;
+    }
 }
