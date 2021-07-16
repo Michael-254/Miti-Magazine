@@ -148,6 +148,11 @@ class PaymentController extends Controller
 
             CartOrder::where('reference', $$payment->reference)->update(['status' => 'paid']);
 
+            $sage = new SageEvolution();
+            $response = $sage->postTransaction('SalesOrderProcessInvoice', '{"salesOrder":{"CustomerAccountCode":'.$customer->customer_code.',"OrderDate":'.Carbon::now()->format('m/d/Y').',"InvoiceDate":'.Carbon::now()->format('m/d/Y').',"DocumentLines":[{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00},{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00},{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00},{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00}],"DocumentFinancialLines":[{"AccountCode":"Rent","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00}]}}');
+
+            // Send email with invoice
+
             // Login the user
             Auth::login($customer);
             
@@ -176,13 +181,13 @@ class PaymentController extends Controller
         // $response = $sage->getTransaction('CustomerFind?Code=CASH');
         // $response = $sage->getTransaction('CustomerExists?Code=CASH');
         // $response = $sage->getTransaction('CustomerList?OrderBy=1&PageNumber=1&PageSize=50');
-         $response = $sage->getTransaction('InventoryItemFind?Code=ISS001');
+        // $response = $sage->getTransaction('InventoryItemFind?Code=ISS001');
         // $response = $sage->getTransaction('InventoryItemList?OrderBy=1&PageNumber=1&PageSize=50');
         // $response = $sage->getTransaction('SalesOrderLoadByOrderNo?orderNo=SO0001');
         // $response = $sage->getTransaction('SalesOrderExists?orderNo=SO0001');
-        // $response = $sage->postTransaction('CustomerInsert', (object)["client" => ["Active" => true, "Description" => "Jane Doe", "ChargeTax" => false, "Code" => "JN001"]]);
+        // $response = $sage->postTransaction('CustomerInsert', (object)["client" => ["Active" => true, "Description" => "John Doe", "ChargeTax" => false, "Code" => "JD001"]]);
         // $response = $sage->postTransaction('InventoryItemInsert', (object)["item" => ["Code" => "ISS001"]]);
-        // $response = $sage->postTransaction('SalesOrderProcessInvoice', (object)["salesorder" => ["CustomerAccountCode" => "ECW001", "OrderDate" => Carbon::now()->toDateString(), "InvoiceDate" => Carbon::now()->toDateString()]]);
+         $response = $sage->postTransaction('SalesOrderProcessInvoice', '{"salesOrder":{"CustomerAccountCode":"CASH","OrderDate":"07/11/2021","InvoiceDate":"07/11/2021","DocumentLines":[{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00}],"DocumentFinancialLines":[{"AccountCode":"Rent","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00}]}}');
 
         /* SalesOrderProcessInvoice Sample Request
         {"salesOrder":{"CustomerAccountCode":"CASH","OrderDate":"07/11/2021","InvoiceDate":"07/11/2021","DocumentLines":[{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00}],"DocumentFinancialLines":[{"AccountCode":"Rent","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00}]}} 
