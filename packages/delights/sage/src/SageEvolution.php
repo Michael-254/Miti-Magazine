@@ -3,6 +3,7 @@
 namespace Delights\Sage;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Promise;
 
 /**
  * Class Cashier.
@@ -17,7 +18,8 @@ class SageEvolution
      *
      * @var string
      */
-    private $baseUri = 'http://desktop-g75h35c:5000/freedom.core/Delights/SDK/Rest/';
+    private $baseUri = 'http://107.180.88.92:5000/freedom.core/Demo/SDK/Rest/';
+    private $baseUriBackUp = 'http://desktop-g75h35c:5000/freedom.core/Delights/SDK/Rest/';
 
     /**
      * The Guzzle HTTP Client.
@@ -50,6 +52,19 @@ class SageEvolution
         try {
             $response = $this->client->request('GET', $initiateEndpoint);
 
+            $statuscode = $response->getStatusCode();
+            if (404 === $statuscode || 523 === $statuscode) {
+                $this->client = new Client([
+                    'base_uri' => $this->baseUriBackUp,
+                    'auth' => [
+                        env('SAGE_CLIENT_ID'), 
+                        env('SAGE_CLIENT_SECRET')
+                    ]
+                ]);
+                
+                $response = $this->client->request('GET', $initiateEndpoint);
+            }
+
             return $response->getBody()->getContents();
         } catch (\Exception $exception) {
             return $exception->getMessage();
@@ -67,6 +82,21 @@ class SageEvolution
             $response = $this->client->request('POST', $initiateEndpoint, [
                 'json' => $params
             ]);
+
+            $statuscode = $response->getStatusCode();
+            if (404 === $statuscode || 523 === $statuscode) {
+                $this->client = new Client([
+                    'base_uri' => $this->baseUriBackUp,
+                    'auth' => [
+                        env('SAGE_CLIENT_ID'), 
+                        env('SAGE_CLIENT_SECRET')
+                    ]
+                ]);
+                
+                $response = $this->client->request('POST', $initiateEndpoint, [
+                    'json' => $params
+                ]);
+            }
 
             return json_decode($response->getBody()->getContents());
         } catch (\Exception $exception) {
