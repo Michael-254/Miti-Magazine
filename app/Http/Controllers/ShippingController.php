@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewCustomer;
 use App\Models\Amount;
 use App\Models\CartItem;
 use App\Models\CartOrder;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Delights\Sage\SageEvolution;
 use Cart;
+use Illuminate\Support\Facades\Mail;
 
 class ShippingController extends Controller
 {
@@ -100,6 +102,8 @@ class ShippingController extends Controller
             else {
                 $customerInsert = $sage->postTransaction('CustomerInsert', (object)["client" => ["Active" => true, "Description" => $names, "ChargeTax" => false, "Code" => $customerCode]]);
             }
+            //NewCustomer Email
+            Mail::to($email)->send(new NewCustomer($customer,$random));
         }
         Session::put('customer_id', $customer->id);
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Gift as MailGift;
 use App\Models\Subscription;
 use App\Models\SelectedIssue;
 use App\Models\SubscriptionPlan;
@@ -9,6 +10,7 @@ use App\Models\Magazine;
 use App\Models\Gift;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class GiftController extends Controller
@@ -34,6 +36,7 @@ class GiftController extends Controller
         $findMember = User::whereEmail($request->email)->first();
         if ($findMember) {
             $customer = $findMember;
+            $random = null;
         } else {
             $random = Str::random(8);
             $customer = User::Create([
@@ -41,8 +44,6 @@ class GiftController extends Controller
                 'name' => $request->name,
                 'password' => bcrypt($random),
             ]);
-
-            //send email
         }
         
         $quantity = SubscriptionPlan::findOrFail($request->plan)->quantity;
@@ -76,7 +77,8 @@ class GiftController extends Controller
                 'issue_no' => $issue,
             ]);
         }
-        
+         //invite Email
+         Mail::to($customer->email)->send(new MailGift($customer, $random));
         return redirect()->back()->with('message', 'Member gifted successfully!');
     }
 

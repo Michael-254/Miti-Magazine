@@ -31,11 +31,11 @@
                                         </thead>
                                         <tbody>
                                             @if($ipaypayments->isEmpty() && $paypalpayments->isEmpty())
-                                               <tr>
-                                                   <td>
-                                                       You have no Purchases yet
-                                                   </td>
-                                               </tr>
+                                            <tr>
+                                                <td>
+                                                    You have no Purchases yet
+                                                </td>
+                                            </tr>
                                             @else
                                             @foreach($paypalpayments as $payment)
                                             <tr>
@@ -43,7 +43,11 @@
                                                 <td>Paypal</td>
                                                 <td>{{$payment->amount}}</td>
                                                 <td>{{$payment->reference}}</td>
-                                                <td><i class="fa fa-download cursor-pointer text-green-600 hover:text-blue-700"></i></td>
+                                                <td>
+                                                    <a href="{{route('paypal.invoice',2)}}">
+                                                        <i class="fa fa-eye cursor-pointer text-green-600 hover:text-blue-700"></i>
+                                                    </a>
+                                                </td>
                                             </tr>
                                             @endforeach
                                             @foreach($ipaypayments as $payment)
@@ -52,7 +56,11 @@
                                                 <td>Ipay ({{$payment->channel}})</td>
                                                 <td>{{$payment->amount}}</td>
                                                 <td>{{$payment->reference}}</td>
-                                                <td><i class="fa fa-download cursor-pointer text-green-600 hover:text-blue-700"></i></td>
+                                                <td>
+                                                    <a href="{{route('ipay.invoice',1)}}">
+                                                        <i class="fa fa-eye cursor-pointer text-green-600 hover:text-blue-700"></i>
+                                                    </a>
+                                                </td>
                                             </tr>
                                             @endforeach
                                             @endif
@@ -60,11 +68,11 @@
                                     </table>
                                 </div>
                                 <div class="flex justify-end">
-                                @if($ipaypayments->count() < $paypalpayments->count())
-                                    {{$paypalpayments->links()}}
-                                @else
-                                    {{$ipaypayments->links()}}
-                                @endif
+                                    @if($ipaypayments->count() < $paypalpayments->count())
+                                        {{$paypalpayments->links()}}
+                                        @else
+                                        {{$ipaypayments->links()}}
+                                        @endif
                                 </div>
                             </div>
                         </div>

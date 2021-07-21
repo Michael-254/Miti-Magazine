@@ -24,12 +24,14 @@ class IsAllowedToViewThisIssue
     {
         $userId = auth()->id();
         $subscriptions = Subscription::where([['user_id', '=', $userId], ['status', '=', 'paid']])->get();
+        $selectedIssues = [];
         foreach ($subscriptions as $subscription) {
             $selectedIssues = SelectedIssue::whereSubscriptionId($subscription->id)->pluck('issue_no')->toArray();
         }
         $magazine = Magazine::whereSlug($request->route('slug'))->whereIn('issue_no', $selectedIssues)->get();
 
         $isInvitedSubscription = Team::where('team_member_id', '=', $userId)->pluck('subscription_id');
+        $invitedIssues = [];
         foreach ($isInvitedSubscription as $subscription) {
             $invitedSub = Subscription::findOrFail($subscription);
             $invitedIssues = $invitedSub->SubIssues->pluck('issue_no')->toArray();

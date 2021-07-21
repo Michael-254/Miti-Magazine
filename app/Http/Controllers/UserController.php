@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ChangePasswordRequest;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Mail\Invite;
 use Delights\Sage\SageEvolution;
 use App\Models\CartOrder;
 use App\Models\Country;
@@ -18,6 +19,7 @@ use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class UserController extends Controller
@@ -97,7 +99,10 @@ class UserController extends Controller
 
                 $findMember = User::where('email', '=', $request->email)->first();
                 if ($findMember) {
-                    Team::create(['user_id' => auth()->id(), 'team_member_id' => $findMember->id]);
+                    Team::create(['user_id' => auth()->id(), 'team_member_id' => $findMember->id, 'subscription_id' => $request->plan,]);
+                    $random = null;
+                    //invite Email
+                    Mail::to($findMember->email)->send(new Invite(auth()->user(), $findMember, $random));
                 } else {
                     $random = Str::random(8);
                     $member = User::Create([
@@ -112,9 +117,10 @@ class UserController extends Controller
                         'subscription_id' => $request->plan,
                     ]);
 
-                    //send email
-                    return redirect()->back()->with('message', 'Member invited successfully. A notification has been sent to them');
+                    //invite Email
+                    Mail::to($member->email)->send(new Invite(auth()->user(), $member, $random));
                 }
+                return redirect()->back()->with('message', 'Member invited successfully. A notification has been sent to them');
             } else {
                 return redirect()->back()->with('error', 'You have exceeded max no of invites kindly upgrade');
             }
@@ -138,9 +144,21 @@ class UserController extends Controller
 
     public function Orders()
     {
-        $Suborders = Order::with('selectedIssue')->where([['status', '!=', 'unverified'], 
-                     ['type', '=', 'combined'], ['user_id', '=', auth()->id()]])->get();
-        $Cartorders = CartOrder::with('items')->where([['status', '!=', 'unverified'],['user_id', '=', auth()->id()]])->get();
+        $Suborders = Order::with('selectedIssue')->where([
+            ['status', '!=', 'unverified'],
+            ['type', '=', 'combined'], ['user_id', '=', auth()->id()]
+        ])->get();
+        $Cartorders = CartOrder::with('items')->where([['status', '!=', 'unverified'], ['user_id', '=', auth()->id()]])->get();
         return view('users/orders', compact('Suborders', 'Cartorders'));
+    }
+
+    public function ipayInvoice(Payment $payment)
+    {
+        return view('invoice/invoice', compact('payment'));
+    }
+
+    public function paypalInvoice(Paypal $paypal)
+    {
+        return view('invoice/invoice', compact('paypal'));
     }
 }
