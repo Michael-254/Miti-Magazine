@@ -2,7 +2,7 @@
     <!-- Extract to Slot -->
     <section id="description" class="card">
         <div class="card-header flex justify-between">
-            <h4 class="card-title text-green-600">Manage Cart orders</h4>
+            <h4 class="card-title text-green-600">Manage Subscription orders</h4>
         </div>
         <div class="card-content">
             <div class="card-body">
@@ -45,7 +45,7 @@
                                                 <td>{{$order->user->email}}</td>
                                                 <td>{{$order->user->myCountry->country}}</td>
                                                 <td>
-                                                    <p class="badge rounded-md {{$order->status == 'failed' ? 'bg-red-600' : 'bg-green-500'}}">
+                                                    <p class="badge rounded-pill px-2 rounded-md {{$order->status == 'failed' ? 'bg-red-600' : 'bg-primary'}}">
                                                         {{$order->status}}
                                                     </p>
                                                 </td>

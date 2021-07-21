@@ -142,7 +142,7 @@ class PaymentController extends Controller
         elseif($ipayStatus == 'aei7p7yrx4ae34') { 
             $msisdn_id = isset($request->msisdn_id) ? $request->msisdn_id : null; 
             $msisdn_idnum = isset($request->msisdn_idnum) ? $request->msisdn_idnum : null; 
-            $payment = Payment::where('reference', $orderId)->update(['msisdn_id' => $msisdn_id, 'msisdn_idnum' => $msisdn_idnum, 'txncd' => $request->txncd, 'channel' => $request->channel, 'status' => 'VERIFIED']);
+            $payment = Payment::where('reference', $orderId)->update(['msisdn_id' => $msisdn_id, 'msisdn_idnum' => $msisdn_idnum, 'txncd' => $request->txncd, 'channel' => $request->channel, 'status' => 'verified']);
 
             Order::where('reference', $orderId)->update(['status' => 'verified']);
 

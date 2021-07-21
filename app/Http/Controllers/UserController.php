@@ -120,11 +120,14 @@ class UserController extends Controller
                     //invite Email
                     Mail::to($member->email)->send(new Invite(auth()->user(), $member, $random));
                 }
+
                 return redirect()->back()->with('message', 'Member invited successfully. A notification has been sent to them');
             } else {
+
                 return redirect()->back()->with('error', 'You have exceeded max no of invites kindly upgrade');
             }
         } else {
+
             return redirect()->back()->with('error', 'Something went wrong wrong kindly retry again');
         }
     }

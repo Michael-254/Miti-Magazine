@@ -44,11 +44,11 @@
                                                 <td>{{$order->user->myCountry->country}}</td>
                                                 <td>
                                                     @php
-                                                    if($order->status == 'dispached') { $color="badge-success" ; }
+                                                    if($order->status == 'dispached') { $color="bg-primary" ; }
                                                     elseif($order->status == 'pending') { $color="bg-blue-600" ; }
                                                     else{ $color="bg-red-600" ; }
                                                     @endphp
-                                                    <p class="badge rounded-md {{$color}}">{{$order->status}}</p>
+                                                    <p class="badge rounded-pill px-2 rounded-md {{$color}}">{{$order->status}}</p>
                                                 </td>
                                                 <td>{{$order->reference}}</td>
                                                 <td>
