@@ -153,20 +153,28 @@ class PaymentController extends Controller
             $amounts = [];
             $issues = [];
             $quantity = [];
+            $lines = [];
             $subscription = Subscription::where('reference', $orderId)->first();
             $cartOrder = CartOrder::where('reference', $orderId)->first();
             if($cartOrder != null) {
                 $amounts = $cartOrder->SubIssuesAmount();
                 $issues = $cartOrder->SubIssuesItemCode();
                 $quantity = $cartOrder->SubIssuesQuantity();
+
+                $counts = count($issues);
+                foreach($counts as $key => $count) {
+                    array_push($lines, ["StockCode" => (string)$issues[$key], "TaxCode" => "1", "Quantity" => (double)$quantity[$key], "ToProcess" => (double)$quantity[$key], "UnitPrice" => (double)$amounts[$key]]);
+                }
             }
             else {
                 $amounts = $subscription->SubIssuesAmount();
                 $issues = $subscription->SubIssuesItemCode();
                 $quantity = $subscription->SubIssuesQuantity();
+
+                $lines = [["StockCode" => (string)$issues[0], "TaxCode" => "1", "Quantity" => (double)$quantity[0], "ToProcess" => (double)$quantity[0], "UnitPrice" => (double)$amounts[0]], ["StockCode" => (string)$issues[1], "TaxCode" => "1", "Quantity" => (double)$quantity[1], "ToProcess" => (double)$quantity[1], "UnitPrice" => (double)$amounts[1]], ["StockCode" => (string)$issues[2], "TaxCode" => "1", "Quantity" => (double)$quantity[2], "ToProcess" => (double)$quantity[2], "UnitPrice" => (double)$amounts[2]], ["StockCode" => (string)$issues[3], "TaxCode" => "1", "Quantity" => (double)$quantity[3], "ToProcess" => (double)$quantity[3], "UnitPrice" => (double)$amounts[3]]];
             }
             $sage = new SageEvolution();
-            $response = $sage->postTransaction('SalesOrderProcessInvoice', '{"salesOrder":{"CustomerAccountCode":'.$customer->customer_code.',"OrderDate":'.Carbon::now()->format('m/d/Y').',"InvoiceDate":'.Carbon::now()->format('m/d/Y').',"DocumentLines":[{"StockCode":'.(string)$issues[0].',"TaxCode":"1","Quantity":'.(double)$quantity[0].',"ToProcess":'.(double)$quantity[0].',"UnitPrice":'.(double)$amounts[0].'},{"StockCode":'.(string)$issues[1].',"TaxCode":"1","Quantity":'.(double)$quantity[1].',"ToProcess":'.(double)$quantity[1].',"UnitPrice":'.(double)$amounts[1].'},{"StockCode":'.(string)$issues[2].',"TaxCode":"1","Quantity":'.(double)$quantity[2].',"ToProcess":'.(double)$quantity[2].',"UnitPrice":'.(double)$amounts[2].'},{"StockCode":'.(string)$issues[3].',"TaxCode":"1","Quantity":'.(double)$quantity[3].',"ToProcess":'.(double)$quantity[3].',"UnitPrice":'.(double)$amounts[3].'}]}}');
+            $response = $sage->postTransaction('SalesOrderProcessInvoice', (object)["quote" =>["CustomerAccountCode" => $customer->customer_code, "OrderDate" => "/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)/", "InvoiceDate" => "/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)/", "Lines" => $lines,"FinancialLines" => []]]);
 
             // Send email with invoice
 
@@ -194,7 +202,7 @@ class PaymentController extends Controller
      */
     public function sageTest(Request $request)
     {
-        $sage = new SageEvolution();
+         $sage = new SageEvolution();
         // $response = $sage->getTransaction('CustomerFind?Code=CASH');
         // $response = $sage->getTransaction('CustomerExists?Code=CASH');
         // $response = $sage->getTransaction('CustomerList?OrderBy=1&PageNumber=1&PageSize=50');
@@ -202,15 +210,11 @@ class PaymentController extends Controller
         // $response = $sage->getTransaction('InventoryItemList?OrderBy=1&PageNumber=1&PageSize=50');
         // $response = $sage->getTransaction('SalesOrderLoadByOrderNo?orderNo=SO0001');
         // $response = $sage->getTransaction('SalesOrderExists?orderNo=SO0001');
-         $response = $sage->postTransaction('CustomerInsert', (object)["client" => ["Active" => true, "Description" => "John Doe", "ChargeTax" => false, "Code" => "JD001"]]);
+        // $response = $sage->postTransaction('CustomerInsert', (object)["client" => ["Active" => true, "Description" => "John Doe", "ChargeTax" => false, "Code" => "JD001"]]);
         // $response = $sage->postTransaction('InventoryItemInsert', (object)["item" => ["Code" => "ISS001"]]);
-        // $response = $sage->postTransaction('SalesOrderProcessInvoice', '{"salesOrder":{"CustomerAccountCode":"CASH","OrderDate":"07/11/2021","InvoiceDate":"07/11/2021","DocumentLines":[{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00}],"DocumentFinancialLines":[{"AccountCode":"Rent","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00}]}}');
-
-        /* SalesOrderProcessInvoice Sample Request
-        {"salesOrder":{"CustomerAccountCode":"CASH","OrderDate":"07/11/2021","InvoiceDate":"07/11/2021","DocumentLines":[{"StockCode":"ISS001","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00}],"DocumentFinancialLines":[{"AccountCode":"Rent","TaxCode":"1","Quantity":1.00,"ToProcess":1.00,"UnitPrice":200.00}]}} 
-        */
+         $response = $sage->postTransaction('SalesOrderProcessInvoice', (object)["quote" =>["CustomerAccountCode" => "CASH","OrderDate" => "/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)/","InvoiceDate" => "/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)/","Lines" => [["StockCode" => "Test","TaxCode" => "1","Quantity" => 1,"ToProcess" => 1,"UnitPrice" => 200.00], ["StockCode" => "Test","TaxCode" => "1","Quantity" => 1,"ToProcess" => 1,"UnitPrice" => 200.00]],"FinancialLines" => []]]); //QuotationPlaceOrder
         
-        dd($response);
+        return dd($response);
     }
 
     /**
