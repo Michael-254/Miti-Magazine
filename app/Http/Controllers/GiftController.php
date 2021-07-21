@@ -32,7 +32,7 @@ class GiftController extends Controller
             'email' => 'required',
             'name' => 'required',
         ]);
-       
+
         $findMember = User::whereEmail($request->email)->first();
         if ($findMember) {
             $customer = $findMember;
@@ -45,12 +45,12 @@ class GiftController extends Controller
                 'password' => bcrypt($random),
             ]);
         }
-        
+
         $quantity = SubscriptionPlan::findOrFail($request->plan)->quantity;
-        $referenceId = "GIFTED".auth()->id();
+        $referenceId = "GIFTED" . auth()->id();
         $subscription = Subscription::create([
-            'user_id' => $customer->id, 
-            'subscription_plan_id' => $request->plan, 
+            'user_id' => $customer->id,
+            'subscription_plan_id' => $request->plan,
             'reference' => $referenceId,
             'type' => $request->type,
             'quantity' => $quantity,
@@ -64,9 +64,9 @@ class GiftController extends Controller
         ]);
 
         $issues = [
-            (int)($request->issue), 
-            ($request->issue + 1), 
-            ($request->issue + 2), 
+            (int)($request->issue),
+            ($request->issue + 1),
+            ($request->issue + 2),
             ($request->issue + 3)
         ];
 
@@ -77,8 +77,8 @@ class GiftController extends Controller
                 'issue_no' => $issue,
             ]);
         }
-         //invite Email
-         Mail::to($customer->email)->send(new MailGift($customer, $random));
+        //invite Email
+        Mail::to($customer->email)->send(new MailGift($customer, $random));
         return redirect()->back()->with('message', 'Member gifted successfully!');
     }
 
