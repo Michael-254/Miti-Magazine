@@ -46,8 +46,8 @@ Route::prefix('user')->middleware(['auth', 'useremail'])->group(function () {
     Route::get('remove-member/{team}', 'UserController@memberdestroy')->name('member.destroy');
     Route::get('MySubscription', 'UserController@mySubscription')->name('user.subscriptions');
     Route::get('MyOrders', 'UserController@Orders')->name('user.orders');
-    Route::get('ipayInvoice-{payment}', 'UserController@ipayInvoice')->name('ipay.invoice');
-    Route::get('paypalInvoice-{paypal}', 'UserController@paypalInvoice')->name('paypal.invoice');
+    Route::get('ipayInvoice-{payment}', 'UserController@userInvoice')->name('ipay.invoice')->middleware(['myinvoice']);
+    Route::get('paypalInvoice-{paypal}', 'UserController@userInvoice')->name('paypal.invoice')->middleware(['myinvoice']);
 });
 
 //Admin Links

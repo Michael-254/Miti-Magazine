@@ -22,6 +22,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Mail;
 
 class PaymentController extends Controller
 {
@@ -201,6 +202,20 @@ class PaymentController extends Controller
                     'quantities' => $quantity[$key]
                 ]);
             }
+
+            $pdf = PDF::loadView('invoice.invoice', $invoice);
+            $data = [
+                'intro'  => 'Hello '.$customer->name.',',
+                'content'   => 'Your order with reference: '.$orderId.' has been well received. Kindly find attached your invoice.',
+                'name' => $customer->name,
+                'email' => $customer->email,
+                'subject'  => 'Order No. '.$orderId
+            ];
+            Mail::send('emails.order', $data, function($message) use ($data, $pdf) {
+                $message->to($data['email'], $data['name'])
+                        ->subject($data['subject'])
+                        ->attachData($pdf->output(), "invoice.pdf");
+            });
 
             // Login the user
             Auth::login($customer);

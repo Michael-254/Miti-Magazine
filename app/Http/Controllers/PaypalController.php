@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Delights\Sage\SageEvolution;
+use Mail;
 
 class PaypalController extends Controller
 {
@@ -231,6 +232,20 @@ class PaypalController extends Controller
                     'quantities' => $quantity[$key]
                 ]);
             }
+
+            $pdf = PDF::loadView('invoice.invoice', $invoice);
+            $data = [
+                'intro'  => 'Hello '.$customer->name.',',
+                'content'   => 'Your order with reference: '.$payment->reference.' has been well received. Kindly find attached your invoice.',
+                'name' => $customer->name,
+                'email' => $customer->email,
+                'subject'  => 'Order No. '.$payment->reference
+            ];
+            Mail::send('emails.order', $data, function($message) use ($data, $pdf) {
+                $message->to($data['email'], $data['name'])
+                        ->subject($data['subject'])
+                        ->attachData($pdf->output(), "invoice.pdf");
+            });
         }
         else {
             Order::where('reference', $payment->reference)->update(['status' => 'failed']);
