@@ -11,6 +11,7 @@ use App\Models\Country;
 use App\Models\Order;
 use App\Models\Payment;
 use App\Models\Paypal;
+use App\Models\Invoice;
 use App\Models\SelectedIssue;
 use App\Models\Shipping;
 use App\Models\Subscription;
@@ -155,13 +156,8 @@ class UserController extends Controller
         return view('users/orders', compact('Suborders', 'Cartorders'));
     }
 
-    public function ipayInvoice(Payment $payment)
+    public function userInvoice(Invoice $invoice)
     {
-        return view('invoice/invoice', compact('payment'));
-    }
-
-    public function paypalInvoice(Paypal $paypal)
-    {
-        return view('invoice/invoice', compact('paypal'));
+        return view('invoice/invoice', compact('invoice'));
     }
 }

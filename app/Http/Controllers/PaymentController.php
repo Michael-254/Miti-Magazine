@@ -14,12 +14,15 @@ use App\Models\Amount;
 use App\Models\Order;
 use App\Models\CartOrder;
 use App\Models\CartItem;
+use App\Models\Invoice;
+use App\Models\InvoiceItem;
 use App\Models\User;
 use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
+use Mail;
 
 class PaymentController extends Controller
 {
@@ -154,9 +157,11 @@ class PaymentController extends Controller
             $issues = [];
             $quantity = [];
             $lines = [];
+            $transaction = "";
             $subscription = Subscription::where('reference', $orderId)->first();
             $cartOrder = CartOrder::where('reference', $orderId)->first();
             if($cartOrder != null) {
+                $transaction = "Cart Order";
                 $amounts = $cartOrder->SubIssuesAmount();
                 $issues = $cartOrder->SubIssuesItemCode();
                 $quantity = $cartOrder->SubIssuesQuantity();
@@ -167,6 +172,7 @@ class PaymentController extends Controller
                 }
             }
             else {
+                $transaction = "Subscription";
                 $amounts = $subscription->SubIssuesAmount();
                 $issues = $subscription->SubIssuesItemCode();
                 $quantity = $subscription->SubIssuesQuantity();
@@ -176,7 +182,40 @@ class PaymentController extends Controller
             $sage = new SageEvolution();
             $response = $sage->postTransaction('SalesOrderProcessInvoice', (object)["quote" =>["CustomerAccountCode" => $customer->customer_code, "OrderDate" => "/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)/", "InvoiceDate" => "/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)/", "Lines" => $lines,"FinancialLines" => []]]);
 
-            // Send email with invoice
+            // Save invoice data
+            $invoice = Invoice::create([
+                'user_id' => $customer->id,
+                'reference' => $orderId,
+                'discount' => "0",
+                'transaction' => $transaction,
+                'sales_order_no' => $response['OrderNo'],
+                'invoice_no' => $response['OrderNo'],
+                'invoice_date'=> $response['InvoiceDate'],
+                'currency' => $currency
+            ]);
+            $counts = count($issues);
+            foreach($counts as $key => $count) {
+                InvoiceItem::create([
+                    'invoice_id' => $invoice->id,
+                    'amount' => $amounts[$key],
+                    'issues' => $issues[$key],
+                    'quantities' => $quantity[$key]
+                ]);
+            }
+
+            $pdf = PDF::loadView('invoice.invoice', $invoice);
+            $data = [
+                'intro'  => 'Hello '.$customer->name.',',
+                'content'   => 'Your order with reference: '.$orderId.' has been well received. Kindly find attached your invoice.',
+                'name' => $customer->name,
+                'email' => $customer->email,
+                'subject'  => 'Order No. '.$orderId
+            ];
+            Mail::send('emails.order', $data, function($message) use ($data, $pdf) {
+                $message->to($data['email'], $data['name'])
+                        ->subject($data['subject'])
+                        ->attachData($pdf->output(), "invoice.pdf");
+            });
 
             // Login the user
             Auth::login($customer);
@@ -192,6 +231,14 @@ class PaymentController extends Controller
      */
     public function paymentFailed()
     {
+        $orderId = Session::get('referenceId');
+
+        Order::where('reference', $orderId)->update(['status' => 'failed']);
+
+        Subscription::where('reference', $orderId)->update(['status' => 'failed']);
+
+        CartOrder::where('reference', $orderId)->update(['status' => 'failed']);
+
         return redirect('subscribe/plan')->with('info', 'Your iPay payment failed! Try again later.');
     }
 

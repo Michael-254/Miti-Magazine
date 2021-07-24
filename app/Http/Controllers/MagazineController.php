@@ -65,7 +65,7 @@ class MagazineController extends Controller
         $file->move($destinationPath, $filename);
 
         // check sage
-        $digits = 4;
+        $digits = 3;
         $code = str_pad($request->issue_no, $digits, '0', STR_PAD_LEFT);
         $sage = new SageEvolution();
         $inventoryItemFind = $sage->getTransaction('InventoryItemFind?Code=ISS'.$code);

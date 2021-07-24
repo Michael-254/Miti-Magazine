@@ -25,9 +25,9 @@
                     <h1 class="font-bold text-3xl">Invoice</h1>
                     <div class="invoice-details mt-2">
                         <h6 class="font-bold">INVOICE NO.</h6>
-                        <p>001/2019</p>
+                        <p>{{ $invoice->invoice_no }}</p>
                         <h6 class="mt-2 font-bold">INVOICE DATE</h6>
-                        <p>10 Dec 2018</p>
+                        <p>{{ \Carbon\Carbon::parse($invoice->invoice_date)->format('d-M-Y') }}</p>
                     </div>
                 </div>
             </div>
@@ -38,19 +38,19 @@
                 <div class="col-sm-6 col-12 text-left">
                     <h5>Recipient</h5>
                     <div class="recipient-info my-2">
-                        <p>Peter Stark</p>
-                        <p>8577 West West Drive</p>
-                        <p>Holbrook, NY</p>
-                        <p>90001</p>
+                        <p>{{ $invoice->user->name }}</p>
+                        <p>{{ $invoice->user->shippingInfo->address }}</p>
+                        <p>{{ $invoice->user->shippingInfo->city.", ".$invoice->user->shippingInfo->state }}</p>
+                        <p>{{ $invoice->user->shippingInfo->zip_code }}</p>
                     </div>
                     <div class="recipient-contact pb-2">
                         <p>
                             <i class="feather icon-mail"></i>
-                            peter@mail.com
+                            {{ $invoice->user->email }}
                         </p>
                         <p>
                             <i class="feather icon-phone"></i>
-                            +91 988 888 8888
+                            {{ $invoice->user->phone_no }}
                         </p>
                     </div>
                 </div>
@@ -90,18 +90,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Website Redesign</td>
-                                    <td>60</td>
-                                    <td>15 USD</td>
-                                    <td>90000 USD</td>
-                                </tr>
-                                <tr>
-                                    <td>Newsletter template design</td>
-                                    <td>20</td>
-                                    <td>12 USD</td>
-                                    <td>24000 USD</td>
-                                </tr>
+                                @foreach($invoice->items as $item)
+                                    <tr>
+                                        <td>{{ $item->issue }}</td>
+                                        <td>{{ $item->quantity }}</td>
+                                        <td>{{ $invoice->currency." ".$item->amount }}</td>
+                                        <td>{{ (int)$item->quantity * (int)$item->amount }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -115,15 +111,15 @@
                                 <tbody>
                                     <tr>
                                         <th>SUBTOTAL</th>
-                                        <td>114000 USD</td>
+                                        <td>{{ $invoice->currency." ".((int)$invoice->getTotalAmount() - (int)$invoice->discount) }}</td>
                                     </tr>
                                     <tr>
-                                        <th>DISCOUNT (5%)</th>
-                                        <td>5700 USD</td>
+                                        <th>DISCOUNT</th>
+                                        <td>{{ $invoice->currency." ".$invoice->discount }}</td>
                                     </tr>
                                     <tr>
                                         <th>TOTAL</th>
-                                        <td>108300 USD</td>
+                                        <td>{{ $invoice->currency." ".$invoice->getTotalAmount() }}</td>
                                     </tr>
                                 </tbody>
                             </table>

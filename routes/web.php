@@ -46,8 +46,8 @@ Route::prefix('user')->middleware(['auth', 'useremail'])->group(function () {
     Route::get('remove-member/{team}', 'UserController@memberdestroy')->name('member.destroy');
     Route::get('MySubscription', 'UserController@mySubscription')->name('user.subscriptions');
     Route::get('MyOrders', 'UserController@Orders')->name('user.orders');
-    Route::get('ipayInvoice-{payment}', 'UserController@ipayInvoice')->name('ipay.invoice');
-    Route::get('paypalInvoice-{paypal}', 'UserController@ipayInvoice')->name('paypal.invoice');
+    Route::get('ipayInvoice-{payment}', 'UserController@userInvoice')->name('ipay.invoice')->middleware(['myinvoice']);
+    Route::get('paypalInvoice-{paypal}', 'UserController@userInvoice')->name('paypal.invoice')->middleware(['myinvoice']);
 });
 
 //Admin Links
@@ -71,7 +71,6 @@ Route::view('/dashboard', 'dashboard')->middleware(['auth', 'useremail'])->name(
 
 //Unauth Pages
 Route::view('/', 'welcome')->name('landing.page');
-Route::get('/sage', 'PaymentController@sageTest'); //To be deleted
 Route::get('/', 'HomePageController@welcome')->name('landing.page');
 Route::get('/Previous-Issues', 'HomePageController@previous')->name('previous.issues');
 Route::post('/Add-to-Cart', 'HomePageController@cart')->name('cart.store');
