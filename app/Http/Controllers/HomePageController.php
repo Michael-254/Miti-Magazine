@@ -31,13 +31,13 @@ class HomePageController extends Controller
         'quantity' => $request->input('quantity'),
        ]);
 
-       return redirect('/Previous-Issues')->with('message', 'Successfully added');
+       return redirect('/Previous-Issues')->with('message', 'Successfully added to cart');
     }
 
     public function remove(Request $request)
     {
         Cart::remove($request->product);
 
-       return redirect('/Previous-Issues')->with('message', 'Successfully removed');
+       return redirect('/Previous-Issues')->with('message', 'Successfully removed from cart');
     }
 }

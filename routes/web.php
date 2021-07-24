@@ -44,14 +44,14 @@ Route::prefix('user')->middleware(['auth', 'useremail'])->group(function () {
     Route::get('invites', 'UserController@invite')->name('user.invite');
     Route::post('invites', 'UserController@memberStore')->name('member.store');
     Route::get('remove-member/{team}', 'UserController@memberdestroy')->name('member.destroy');
-    Route::get('MySubscription', 'UserController@mySubscription')->name('user.subscriptions');
-    Route::get('MyOrders', 'UserController@Orders')->name('user.orders');
-    Route::get('ipayInvoice-{payment}', 'UserController@userInvoice')->name('ipay.invoice')->middleware(['myinvoice']);
-    Route::get('paypalInvoice-{paypal}', 'UserController@userInvoice')->name('paypal.invoice')->middleware(['myinvoice']);
+    Route::get('mySubscription', 'UserController@mySubscription')->name('user.subscriptions');
+    Route::get('myOrders', 'UserController@Orders')->name('user.orders');
+    Route::get('view-invoice-{payment}', 'UserController@ipayInvoice')->name('Myipay.invoice');
+    Route::get('paypal-invoice-{payment}', 'UserController@paypalInvoice')->name('Mypaypal.invoice');
 });
 
 //Admin Links
-Route::prefix('admin')->middleware(['auth', 'useremail','AdminAccess'])->group(function () {
+Route::prefix('admin')->middleware(['auth', 'useremail', 'AdminAccess'])->group(function () {
     Route::get('file-manager', 'FileManagerController@index')->name('manage.magazines');
     Route::view('subscription-plans', 'admin.subscription-plans')->name('manage.plans');
     Route::view('upload-magazine', 'admin.magazine-upload')->name('upload.magazine');
@@ -65,6 +65,8 @@ Route::prefix('admin')->middleware(['auth', 'useremail','AdminAccess'])->group(f
     Route::get('remove-gift/{gift}', 'GiftController@destroyGift')->name('gift.destroy');
     Route::get('Cart-Orders', 'OrderController@CartOrder')->name('cart.orders');
     Route::get('Subscription-Orders', 'OrderController@SubOrder')->name('subscription.orders');
+    Route::get('ipay-Invoice-{payment}', 'ViewTransactionController@ipayInvoice')->name('ipay.invoice');
+    Route::get('paypal-Invoice-{payment}', 'ViewTransactionController@paypalInvoice')->name('paypal.invoice');
 });
 
 Route::view('/dashboard', 'dashboard')->middleware(['auth', 'useremail'])->name('dashboard');

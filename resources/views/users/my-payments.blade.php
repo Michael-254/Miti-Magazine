@@ -44,7 +44,7 @@
                                                 <td>{{$payment->amount}}</td>
                                                 <td>{{$payment->reference}}</td>
                                                 <td>
-                                                    <a href="{{route('paypal.invoice',2)}}">
+                                                    <a href="{{route('Mypaypal.invoice',$payment)}}">
                                                         <i class="fa fa-eye cursor-pointer text-green-600 hover:text-blue-700"></i>
                                                     </a>
                                                 </td>
@@ -57,7 +57,7 @@
                                                 <td>{{$payment->amount}}</td>
                                                 <td>{{$payment->reference}}</td>
                                                 <td>
-                                                    <a href="{{route('ipay.invoice',1)}}">
+                                                    <a href="{{route('Myipay.invoice',$payment)}}">
                                                         <i class="fa fa-eye cursor-pointer text-green-600 hover:text-blue-700"></i>
                                                     </a>
                                                 </td>
