@@ -93,8 +93,7 @@ class MagazineController extends Controller
      */
     public function show($slug)
     {
-        //$magazine = Magazine::whereSlug($slug)->first();
-        $magazine = collect();
+        $magazine = Magazine::whereSlug($slug)->first();
 
         return view('read', compact('magazine'));
     }
