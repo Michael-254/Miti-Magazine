@@ -13,9 +13,9 @@
                     <div class="recipient-info my-2">
                         <p>Name: {{$customer->name}}</p>
                         <p>Company: {{$customer->company}}</p>
-                        <p>Apartment: {{$customer->shippingInfo?->apartment}}</p>
-                        <p>State/City: {{$customer->shippingInfo?->state}}, {{$customer->shippingInfo?->city}}</p>
-                        <p>Address: {{$customer->shippingInfo?->address}},{{$customer->shippingInfo?->zip_code}}</p>
+                        <p>Apartment: {{$customer->shippingInfo->apartment ?? ''}}</p>
+                        <p>State/City: {{$customer->shippingInfo->state ?? ''}}, {{$customer->shippingInfo->city ?? ''}}</p>
+                        <p>Address: {{$customer->shippingInfo->address ?? ''}},{{$customer->shippingInfo->zip_code ?? ''}}</p>
                     </div>
                     <div class="recipient-contact pb-2">
                         <p>

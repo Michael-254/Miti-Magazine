@@ -64,10 +64,10 @@ class UserController extends Controller
     public function mypayments()
     {
         $ipaypayments = Payment::where([['user_id', '=', auth()->id()], ['status', '=', 'verified']])
-            ->select('amount', 'reference', 'updated_at', 'channel')
+            ->select('id', 'amount', 'reference', 'updated_at', 'channel')
             ->paginate(8);
         $paypalpayments = Paypal::where([['user_id', '=', auth()->id()], ['status', '=', 'verified']])
-            ->select('amount', 'reference', 'updated_at')
+            ->select('id', 'amount', 'reference', 'updated_at')
             ->paginate(8);
         return view('users.my-payments', compact('ipaypayments', 'paypalpayments'));
     }
@@ -156,8 +156,23 @@ class UserController extends Controller
         return view('users/orders', compact('Suborders', 'Cartorders'));
     }
 
-    public function userInvoice(Invoice $invoice)
+    public function ipayInvoice(Payment $payment)
     {
-        return view('invoice/invoice', compact('invoice'));
+        $invoice = Invoice::where('reference', '=', $payment->reference)->first();
+        if (!$invoice || $invoice->user_id != auth()->id()) {
+            abort(404);
+        } else {
+            return view('invoice/invoice', compact('invoice'));
+        }
+    }
+
+    public function paypalInvoice(Paypal $paypal)
+    {
+        $invoice = Invoice::where('reference', '=', $paypal->reference)->first();
+        if (!$invoice || $invoice->user_id != auth()->id()) {
+            abort(404);
+        } else {
+            return view('invoice/invoice', compact('invoice'));
+        }
     }
 }

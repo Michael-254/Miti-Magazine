@@ -250,7 +250,7 @@ class PaypalController extends Controller
         else {
             Order::where('reference', $payment->reference)->update(['status' => 'failed']);
 
-            Subscription::where('reference', $$payment->reference)->update(['status' => 'failed']);
+            Subscription::where('reference', $payment->reference)->update(['status' => 'failed']);
 
             CartOrder::where('reference', $payment->reference)->update(['status' => 'failed']);
         }
