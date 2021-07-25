@@ -9,7 +9,7 @@ use Livewire\Component;
 class HomepagePlans extends Component
 {
     public $copies = 1;
-    public $ip = 'Kenya';
+    public $Mycountry;
     public $location;
 
     public function copySelected($value)
@@ -19,7 +19,10 @@ class HomepagePlans extends Component
 
     public function mount()
     {
-        switch ($this->ip) {
+        $ip = request()->ip();
+        $data = \Location::get($ip);
+        $this->Mycountry = $data->countryName;
+        switch ($this->Mycountry) {
             case 'Kenya':
                 return $this->location = 'Kenya';
             case 'Uganda':

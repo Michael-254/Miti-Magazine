@@ -37,7 +37,7 @@
                                             <tr>
                                                 <td>{{$customer->name}}</td>
                                                 <td>{{$customer->email}}</td>
-                                                <td>{{$customer->myCountry?->country}}</td>
+                                                <td>{{$customer->myCountry->country ?? ''}}</td>
                                                 <td>{{$customer->phone_no}}</td>
                                                 <td>{{$customer->company}}</td>
                                                 <td>

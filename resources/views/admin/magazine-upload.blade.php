@@ -46,17 +46,6 @@
                                                                 </div>
                                                             </div>
 
-                                                            <div class="col-12">
-                                                                <div class="form-group">
-                                                                    <label class="font-bold text-green-600">Inventory</label>
-                                                                    <div>
-                                                                        <input type="number" name="inventory" class="rounded-md border-gray-400 form-control" placeholder="Printed Copy in stock">
-                                                                        <div class="form-control-position">
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
                                                             <div class="media-body mt-75">
                                                                 <div class="col-12">
                                                                     <label class="font-bold text-green-600">Magazine</label>

@@ -44,7 +44,6 @@ class MagazineController extends Controller
         $request->validate([
             'issue_no' => 'required|unique:magazines,issue_no',
             'title' => 'required',
-            'inventory' => 'required',
             'file' => 'required|mimes:pdf',
             'image' => 'required|mimes:jpeg,jpg,png,gif',
         ]);
@@ -75,7 +74,6 @@ class MagazineController extends Controller
             'item_code' => $response,
             'issue_no' => $code,
             'title' => $request->title,
-            'invetory' => $request->inventory,
             'slug' => $slug,
             'file' => $filename,
             'image' =>  $image_name,

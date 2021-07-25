@@ -21,7 +21,6 @@ class CreateMagazinesTable extends Migration
             $table->string('slug')->unique();
             $table->string('file');
             $table->string('image');
-            $table->string('invetory');
             $table->integer('quantity')->nullable();
             $table->timestamps();
         });
