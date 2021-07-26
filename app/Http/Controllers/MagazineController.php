@@ -71,8 +71,8 @@ class MagazineController extends Controller
         $response = json_decode($inventoryItemFind, true);
 
         $magazine = Magazine::create([
-            'item_code' => $response,
-            'issue_no' => $code,
+            'item_code' => $code,
+            'issue_no' => $request->issue_no,
             'title' => $request->title,
             'slug' => $slug,
             'file' => $filename,

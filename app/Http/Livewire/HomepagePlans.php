@@ -21,7 +21,7 @@ class HomepagePlans extends Component
     {
         $ip = request()->ip();
         $data = \Location::get($ip);
-        $this->Mycountry = $data->countryName;
+        $this->Mycountry = $data->countryName ?? '';
         switch ($this->Mycountry) {
             case 'Kenya':
                 return $this->location = 'Kenya';

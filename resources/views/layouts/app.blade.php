@@ -173,8 +173,6 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li data-menu=""><a class="dropdown-item" href="sk-layout-2-columns.html" data-toggle="dropdown" data-i18n="2 columns">Inventory</a>
-                            </li>
                             <li class="{{ (request()->is('admin/gifts')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="{{route('admin.gift')}}" data-toggle="dropdown" data-i18n="2 columns">Gift Members</a>
                             </li>
                         </ul>

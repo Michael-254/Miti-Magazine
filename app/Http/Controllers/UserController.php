@@ -159,20 +159,20 @@ class UserController extends Controller
     public function ipayInvoice(Payment $payment)
     {
         $invoice = Invoice::where('reference', '=', $payment->reference)->first();
-        if (!$invoice || $invoice->user_id != auth()->id()) {
-            abort(404);
-        } else {
+        if ($invoice && $invoice->user_id == auth()->id()) {
             return view('invoice/invoice', compact('invoice'));
+        } else {
+            abort(404);
         }
     }
 
     public function paypalInvoice(Paypal $paypal)
     {
         $invoice = Invoice::where('reference', '=', $paypal->reference)->first();
-        if (!$invoice || $invoice->user_id != auth()->id()) {
-            abort(404);
-        } else {
+        if ($invoice && $invoice->user_id == auth()->id()) {
             return view('invoice/invoice', compact('invoice'));
+        } else {
+            abort(404);
         }
     }
 }
