@@ -218,6 +218,7 @@ class ShippingController extends Controller
         }
 
         Cart::clear();
+        
         if ($request->payment_method == 'paypal') {
             return redirect('paypal/checkout');
         } else {
