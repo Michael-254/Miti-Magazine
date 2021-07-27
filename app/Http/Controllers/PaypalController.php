@@ -239,7 +239,7 @@ class PaypalController extends Controller
                 'content'   => 'Your order with reference: '.$payment->reference.' has been well received. Kindly find attached your invoice.',
                 'name' => $customer->name,
                 'email' => $customer->email,
-                'subject'  => 'Order No. '.$payment->reference
+                'subject'  => 'Successful Payment for Order No. '.$payment->reference
             ];
             Mail::send('emails.order', $data, function($message) use ($data, $pdf) {
                 $message->to($data['email'], $data['name'])

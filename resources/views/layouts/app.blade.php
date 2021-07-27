@@ -83,7 +83,9 @@
                             </li>
                         </ul>
                         <ul class="lg:block nav navbar-nav">
+                            <a href="{{route('landing.page')}}">
                             <p class="text-blue-500 font-semibold">Miti Magazine</p>
+                            </a>
                         </ul>
                     </div>
 

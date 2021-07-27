@@ -209,7 +209,7 @@ class PaymentController extends Controller
                 'content'   => 'Your order with reference: '.$orderId.' has been well received. Kindly find attached your invoice.',
                 'name' => $customer->name,
                 'email' => $customer->email,
-                'subject'  => 'Order No. '.$orderId
+                'subject'  => 'Successful Payment for Order No. '.$orderId
             ];
             Mail::send('emails.order', $data, function($message) use ($data, $pdf) {
                 $message->to($data['email'], $data['name'])

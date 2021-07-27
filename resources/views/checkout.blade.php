@@ -67,10 +67,10 @@
                                     <h4 class="text-green-500 font-bold">Order Total</h4>
                                     <table class="table">
                                         <tbody>
-                                                @foreach (Cart::getContent() as $cart)
+                                            @foreach (Cart::getContent() as $cart)
                                             <tr>
                                                 <td class="cart-product-name">
-                                                    <strong>{{$cart->name}}</strong>
+                                                    <strong>Issue: {{$cart->name}}</strong>
                                                 </td>
                                                 <td class="cart-product-name  text-right">
                                                     <span class="amount">{{$cart->quantity}}</span>
