@@ -64,15 +64,14 @@ class MagazineController extends Controller
         $file->move($destinationPath, $filename);
 
         // check sage
-        $digits = 3;
-        $code = str_pad($request->issue_no, $digits, '0', STR_PAD_LEFT);
+        $code = $request->item_code;
         $sage = new SageEvolution();
-        $inventoryItemFind = $sage->getTransaction('InventoryItemFind?Code=ISS'.$code);
+        $inventoryItemFind = $sage->getTransaction('InventoryItemFind?Code='.$code);
         $response = json_decode($inventoryItemFind, true);
 
         $magazine = Magazine::create([
-            'item_code' => $response,
-            'issue_no' => $code,
+            'item_code' => $code,
+            'issue_no' => $request->issue_no,
             'title' => $request->title,
             'slug' => $slug,
             'file' => $filename,

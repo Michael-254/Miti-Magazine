@@ -37,6 +37,15 @@
 
                                                             <div class="col-12">
                                                                 <div class="form-group">
+                                                                    <label class="font-bold text-green-600">Item Code</label>
+                                                                    <div>
+                                                                        <input type="number" name="item_code" class="rounded-md border-gray-400 form-control" placeholder="Item Code">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-12">
+                                                                <div class="form-group">
                                                                     <label class="font-bold text-green-600">Title</label>
                                                                     <div>
                                                                         <input type="text" name="title" class="rounded-md border-gray-400 form-control" placeholder="Title of magazine">
