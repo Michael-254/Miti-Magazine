@@ -18,8 +18,8 @@ class SageEvolution
      *
      * @var string
      */
-    private $baseUri = 'http://DESKTOP-F012DQR:5000/freedom.core/Demo/SDK/Rest/';
-    private $baseUriBackUp = 'http://DESKTOP-F012DQR:5000/freedom.core/Demo/SDK/Rest/';
+    private $baseUri = 'http://197.232.244.211:5000/freedom.core/Better Globe Forestry Ltd NEW/SDK/Rest/';
+    private $baseUriBackUp = 'http://197.232.244.211:5000/freedom.core/Better Globe Forestry Ltd NEW/SDK/Rest/';
 
     /**
      * The Guzzle HTTP Client.
