@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'viewissue' => \App\Http\Middleware\IsAllowedToViewThisIssue::class,
         'myinvoice' => \App\Http\Middleware\IsMyInvoice::class,
         'AdminAccess' => \App\Http\Middleware\AdminAccess::class,
+        'SuperAccess' => \App\Http\Middleware\SuperAdmin::class,
     ];
 }

@@ -30,7 +30,7 @@ class HomepagePlans extends Component
             case 'Tanzania':
                 return $this->location = 'Tanzania';
             default:
-                return $this->location = 'Rest of World';
+                return $this->location = 'Rest of Africa';
         }
     }
 

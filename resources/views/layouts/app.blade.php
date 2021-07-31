@@ -152,8 +152,8 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item {{ (request()->is('user/MySubscription')) ? 'active' : '' }}"><a class="nav-link" href="{{route('user.subscriptions')}}"><i class="fa fa-newspaper-o"></i><span>My Subscription</span></a></li>
-                    <li class="nav-item {{ (request()->is('user/MyOrders')) ? 'active' : '' }}"><a class="nav-link" href="{{route('user.orders')}}"><i class="feather icon-shopping-cart"></i><span>My orders</span></a></li>
+                    <li class="nav-item {{ (request()->is('user/mySubscription')) ? 'active' : '' }}"><a class="nav-link" href="{{route('user.subscriptions')}}"><i class="fa fa-newspaper-o"></i><span>My Subscription</span></a></li>
+                    <li class="nav-item {{ (request()->is('user/myOrders')) ? 'active' : '' }}"><a class="nav-link" href="{{route('user.orders')}}"><i class="feather icon-shopping-cart"></i><span>My orders</span></a></li>
 
                     @admin
                     <li class="nav-item {{ (request()->is('admin/Customers')) ? 'active' : '' }}"><a class="nav-link" href="{{route('customers.view')}}"><i class="fa fa-users"></i><span>Customers</span></a></li>

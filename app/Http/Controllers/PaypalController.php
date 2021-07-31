@@ -60,7 +60,7 @@ class PaypalController extends Controller
 
         if ($currency == 'KSh') {
             $currency = "USD";
-            $amount = round($amount/100);
+            $amount = round($amount/109);
         }
         elseif ($currency == 'TSh') {
             $currency = "USD";
@@ -71,7 +71,7 @@ class PaypalController extends Controller
             $amount = round($amount/3556);
         }
         else {
-            $currency = "EUR";
+            $currency = "USD";
         }
         Session::put('user_currency', $currency);
         Session::put('user_amount', $amount);

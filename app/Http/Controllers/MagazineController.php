@@ -64,19 +64,19 @@ class MagazineController extends Controller
         $file->move($destinationPath, $filename);
 
         // check sage
-        $code = $request->item_code;
-        $sage = new SageEvolution();
-        $inventoryItemFind = $sage->getTransaction('InventoryItemFind?Code='.$code);
-        $response = json_decode($inventoryItemFind, true);
+        // $code = $request->item_code;
+        // $sage = new SageEvolution();
+        // $inventoryItemFind = $sage->getTransaction('InventoryItemFind?Code='.$code);
+        // $response = json_decode($inventoryItemFind, true);
 
         $magazine = Magazine::create([
-            'item_code' => $code,
+            'item_code' => $request->item_code,
             'issue_no' => $request->issue_no,
             'title' => $request->title,
             'slug' => $slug,
             'file' => $filename,
             'image' =>  $image_name,
-            'quantity' =>  $response["QtyOnHand"],
+            'quantity' =>  $request->inventory,
         ]);
 
         return redirect('admin/file-manager')->with('message','Uploaded successfully');

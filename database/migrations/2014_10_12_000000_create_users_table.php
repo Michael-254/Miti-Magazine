@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->string('gender')->nullable();
             $table->string('company')->nullable();
             $table->boolean('administrator_role')->default(0);
+            $table->boolean('senior_role')->default(0);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
