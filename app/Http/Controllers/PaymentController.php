@@ -19,6 +19,7 @@ use App\Models\InvoiceItem;
 use App\Models\User;
 use App\Models\Role;
 use Carbon\Carbon;
+use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
@@ -249,6 +250,8 @@ class PaymentController extends Controller
      */
     public function sageTest(Request $request)
     {
+        $position = Location::get('197.232.61.227');
+        dd($position);
          $sage = new SageEvolution();
         // $response = $sage->getTransaction('CustomerFind?Code=CASH');
         // $response = $sage->getTransaction('CustomerExists?Code=CASH');
