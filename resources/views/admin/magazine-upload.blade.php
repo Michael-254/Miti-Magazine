@@ -39,7 +39,16 @@
                                                                 <div class="form-group">
                                                                     <label class="font-bold text-green-600">Item Code</label>
                                                                     <div>
-                                                                        <input type="number" name="item_code" class="rounded-md border-gray-400 form-control" placeholder="Item Code">
+                                                                        <input type="text" name="item_code" class="rounded-md border-gray-400 form-control" placeholder="Item Code">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-12">
+                                                                <div class="form-group">
+                                                                    <label class="font-bold text-green-600">Quanity in Stock</label>
+                                                                    <div>
+                                                                        <input type="text" name="inventory" class="rounded-md border-gray-400 form-control" placeholder="Quantity">
                                                                     </div>
                                                                 </div>
                                                             </div>

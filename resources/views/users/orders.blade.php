@@ -99,7 +99,7 @@
                                                 <td>
                                                     @php
                                                     if($order->status == 'dispached') { $color="bg-primary" ; }
-                                                    elseif($order->status == 'pending') { $color="bg-blue-600" ; }
+                                                    elseif($order->status == 'verified') { $color="bg-blue-600" ; }
                                                     else{ $color="bg-red-600" ; }
                                                     @endphp
                                                     <p class="badge rounded-pill rounded-md {{$color}} px-2">

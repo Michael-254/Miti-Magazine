@@ -45,7 +45,7 @@
                                                 <td>
                                                     @php
                                                     if($order->status == 'dispached') { $color="bg-primary" ; }
-                                                    elseif($order->status == 'pending') { $color="bg-blue-600" ; }
+                                                    elseif($order->status == 'verified') { $color="bg-blue-600" ; }
                                                     else{ $color="bg-red-600" ; }
                                                     @endphp
                                                     <p class="badge rounded-pill px-2 rounded-md {{$color}}">{{$order->status}}</p>
@@ -122,7 +122,7 @@
                                     <label class="text-green-600 font-bold">Status</label>
                                     <select wire:model="status" class="form-control">
                                         <option value="">-- Update Status --</option>
-                                        <option value="pending">pending</option>
+                                        <option value="verified">pending</option>
                                         <option value="dispached">dispached</option>
                                         <option value="cancelled">cancelled</option>
                                     </select>

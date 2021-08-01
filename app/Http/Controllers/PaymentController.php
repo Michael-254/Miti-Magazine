@@ -84,7 +84,7 @@ class PaymentController extends Controller
         }
         else {
             $currency = "KES";
-            $amount = round($amount*128);
+            $amount = round($amount*109);
         }
         Session::put('user_currency', $currency);
         Session::put('user_amount', $amount);

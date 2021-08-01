@@ -1,7 +1,7 @@
 <div class="mt-12">
   <div class="text-center">
     <h1 class="font-bold text-3xl text-green-600 mb-2">Subscription Plans {{$plans->location ?? ''}}</h1>
-    <h4 class="text-gray-600">Each Subscription Package gives access to 4 issues.</h4>
+    <h4 class="text-gray-600">Each Subscription Package gives access to 4 issues. For subscription of more than 10 copies, Kindly Email us</h4>
   </div>
 
   <div class="mt-8 border-b">
@@ -33,7 +33,7 @@
             <li class="text-gray-500"><i class="icon-x-circle"></i>Printed Copy</li>
             <li class="{{$copies ==  '1' ? 'text-gray-500' : 'text-green-700' }}">
               @if($copies == '1')<i class="icon-x-circle"></i>@else<i class="fas fa-check"></i>@endif
-              Invite other members 
+              Invite other members
             </li>
             <li><i class="fas fa-check"></i>Cancel Subscription anytime</li>
           </ul>

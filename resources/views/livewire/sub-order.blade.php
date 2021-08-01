@@ -44,12 +44,12 @@
                                                 <td>{{$order->user->name}}</td>
                                                 <td>{{$order->user->email}}</td>
                                                 <td>{{$order->user->myCountry->country}}</td>
+                                                <td>{{$order->reference}}</td>
                                                 <td>
                                                     <p class="badge rounded-pill px-2 rounded-md {{$order->status == 'failed' ? 'bg-red-600' : 'bg-primary'}}">
                                                         {{$order->status}}
                                                     </p>
                                                 </td>
-                                                <td>{{$order->reference}}</td>
                                                 <td>{{$order->type}}</td>
                                                 <td>
                                                     @foreach($order->selectedIssue as $issue)

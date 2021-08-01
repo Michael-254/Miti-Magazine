@@ -21,6 +21,6 @@ class SubscriptionPlan extends Model
             'Kenya' => 'KSh',
             'Uganda' => 'UGX',
             'Tanzania' => 'TSh',
-        ][$this->location] ?? '€';
+        ][$this->location] ?? '$';
     }
 }

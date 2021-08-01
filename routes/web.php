@@ -53,11 +53,11 @@ Route::prefix('user')->middleware(['auth', 'useremail'])->group(function () {
 //Admin Links
 Route::prefix('admin')->middleware(['auth', 'useremail', 'AdminAccess'])->group(function () {
     Route::get('file-manager', 'FileManagerController@index')->name('manage.magazines');
-    Route::view('subscription-plans', 'admin.subscription-plans')->name('manage.plans');
+    Route::view('subscription-plans', 'admin.subscription-plans')->name('manage.plans')->middleware('SuperAccess');
     Route::view('upload-magazine', 'admin.magazine-upload')->name('upload.magazine');
     Route::post('post-magazine', 'MagazineController@store')->name('magazine.upload');
-    Route::get('Paypal-payments', 'ViewTransactionController@paypalTransaction')->name('paypal.admin');
-    Route::get('Ipay-payments', 'ViewTransactionController@ipayTransaction')->name('ipay.admin');
+    Route::get('Paypal-payments', 'ViewTransactionController@paypalTransaction')->name('paypal.admin')->middleware('SuperAccess');
+    Route::get('Ipay-payments', 'ViewTransactionController@ipayTransaction')->name('ipay.admin')->middleware('SuperAccess');
     Route::get('Customers', 'CustomerController@index')->name('customers.view');
     Route::get('Customer-{customer}', 'CustomerController@customerInfo')->name('customer.info');
     Route::get('gifts', 'GiftController@gifts')->name('admin.gift');
