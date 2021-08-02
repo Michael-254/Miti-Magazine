@@ -216,13 +216,15 @@ class PaypalController extends Controller
             // Save invoice data
             $code = Magazine::whereIssueNo($issues[0])->value('item_code');
             $inventoryTransaction = $sage->getTransaction('InventoryTransactionListByItemCode?Code='.$code.'&OrderBy=1&PageNumber=1&PageSize=5000000');
-            $responseInvoice = json_decode($inventoryTransaction, true);
+            $xml = simplexml_load_string($inventoryTransaction);
+            $json = json_encode($xml);
+            $responseInvoice = json_decode($json, true);
             $OrderNo = "";
             $InvoiceNo = "";
             $InvoiceDate = "";
-            foreach($responseInvoice as $value) 
+            foreach($responseInvoice['InventoryTransactionDto'] as $key => $value) 
             {
-                if($loop->last) {
+                if(end($responseInvoice['InventoryTransactionDto']) == $value) {
                     $OrderNo = $value['OrderNum'];
                     $InvoiceNo = $value['Reference'];
                     $InvoiceDate = Carbon::parse($value['Date']);
