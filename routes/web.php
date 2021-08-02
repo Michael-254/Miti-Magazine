@@ -73,6 +73,7 @@ Route::view('/dashboard', 'dashboard')->middleware(['auth', 'useremail'])->name(
 
 //Unauth Pages
 Route::view('/', 'welcome')->name('landing.page');
+Route::get('sage', 'PaymentController@sageTest');
 Route::get('/', 'HomePageController@welcome')->name('landing.page');
 Route::get('/Previous-Issues', 'HomePageController@previous')->name('previous.issues');
 Route::post('/Add-to-Cart', 'HomePageController@cart')->name('cart.store');
