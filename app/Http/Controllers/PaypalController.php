@@ -213,14 +213,17 @@ class PaypalController extends Controller
             $response = $sage->postTransaction('SalesOrderPlaceOrder', (object)["quote" =>["CustomerAccountCode" => $customer->customer_code, "OrderDate" => "\/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)\/", "InvoiceDate" => "\/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)\/", "Lines" => $lines,"FinancialLines" => []]]);
 
             // Save invoice data
+            $OrderNo = "SO".str_pad(rand(0,9999), 4, '0', STR_PAD_LEFT);
+            $InvoiceNo = "INV".str_pad(rand(0,9999), 4, '0', STR_PAD_LEFT);
+            $InvoiceDate = Carbon::now();
             $invoice = Invoice::create([
                 'user_id' => $customer->id,
                 'reference' => $payment->reference,
                 'discount' => "0",
                 'transaction' => $transaction,
-                'sales_order_no' => $response['OrderNo'],
-                'invoice_no' => $response['OrderNo'],
-                'invoice_date'=> $response['InvoiceDate'],
+                'sales_order_no' => $OrderNo,
+                'invoice_no' => $InvoiceNo,
+                'invoice_date'=> $InvoiceDate,
                 'currency' => $payment->currency
             ]);
             $counts = count($issues);

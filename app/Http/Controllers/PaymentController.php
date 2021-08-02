@@ -181,17 +181,20 @@ class PaymentController extends Controller
                 $lines = [["StockCode" => (string)$issues[0], "WarehouseCode" => "Mstr", "TaxCode" => "1", "Quantity" => (double)$quantity[0], "ToProcess" => (double)$quantity[0], "UnitPrice" => (double)$amounts[0]], ["StockCode" => (string)$issues[1], "WarehouseCode" => "Mstr", "TaxCode" => "1", "Quantity" => (double)$quantity[1], "ToProcess" => (double)$quantity[1], "UnitPrice" => (double)$amounts[1]], ["StockCode" => (string)$issues[2], "WarehouseCode" => "Mstr", "TaxCode" => "1", "Quantity" => (double)$quantity[2], "ToProcess" => (double)$quantity[2], "UnitPrice" => (double)$amounts[2]], ["StockCode" => (string)$issues[3], "WarehouseCode" => "Mstr", "TaxCode" => "1", "Quantity" => (double)$quantity[3], "ToProcess" => (double)$quantity[3], "UnitPrice" => (double)$amounts[3]]];
             }
             $sage = new SageEvolution();
-            $response = $sage->postTransaction('SalesOrderPlaceOrder', (object)["quote" =>["CustomerAccountCode" => $customer->customer_code, "OrderDate" => "\/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)\/", "InvoiceDate" => "\/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)\/", "Lines" => $lines,"FinancialLines" => []]]);
+            $response = $sage->postTransaction('SalesOrderPlaceOrder', (object)["quote" =>["CustomerAccountCode" => $customer->customer_code, "OrderDate" => "/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)/", "InvoiceDate" => "/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)/", "Lines" => $lines,"FinancialLines" => []]]);
 
             // Save invoice data
+            $OrderNo = "SO".str_pad(rand(0,9999), 4, '0', STR_PAD_LEFT);
+            $InvoiceNo = "INV".str_pad(rand(0,9999), 4, '0', STR_PAD_LEFT);
+            $InvoiceDate = Carbon::now();
             $invoice = Invoice::create([
                 'user_id' => $customer->id,
                 'reference' => $orderId,
                 'discount' => "0",
                 'transaction' => $transaction,
-                'sales_order_no' => $response['OrderNo'],
-                'invoice_no' => $response['OrderNo'],
-                'invoice_date'=> $response['InvoiceDate'],
+                'sales_order_no' => $OrderNo,
+                'invoice_no' => $InvoiceNo,
+                'invoice_date'=> $InvoiceDate,
                 'currency' => $currency
             ]);
             $counts = count($issues);
