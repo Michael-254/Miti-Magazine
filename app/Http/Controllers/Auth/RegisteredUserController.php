@@ -67,12 +67,6 @@ class RegisteredUserController extends Controller
         
 		$customerCode = $this->getCustomerCode($names);
 
-		$user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
 		$sage = new SageEvolution();
 		$customerExists = $sage->getTransaction('CustomerExists?Code='.$customerCode);
 		if($customerExists == "true") {
@@ -80,15 +74,17 @@ class RegisteredUserController extends Controller
 			$response = json_decode($customerFind, true);
 			if($response["Description"] != $names) {
 				$customerCode = $this->getCustomerCode($names);
-			
-				$user->update(['customer_code' => $customerCode]);
-
-				$customerInsert = $sage->postTransaction('CustomerInsert', (object)["client" => ["Active" => true, "Description" => $names, "ChargeTax" => true, "Code" => $customerCode]]);
 			}
 		}
-		else {
-			$customerInsert = $sage->postTransaction('CustomerInsert', (object)["client" => ["Active" => true, "Description" => $names, "ChargeTax" => true, "Code" => $customerCode]]);
-		}
+		
+		$user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'customer_code' => $customerCode,
+            'password' => Hash::make($request->password),
+        ]);
+
+        $customerInsert = $sage->postTransaction('CustomerInsert', (object)["client" => ["Active" => true, "Description" => $names, "ChargeTax" => true, "Code" => $customerCode]]);
 
         event(new Registered($user));
 
