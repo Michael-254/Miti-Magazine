@@ -9,8 +9,8 @@
             <div class="slide-captions text-center">
 
                 <h2 class="text-uppercase text-medium text-light">Welcome to Miti Magazine</h2>
-                <p class="lead text-light">Miti is a high-quality quarterly on forestry in East Africa,
-                    <br /> providing specialist information beautifully presented. Since 2009.
+                <p class="lead text-light">Miti is a high-quality quarterly publication on forestry in East Africa,
+                    <br /> providing specialist information in an attractive way since 2009.
                 </p>
                 <a class="btn btn-primary" href="{{route('choose.plan')}}">Start your Subscription Now</a>
             </div>
@@ -47,7 +47,7 @@
 
 <section class="bg-success text-center">
     <div class="container" data-animate="fadeInUp" data-animate-delay="0">
-        <h3 class="lead text-light">Wish to View Previous Issues and purchase each @ 250 KSH
+        <h3 class="lead text-light">Wish to View Previous Miti Magazine issues and purchase
         </h3>
         <a class="btn btn-primary" href="{{route('previous.issues')}}">View Now</a>
     </div>

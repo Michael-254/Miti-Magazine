@@ -29,17 +29,15 @@
                 <div class="row text-white">
                     <div class="col-md-6">
                         <ul class="top-menu">
-                            <li><a href="#">Phone: +254 (0)20 3594200</a></li>
+                            <li><a href="#">Phone: +254 719619006</a></li>
                             <li><a href="#">Email: miti-magazine@betterglobeforestry.com</a></li>
                         </ul>
                     </div>
                     <div class="col-md-6 d-none d-sm-block">
                         <div class="social-icons social-icons-colored-hover">
                             <ul>
-                                <li class="social-facebook"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                <li class="social-twitter"><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                <li class="social-google"><a href="#"><i class="fab fa-google-plus-g"></i></a></li>
-                                <li class="social-youtube"><a href="#"><i class="fab fa-youtube"></i></a></li>
+                                <li class="social-facebook"><a href="https://www.facebook.com/Miti-Magazine-The-Tree-Farmers-Magazine-For-Africa-102404213169518"><i class="fab fa-facebook-f"></i></a></li>
+                                <li class="social-youtube"><a href="https://www.youtube.com/channel/UCm5OFlhfyL_2SqqSD9G5C-Q"><i class="fab fa-youtube"></i></a></li>
                             </ul>
                         </div>
                     </div>
@@ -106,7 +104,9 @@
                                     <a href="#"><i class="icon-clock"></i></a>
                                 </div>
                                 <h3>Quick Links</h3>
-                                <p class="mb-4 text-sm">Better Globe Forestry <strong>Website</strong></p>
+                                <p class="mb-4 text-sm">Better Globe Forestry LTD
+                                    <a href="https://www.betterglobeforestry.com/index.html">Website</a>
+                                </p>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -129,7 +129,7 @@
                                 </div>
                                 <h3>Contact</h3>
                                 <p><strong>Phone:</strong>
-                                    <br> +254 (0)20 3594200.
+                                    <br> +254 719619006
                                     <br>
                                 </p>
                             </div>
@@ -144,15 +144,14 @@
 
                             <div class="social-icons social-icons-colored float-left">
                                 <ul>
-                                    <li class="social-facebook"><a href="#"><i class="fab fa-facebook-f"></i></a></li>
-                                    <li class="social-twitter"><a href="#"><i class="fab fa-twitter"></i></a></li>
-                                    <li class="social-youtube"><a href="#"><i class="fab fa-youtube"></i></a></li>
+                                    <li class="social-facebook"><a href="https://www.facebook.com/Better-Globe-Forestry-Ltd-108623875892812"><i class="fab fa-facebook-f"></i></a></li>
+                                    <li class="social-youtube"><a href="https://www.youtube.com/channel/UCm5OFlhfyL_2SqqSD9G5C-Q"><i class="fab fa-youtube"></i></a></li>
                                 </ul>
                             </div>
 
                         </div>
                         <div class="col-lg-6">
-                            <div class="copyright-text text-center">&copy; 2021 Better Globe Forestry. All Rights Reserved.</div>
+                            <div class="copyright-text text-center">&copy; 2021 Better Globe Forestry LTD. All Rights Reserved.</div>
                         </div>
                     </div>
                 </div>

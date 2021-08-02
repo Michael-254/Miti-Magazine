@@ -4,7 +4,7 @@
 <section>
     <div class="container">
         <div class="text-xl text-center mb-3">
-            <h2 class="font-bold text-xl uppercase px-8 text-black">Previous Miti Issues (@250 KSH) Each</h2>
+            <h2 class="font-bold text-xl uppercase px-8 text-black">Previous MITI Magazine single issues for sale</h2>
             @livewire('cart-contain')
         </div>
         @if(session()->has('message'))
