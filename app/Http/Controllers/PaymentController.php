@@ -18,7 +18,9 @@ use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Magazine;
 use Carbon\Carbon;
+use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
@@ -168,7 +170,7 @@ class PaymentController extends Controller
 
                 $counts = count($issues);
                 foreach($counts as $key => $count) {
-                    array_push($lines, ["StockCode" => (string)$issues[$key], "TaxCode" => "1", "Quantity" => (double)$quantity[$key], "ToProcess" => (double)$quantity[$key], "UnitPrice" => (double)$amounts[$key]]);
+                    array_push($lines, ["StockCode" => (string)$issues[$key], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[$key], "ToProcess" => (double)$quantity[$key], "UnitPrice" => (double)$amounts[$key]]);
                 }
             }
             else {
@@ -177,20 +179,36 @@ class PaymentController extends Controller
                 $issues = $subscription->SubIssuesItemCode();
                 $quantity = $subscription->SubIssuesQuantity();
 
-                $lines = [["StockCode" => (string)$issues[0], "TaxCode" => "1", "Quantity" => (double)$quantity[0], "ToProcess" => (double)$quantity[0], "UnitPrice" => (double)$amounts[0]], ["StockCode" => (string)$issues[1], "TaxCode" => "1", "Quantity" => (double)$quantity[1], "ToProcess" => (double)$quantity[1], "UnitPrice" => (double)$amounts[1]], ["StockCode" => (string)$issues[2], "TaxCode" => "1", "Quantity" => (double)$quantity[2], "ToProcess" => (double)$quantity[2], "UnitPrice" => (double)$amounts[2]], ["StockCode" => (string)$issues[3], "TaxCode" => "1", "Quantity" => (double)$quantity[3], "ToProcess" => (double)$quantity[3], "UnitPrice" => (double)$amounts[3]]];
+                $lines = [["StockCode" => (string)$issues[0], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[0], "ToProcess" => (double)$quantity[0], "UnitPrice" => (double)$amounts[0]], ["StockCode" => (string)$issues[1], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[1], "ToProcess" => (double)$quantity[1], "UnitPrice" => (double)$amounts[1]], ["StockCode" => (string)$issues[2], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[2], "ToProcess" => (double)$quantity[2], "UnitPrice" => (double)$amounts[2]], ["StockCode" => (string)$issues[3], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[3], "ToProcess" => (double)$quantity[3], "UnitPrice" => (double)$amounts[3]]];
             }
             $sage = new SageEvolution();
             $response = $sage->postTransaction('SalesOrderProcessInvoice', (object)["quote" =>["CustomerAccountCode" => $customer->customer_code, "OrderDate" => "/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)/", "InvoiceDate" => "/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)/", "Lines" => $lines,"FinancialLines" => []]]);
 
             // Save invoice data
+            $code = Magazine::whereIssueNo($issues[0])->value('item_code');
+            $inventoryTransaction = $sage->getTransaction('InventoryTransactionListByItemCode?Code='.$code.'&OrderBy=1&PageNumber=1&PageSize=5000000');
+            $xml = simplexml_load_string($inventoryTransaction);
+            $json = json_encode($xml);
+            $responseInvoice = json_decode($json, true);
+            $OrderNo = "";
+            $InvoiceNo = "";
+            $InvoiceDate = "";
+            foreach($responseInvoice['InventoryTransactionDto'] as $key => $value) 
+            {
+                if(end($responseInvoice['InventoryTransactionDto']) == $value) {
+                    $OrderNo = $value['OrderNum'];
+                    $InvoiceNo = $value['Reference'];
+                    $InvoiceDate = Carbon::parse($value['Date']);
+                }
+            }
             $invoice = Invoice::create([
                 'user_id' => $customer->id,
                 'reference' => $orderId,
                 'discount' => "0",
                 'transaction' => $transaction,
-                'sales_order_no' => $response['OrderNo'],
-                'invoice_no' => $response['OrderNo'],
-                'invoice_date'=> $response['InvoiceDate'],
+                'sales_order_no' => $OrderNo,
+                'invoice_no' => $InvoiceNo,
+                'invoice_date'=> $InvoiceDate,
                 'currency' => $currency
             ]);
             $counts = count($issues);
@@ -249,7 +267,25 @@ class PaymentController extends Controller
      */
     public function sageTest(Request $request)
     {
-         $sage = new SageEvolution();
+        $sage = new SageEvolution();
+
+        $code = "MIT2021";
+        $inventoryTransaction = $sage->getTransaction('InventoryTransactionListByItemCode?Code='.$code.'&OrderBy=1&PageNumber=1&PageSize=5000000');
+        $xml = simplexml_load_string($inventoryTransaction);
+        $json = json_encode($xml);
+        $responseInvoice = json_decode($json, true);
+        $OrderNo = "";
+        $InvoiceNo = "";
+        $InvoiceDate = "";
+        foreach($responseInvoice['InventoryTransactionDto'] as $key => $value) 
+        {
+            if(end($responseInvoice['InventoryTransactionDto']) == $value) {
+                $OrderNo = $value['OrderNum'];
+                $InvoiceNo = $value['Reference'];
+                $InvoiceDate = Carbon::parse($value['Date']);
+            }
+        }
+        dd($OrderNo." / ".$InvoiceNo." / ".$InvoiceDate);
         // $response = $sage->getTransaction('CustomerFind?Code=CASH');
         // $response = $sage->getTransaction('CustomerExists?Code=CASH');
         // $response = $sage->getTransaction('CustomerList?OrderBy=1&PageNumber=1&PageSize=50');

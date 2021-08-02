@@ -18,7 +18,7 @@ class SageEvolution
      *
      * @var string
      */
-    private $baseUri = 'http://197.232.244.211:5000/freedom.core/Better Globe Forestry Ltd NEW/SDK/Rest/';
+    private $baseUri = 'http://107.180.88.92:5000/freedom.core/Demo/SDK/Rest/';
     private $baseUriBackUp = 'http://197.232.244.211:5000/freedom.core/Better Globe Forestry Ltd NEW/SDK/Rest/';
 
     /**
