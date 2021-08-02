@@ -18,6 +18,7 @@ use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\User;
 use App\Models\Role;
+use App\Models\Magazine;
 use Carbon\Carbon;
 use Stevebauman\Location\Facades\Location;
 use Illuminate\Support\Facades\Log;
@@ -184,9 +185,20 @@ class PaymentController extends Controller
             $response = $sage->postTransaction('SalesOrderProcessInvoice', (object)["quote" =>["CustomerAccountCode" => $customer->customer_code, "OrderDate" => "/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)/", "InvoiceDate" => "/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)/", "Lines" => $lines,"FinancialLines" => []]]);
 
             // Save invoice data
-            $OrderNo = "SO".str_pad(rand(0,9999), 4, '0', STR_PAD_LEFT);
-            $InvoiceNo = "INV".str_pad(rand(0,9999), 4, '0', STR_PAD_LEFT);
-            $InvoiceDate = Carbon::now();
+            $code = Magazine::whereIssueNo($issues[0])->value('item_code');
+            $inventoryTransaction = $sage->getTransaction('InventoryTransactionListByItemCode?Code='.$code.'&OrderBy=1&PageNumber=1&PageSize=5000000');
+            $responseInvoice = json_decode($inventoryTransaction, true);
+            $OrderNo = "";
+            $InvoiceNo = "";
+            $InvoiceDate = "";
+            foreach($responseInvoice as $value) 
+            {
+                if($loop->last) {
+                    $OrderNo = $value['OrderNum'];
+                    $InvoiceNo = $value['Reference'];
+                    $InvoiceDate = Carbon::parse($value['Date']);
+                }
+            }
             $invoice = Invoice::create([
                 'user_id' => $customer->id,
                 'reference' => $orderId,
