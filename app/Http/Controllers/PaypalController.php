@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Delights\Sage\SageEvolution;
+use PDF;
 use Mail;
 
 class PaypalController extends Controller
@@ -214,7 +215,7 @@ class PaypalController extends Controller
             $response = $sage->postTransaction('SalesOrderProcessInvoice', (object)["quote" =>["CustomerAccountCode" => $customer->customer_code, "OrderDate" => "\/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)\/", "InvoiceDate" => "\/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)\/", "Lines" => $lines,"FinancialLines" => []]]);
 
             // Save invoice data
-            $code = Magazine::whereIssueNo($issues[0])->value('item_code');
+            $code = $issues[0];
             $inventoryTransaction = $sage->getTransaction('InventoryTransactionListByItemCode?Code='.$code.'&OrderBy=1&PageNumber=1&PageSize=5000000');
             $xml = simplexml_load_string($inventoryTransaction);
             $json = json_encode($xml);
@@ -241,16 +242,17 @@ class PaypalController extends Controller
                 'currency' => $payment->currency
             ]);
             $counts = count($issues);
-            foreach($counts as $key => $count) {
+            foreach($issues as $key => $count) {
                 InvoiceItem::create([
                     'invoice_id' => $invoice->id,
                     'amount' => $amounts[$key],
-                    'issues' => $issues[$key],
-                    'quantities' => $quantity[$key]
+                    'issue' => Magazine::whereItemCode($issues[$key])->value('issue_no'),
+                    'quantity' => $quantity[$key]
                 ]);
             }
 
-            $pdf = PDF::loadView('invoice.invoice', $invoice);
+            $invoiceData = Invoice::with('user', 'items')->whereReference($orderId)->get()->toArray();
+            $pdf = PDF::loadView('invoice.invoicepdf', $invoiceData);
             $data = [
                 'intro'  => 'Hello '.$customer->name.',',
                 'content'   => 'Your order with reference: '.$payment->reference.' has been well received. Kindly find attached your invoice.',

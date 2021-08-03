@@ -2,15 +2,6 @@
 
 @section('content')
 <div class="content-body">
-    <!-- invoice functionality start -->
-    <section class="invoice-print mb-1">
-        <div class="row">
-            <div class="col-12 col-md-12 d-flex flex-column flex-md-row justify-content-end">
-                <button class="btn btn-primary btn-print mb-1 mb-md-0"> <i class="feather icon-file-text"></i> Print</button>
-            </div>
-        </div>
-    </section>
-    <!-- invoice functionality end -->
     <!-- invoice page -->
     <section class="card invoice-page">
         <div id="invoice-template" class="card-body">
@@ -25,9 +16,9 @@
                     <h1 class="font-bold text-3xl">Invoice</h1>
                     <div class="invoice-details mt-2">
                         <h6 class="font-bold">INVOICE NO.</h6>
-                        <p>{{ $invoice->invoice_no }}</p>
+                        <p>{{ $invoice['invoice_no'] }}</p>
                         <h6 class="mt-2 font-bold">INVOICE DATE</h6>
-                        <p>{{ \Carbon\Carbon::parse($invoice->invoice_date)->format('d-M-Y') }}</p>
+                        <p>{{ \Carbon\Carbon::parse($invoice['invoice_date'])->format('d-M-Y') }}</p>
                     </div>
                 </div>
             </div>
@@ -38,19 +29,19 @@
                 <div class="col-sm-6 col-12 text-left">
                     <h5>Recipient</h5>
                     <div class="recipient-info my-2">
-                        <p>{{ $invoice->user->name }}</p>
-                        <p>{{ $invoice->user->shippingInfo->address }}</p>
-                        <p>{{ $invoice->user->shippingInfo->city.", ".$invoice->user->shippingInfo->state }}</p>
-                        <p>{{ $invoice->user->shippingInfo->zip_code }}</p>
+                        <p>{{ $invoice['user']['name'] }}</p>
+                        <p>{{ $invoice['user']['shippingInfo']['address'] }}</p>
+                        <p>{{ $invoice['user']['shippingInfo']['city'].", ".$invoice['user']['shippingInfo']['state'] }}</p>
+                        <p>{{ $invoice['user']['shippingInfo']['zip_code'] }}</p>
                     </div>
                     <div class="recipient-contact pb-2">
                         <p>
                             <i class="feather icon-mail"></i>
-                            {{ $invoice->user->email }}
+                            {{ $invoice['user']['email'] }}
                         </p>
                         <p>
                             <i class="feather icon-phone"></i>
-                            {{ $invoice->user->phone_no }}
+                            {{ $invoice['user']['phone_no'] }}
                         </p>
                     </div>
                 </div>
@@ -82,14 +73,14 @@
                     <div class="table-responsive col-12">
                         <table class="table table-borderless">
                             <thead>
-                                @if($invoice->transaction == "Subscription")
+                                @if($invoice['transaction'] == "Subscription")
                                     <tr>
                                         <th>ITEM DESCRIPTION</th>
                                         <th>QUANTITY</th>
                                         <th>AMOUNT</th>
                                     </tr>
                                 @endif
-                                @if($invoice->transaction == "Cart Order")
+                                @if($invoice['transaction'] == "Cart Order")
                                     <tr>
                                         <th>ITEM DESCRIPTION</th>
                                         <th>QUANTITY</th>
@@ -99,23 +90,23 @@
                                 @endif
                             </thead>
                             <tbody>
-                                @if($invoice->transaction == "Subscription")
+                                @if($invoice['transaction'] == "Subscription")
                                     <tr>
-                                        <td>{{ "From issue: ".$invoice->items->first()->issue." to issue: ".$invoice->items->latest()->first()->issue }}</td>
-                                        <td>{{ $item->quantity * count($invoice->items) }}</td>
-                                        <td>{{ $invoice->getTotalAmount() }}</td>
+                                        <td>{{ "From issue: ".$item['items'][0]['issue']." to issue: ".$item['items'][count($invoice['items'])-1]['issue'] }}</td>
+                                        <td>{{ $item['quantity'] * count($invoice['items']) }}</td>
+                                        <td>{{ $invoice['items'][0]['amount'] }}</td>
                                     </tr>
                                 @endif
-                                @if($invoice->transaction == "Cart Order")
-                                    @foreach($invoice->items as $item)
+                                @if($invoice['transaction'] == "Cart Order")
+                                    @foreach($invoice['items'] as $item)
                                         <tr>
-                                            <td>{{ $item->issue }}</td>
-                                            <td>{{ $item->quantity }}</td>
-                                            <td>{{ $invoice->currency." ".$item->amount }}</td>
-                                            <td>{{ (int)$item->quantity * (int)$item->amount }}</td>
+                                            <td>{{ $item['issue'] }}</td>
+                                            <td>{{ $item['quantity'] }}</td>
+                                            <td>{{ $invoice['currency']." ".$item['amount'] }}</td>
+                                            <td>{{ (int)$item['quantity'] * (int)$item['amount'] }}</td>
                                         </tr>
                                     @endforeach
-                                @endif
+                                @endif                                
                             </tbody>
                         </table>
                     </div>
@@ -129,15 +120,15 @@
                                 <tbody>
                                     <tr>
                                         <th>SUBTOTAL</th>
-                                        <td>{{ $invoice->currency." ".((int)$invoice->getTotalAmount() - (int)$invoice->discount) }}</td>
+                                        <td>{{ $invoice['currency']." ".((int)$invoice['items'][0]['amount'] - (int)$invoice['discount']) }}</td>
                                     </tr>
                                     <tr>
                                         <th>DISCOUNT</th>
-                                        <td>{{ $invoice->currency." ".$invoice->discount }}</td>
+                                        <td>{{ $invoice['currency']." ".$invoice['discount'] }}</td>
                                     </tr>
                                     <tr>
                                         <th>TOTAL</th>
-                                        <td>{{ $invoice->currency." ".$invoice->getTotalAmount() }}</td>
+                                        <td>{{ $invoice['currency']." ".$invoice['items'][0]['amount'] }}</td>
                                     </tr>
                                 </tbody>
                             </table>
