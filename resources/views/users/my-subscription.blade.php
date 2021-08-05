@@ -51,7 +51,6 @@
                                                     <div class="col-lg-4 col-md-6 col-sm-12">
                                                         <div class="card border-info text-center bg-transparent">
                                                             <div class="card-content">
-                                                                <img src="https://akcdn.magzter.com/images/family_sharing_bg.png" alt="element 04" width="200" class="float-left mt-3 pl-2">
                                                                 <div class="card-body">
                                                                     <h4 class="card-title mt-3">You currently have no subscription</h4>
                                                                     <p class="card-text mb-25">Subscribe now to enjoy Miti Magazine Issues</p>
@@ -96,7 +95,7 @@
                                                     <div class="col-lg-4 col-md-6 col-sm-12">
                                                         <div class="card border-info text-center bg-transparent">
                                                             <div class="card-content">
-                                                                <img src="https://akcdn.magzter.com/images/family_sharing_bg.png" alt="element 04" width="200" class="float-left mt-3 pl-2">
+                                                                <img src="{{asset('storage/read.jpg')}}" alt="element 04" width="200" class="float-left mt-3 pl-2">
                                                                 <div class="card-body">
                                                                     <h4 class="card-title mt-3">You have not been invited to any subscription</h4>
                                                                 </div>

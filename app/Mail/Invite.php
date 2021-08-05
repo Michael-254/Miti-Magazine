@@ -34,6 +34,8 @@ class Invite extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.invite')->subject('Invitation to online Miti Magazine');
+        return $this->markdown('emails.invite')
+        ->subject('Invitation to online Miti Magazine')
+        ->replyTo('miti-magazine@betterglobeforestry.com');
     }
 }

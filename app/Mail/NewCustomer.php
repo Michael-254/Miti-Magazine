@@ -33,6 +33,8 @@ class NewCustomer extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.new_customer')->subject('Successful Registration');
+        return $this->markdown('emails.new_customer')
+        ->subject('Successful Registration')
+        ->replyTo('miti-magazine@betterglobeforestry.com');
     }
 }

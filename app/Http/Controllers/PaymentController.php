@@ -222,7 +222,7 @@ class PaymentController extends Controller
                 ]);
             }
 
-            $invoiceData = Invoice::with('user', 'items')->whereReference($orderId)->get()->toArray();
+            $invoiceData = Invoice::with('user', 'items')->whereReference($orderId)->first()->toArray();
             $pdf = PDF::loadView('invoice.invoicepdf', $invoiceData);
             $data = [
                 'intro'  => 'Hello '.$customer->name.',',
@@ -240,7 +240,7 @@ class PaymentController extends Controller
             // Login the user
             Auth::login($customer);
             
-            return redirect('/user/profile')->with('ok', 'Your iPay payment has been received, wait for confirmation');
+            return redirect('/user/profile')->with('message', 'Your iPay payment has been received, wait for confirmation');
         }
     }
 

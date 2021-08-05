@@ -16,8 +16,7 @@ Have questions? Please, Email <span class="text-success">miti-magazine@betterglo
 <small class="text-sm">
 Thanks,<br>
 Enjoy!<br>
-Claudiah Caroline Deprins<br>
-Communications Manager<br>
+Miti Magazine Team<br>
 Better Globe Forestry LTD. 
 </small>
 

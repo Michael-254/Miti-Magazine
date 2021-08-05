@@ -137,7 +137,7 @@ class PaypalController extends Controller
         // Login the user
         Auth::login($customer);
 		
-        return redirect('/user/profile')->with('ok', 'Your Paypal payment has been received, wait for confirmation');
+        return redirect('/user/profile')->with('message', 'Your Paypal payment has been received, wait for confirmation');
     }
 
     /**
@@ -251,7 +251,7 @@ class PaypalController extends Controller
                 ]);
             }
 
-            $invoiceData = Invoice::with('user', 'items')->whereReference($orderId)->get()->toArray();
+            $invoiceData = Invoice::with('user', 'items')->whereReference($orderId)->first()->toArray();
             $pdf = PDF::loadView('invoice.invoicepdf', $invoiceData);
             $data = [
                 'intro'  => 'Hello '.$customer->name.',',

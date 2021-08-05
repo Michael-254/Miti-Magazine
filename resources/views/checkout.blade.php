@@ -76,7 +76,7 @@
                                                     <span class="amount">{{$cart->quantity}}</span>
                                                 </td>
                                                 <td class="cart-product-name  text-right">
-                                                    @<span class="amount">{{$cart->price}}KSH</span>
+                                                    <span class="amount">{{$cart->price}}KSH</span>
                                                 </td>
                                             </tr>
                                             @endforeach
