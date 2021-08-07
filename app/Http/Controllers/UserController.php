@@ -65,9 +65,11 @@ class UserController extends Controller
     {
         $ipaypayments = Payment::where([['user_id', '=', auth()->id()], ['status', '=', 'verified']])
             ->select('id', 'amount', 'reference', 'updated_at', 'channel')
+            ->latest()
             ->paginate(8);
         $paypalpayments = Paypal::where([['user_id', '=', auth()->id()], ['status', '=', 'verified']])
             ->select('id', 'amount', 'reference', 'updated_at')
+            ->latest()
             ->paginate(8);
         return view('users.my-payments', compact('ipaypayments', 'paypalpayments'));
     }
