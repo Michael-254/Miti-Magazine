@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Online Miti Magazine | Better Globe Forestry LTD</title>
+	<title>DotNetTec - Invoice html template bootstrap</title>
 	<style type="text/css" media="screen">
 		html {
 			font-family: sans-serif;
@@ -147,28 +147,30 @@
 <body>
 	<!-- invoice page -->
 	<section class="card">
-		<div  class="card-body">
+		<div class="card-body">
 			<!-- Invoice Company Details -->
 			<div class="row">
-        <table style="width: 100%;">
-          <tr>
-            <td>
-              <div class="col-sm-6 col-12 text-left pt-1">
-                <div class="media pt-1">
-                  <img src="{{asset('storage/logo.png')}}" width="100" height="100" alt="company logo" />
-                </div>
-              </div>
-            </td>
-            <td>
-              <div class="col-sm-6 col-12 text-right">
-                <div class="invoice-details mt-2">
-                  <p class="text-green-800">INVOICE NO: {{ $invoice_no }}</p>
-                  <p class="text-green-800">INVOICE DATE: {{ \Carbon\Carbon::parse($invoice_date)->format('d-M-Y') }}</p>
-                </div>
-              </div>
-            </td>
-          </tr>
-        </table>
+				<table style="width: 100%;">
+					<tr>
+						<td>
+							<div class="col-sm-6 col-12 text-left pt-1">
+								<div class="media pt-1">
+									<img src="https://miti-magazine.betterglobeforestry.com/storage/logo.png" width="100" height="100" alt="company logo" />
+								</div>
+							</div>
+						</td>
+						<td>
+							<div class="col-sm-6 col-12 text-right">
+								<div class="invoice-details mt-2">
+									<p class="text-green-800">INVOICE NO: {{ $invoice_no }}</p>
+									<p class="text-green-800">DATE: {{
+										\Carbon\Carbon::parse($invoice_date)->format('d-M-Y') }}</p>
+									<p class="text-green-800">KRA PIN: P051167447E</p>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</table>
 
 
 			</div>
@@ -176,35 +178,35 @@
 
 			<!-- Invoice Recipient Details -->
 			<div class="row mt-2">
-        <table style="width: 100%;">
-          <tr>
-            <td>
-              <div class="col-sm-6 ">
-                @php
-                $Owner = \App\Models\User::find($user['id']);
-                @endphp
-                <h5 class="mb-3">To:</h5>
-                <h3 class="text-dark mb-1">{{ $user['name'] }}</h3>
-                <div>{{ $Owner->shippingInfo->address  }}</div>
-                <div>{{ $Owner->shippingInfo->city.", ".$Owner->shippingInfo->state }}</div>
-                <div>{{ $Owner->shippingInfo->zip_code }}</div>
-                <div>Email: {{ $user['email'] }}</div>
-                <div>Phone: {{ $user['phone_no'] }}</div>
-              </div>
-            </td>
-            <td>
-              <div class="col-sm-6">
-                <h5 class="mb-3">From:</h5>
-                <h3 class="text-dark mb-1">Better Globe Forestry</h3>
-                <div>Tabere Cresecent, Kileleshwa</div>
-                <div>Nairobi, Kenya</div>
-                <div>823-00606</div>
-                <div>Email: miti-magazine@betterglobeforestry.com</div>
-                <div>Phone: +254 (0)20 3594200</div>
-              </div>
-            </td>
-          </tr>
-        </table>
+				<table style="width: 100%;">
+					<tr>
+						<td>
+							<div class="col-sm-6 ">
+								@php
+								$Owner = \App\Models\User::find($user['id']);
+								@endphp
+								<h5 class="mb-3">To:</h5>
+								<h3 class="text-dark mb-1">{{ $user['name'] }}</h3>
+								<div>{{ $Owner->shippingInfo->address }}</div>
+								<div>{{ $Owner->shippingInfo->city.", ".$Owner->shippingInfo->state }}</div>
+								<div>{{ $Owner->shippingInfo->zip_code }}</div>
+								<div>Email: {{ $user['email'] }}</div>
+								<div>Phone: {{ $user['phone_no'] }}</div>
+							</div>
+						</td>
+						<td>
+							<div class="col-sm-6">
+								<h5 class="mb-3">From:</h5>
+								<h3 class="text-dark mb-1">Better Globe Forestry</h3>
+								<div>Tabere Cresecent, Kileleshwa</div>
+								<div>Nairobi, Kenya</div>
+								<div>823-00606</div>
+								<div>Email: miti-magazine@betterglobeforestry.com</div>
+								<div>Phone: +254 (0)20 3594200</div>
+							</div>
+						</td>
+					</tr>
+				</table>
 
 
 			</div>
@@ -215,43 +217,44 @@
 				<div class="row">
 					<div class="table-responsive col-12">
 						<table class="table table-striped">
-              <thead>
-                @if($transaction == "Subscription")
-                                      <tr>
-                                          <th class="right">ITEM DESCRIPTION</th>
-                                          <th class="center">QUANTITY TO RECEIVE PER ISSUE</th>
-                                          <th class="right">AMOUNT</th>
-                                      </tr>
-                                      @endif
-                                      @if($transaction == "Cart Order")
-                                      <tr>
-                                          <th class="right">ITEM DESCRIPTION</th>
-                                          <th class="center">QUANTITY</th>
-                                          <th class="center">UNIT PRICE</th>
-                                          <th class="right">SUB-TOTAL</th>
-                                      </tr>
-                                      @endif
-              </thead>
-              <tbody>
-                @if($transaction == "Subscription")
-                <tr>
-                  <td class="left strong">{{ "From issue: ".$items[0]['issue']." to issue: ".$items[count($items)-1]['issue'] }}</td>
-                  <td class="center">{{ $items[0]['quantity'] }}</td>
-                  <td class="right">{{ $items[0]['amount'] * 4 }}</td>
-                </tr>
-                @endif
-                @if($transaction == "Cart Order")
-                @foreach($items as $item)
-                <tr>
-                  <td class="left strong">{{ $item['issue'] }}</td>
-                  <td class="center">{{ $item['quantity'] }}</td>
-                  <td class="center">{{ $currency." ".$item['amount'] }}</td>
-                  <td class="right">{{ $item['quantity'] * $item['amount'] }}</td>
-                </tr>
-                @endforeach
-                @endif
-              </tbody>
-            </table>
+							<thead>
+								@if($transaction == "Subscription")
+								<tr>
+									<th class="right">ITEM DESCRIPTION</th>
+									<th class="center">QUANTITY TO RECEIVE PER ISSUE</th>
+									<th class="right">AMOUNT</th>
+								</tr>
+								@endif
+								@if($transaction == "Cart Order")
+								<tr>
+									<th class="right">ITEM DESCRIPTION</th>
+									<th class="center">QUANTITY</th>
+									<th class="center">UNIT PRICE</th>
+									<th class="right">SUB-TOTAL</th>
+								</tr>
+								@endif
+							</thead>
+							<tbody>
+								@if($transaction == "Subscription")
+								<tr>
+									<td class="left strong">Miti Magazine {{ "From issue: ".$items[0]['issue']." to issue:
+										".$items[count($items)-1]['issue'] }}</td>
+									<td class="center">{{ $items[0]['quantity'] }}</td>
+									<td class="right">{{ $items[0]['amount'] * 4 }}</td>
+								</tr>
+								@endif
+								@if($transaction == "Cart Order")
+								@foreach($items as $item)
+								<tr>
+									<td class="left strong">Miti Magazine {{ $item['issue'] }}</td>
+									<td class="center">{{ $item['quantity'] }}</td>
+									<td class="center">{{ $currency." ".$item['amount'] }}</td>
+									<td class="right">{{ $item['quantity'] * $item['amount'] }}</td>
+								</tr>
+								@endforeach
+								@endif
+							</tbody>
+						</table>
 					</div>
 				</div>
 			</div>
@@ -260,52 +263,55 @@
 					<div class="col-7 offset-5">
 						<div class="table-responsive">
 							<table class="table table-clear">
-                <tbody>
-                  @if($transaction == "Subscription")
-                    <tr>
-                      <td class="left">
-                        <strong class="text-dark">Subtotal</strong>
-                      </td>
-                      <td class="right">{{ $currency." ".($items[0]['amount'] * 4) }}</td>
-                    </tr>
-                    <tr>
-                      <td class="left">
-                        <strong class="text-dark">Discount</strong>
-                      </td>
-                      <td class="right">{{ $currency." ".$discount }}</td>
-                    </tr>
-                    <tr>
-                      <td class="left">
-                        <strong class="text-dark">Total</strong>
-                      </td>
-                      <td class="right">
-                        <strong class="text-dark">{{ $currency." ".(($items[0]['amount'] * 4) - $discount) }}</strong>
-                      </td>
-                    </tr>
-                  @else
-                    <tr>
-                      <td class="left">
-                        <strong class="text-dark">Subtotal</strong>
-                      </td>
-                      <td class="right">{{ $currency." ".(($items[0]['amount'] * count($items) ) - $discount) }}</td>
-                    </tr>
-                    <tr>
-                      <td class="left">
-                        <strong class="text-dark">Discount</strong>
-                      </td>
-                      <td class="right">{{ $currency." ".$discount }}</td>
-                    </tr>
-                    <tr>
-                      <td class="left">
-                        <strong class="text-dark">Total</strong>
-                      </td>
-                      <td class="right">
-                        <strong class="text-dark">{{ $currency." ".(($items[0]['amount'] * count($items) ))  }}</strong>
-                      </td>
-                    </tr>
-                   @endif
-                </tbody>
-              </table>
+								<tbody>
+									@if($transaction == "Subscription")
+									<tr>
+										<td class="left">
+											<strong class="text-dark">Subtotal</strong>
+										</td>
+										<td class="right">{{ $currency." ".($items[0]['amount'] * 4) }}</td>
+									</tr>
+									<tr>
+										<td class="left">
+											<strong class="text-dark">Discount</strong>
+										</td>
+										<td class="right">{{ $currency." ".$discount }}</td>
+									</tr>
+									<tr>
+										<td class="left">
+											<strong class="text-dark">Total</strong>
+										</td>
+										<td class="right">
+											<strong class="text-dark">{{ $currency." ".(($items[0]['amount'] * 4) -
+												$discount) }}</strong>
+										</td>
+									</tr>
+									@else
+									<tr>
+										<td class="left">
+											<strong class="text-dark">Subtotal</strong>
+										</td>
+										<td class="right">{{ $currency." ".(($items[0]['amount'] * count($items) ) -
+											$discount) }}</td>
+									</tr>
+									<tr>
+										<td class="left">
+											<strong class="text-dark">Discount</strong>
+										</td>
+										<td class="right">{{ $currency." ".$discount }}</td>
+									</tr>
+									<tr>
+										<td class="left">
+											<strong class="text-dark">Total</strong>
+										</td>
+										<td class="right">
+											<strong class="text-dark">{{ $currency." ".(($items[0]['amount'] *
+												count($items) )) }}</strong>
+										</td>
+									</tr>
+									@endif
+								</tbody>
+							</table>
 						</div>
 					</div>
 				</div>
@@ -313,10 +319,7 @@
 
 			<!-- Invoice Footer -->
 			<div id="invoice-footer" class="text-right pt-3">
-				<p>www.betterglobeforestry.com.
-				<p class="bank-details mb-0">
-					<span class="mr-4">PIN: <strong>P051167447E</strong></span>
-				</p>
+				<p>miti-magazine.betterglobeforestry.com.
 			</div>
 			<!--/ Invoice Footer -->
 

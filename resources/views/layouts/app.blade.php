@@ -187,6 +187,8 @@
                             </li>
                             <li data-menu="" class="{{ (request()->is('admin/file-manager')) ? 'active' : '' }}"><a class="dropdown-item" href="{{route('manage.magazines')}}" data-toggle="dropdown" data-i18n="2 columns">Manage Magazines</a>
                             </li>
+                            <li data-menu="" class="{{ (request()->is('admin/ExchangeRates')) ? 'active' : '' }}"><a class="dropdown-item" href="{{route('exchange.rates')}}" data-toggle="dropdown" data-i18n="2 columns">Exchange Rates</a>
+                            </li>
                         </ul>
                     </li>
                     @endadmin

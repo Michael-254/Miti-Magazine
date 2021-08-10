@@ -3,7 +3,7 @@
 @section('content')
 <div id="slider" class="inspiro-slider slider-halfscreen dots-creative" data-height-xs="360" data-autoplay="2600" data-animate-in="fadeIn" data-animate-out="fadeOut" data-items="1" data-loop="true" data-autoplay="true">
 
-    <div class="slide background-image" style="background-image:url('/storage/drp.jpg');">
+    <div class="slide background-image" style="background-image:url('/storage/drp.JPG');">
         <div class="bg-overlay"></div>
         <div class="container">
             <div class="slide-captions text-center">

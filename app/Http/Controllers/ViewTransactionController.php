@@ -38,4 +38,9 @@ class ViewTransactionController extends Controller
             return view('invoice/invoice', compact('invoice'));
         }
     }
+
+    public function rates()
+    {
+        return view('admin/exchange');
+    }
 }

@@ -15,15 +15,6 @@
                         <div class="tab-pane active" id="account" aria-labelledby="account-tab" role="tabpanel">
                             <!-- Success Message -->
                             @include('partials.alertB')
-                            @if(session()->has('ok'))
-                            @include('partials/alert', ['type' => 'success', 'message' => session('success')])
-                            @endif
-                            @if(session()->has('info'))
-                            @include('partials/alert', ['type' => 'warning', 'message' => session('info')])
-                            @endif
-                            @if(isset($info))
-                            @include('partials/alert', ['type' => 'info', 'message' => $info])
-                            @endif
                             <!-- Validation Errors -->
                             <x-auth-validation-errors class="mb-2" :errors="$errors" />
                             @if(!auth()->user()->hasVerifiedEmail())
