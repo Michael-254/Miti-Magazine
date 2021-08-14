@@ -18,7 +18,11 @@
                                 <select name="country" class="border rounded h-10 w-full focus:outline-none focus:border-green-200 px-2 mt-2 text-sm">
                                     <option value="">-- Select your country --</option>
                                     @foreach($countries as $country)
+                                    @if (old('country') == $country->id)
+                                    <option value="{{$country->id}}" selected>{{$country->country}}</option>
+                                    @else
                                     <option value="{{$country->id}}">{{$country->country}}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>

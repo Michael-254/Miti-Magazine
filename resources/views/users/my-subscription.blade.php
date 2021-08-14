@@ -16,14 +16,14 @@
                         <div class="card-body">
                             <ul class="nav nav-pills nav-fill">
                                 <li class="nav-item">
-                                    <a class="nav-link" id="home-tab-fill" data-toggle="pill" href="#home-fill" aria-expanded="true">Purchased Magazines</a>
+                                    <a class="nav-link active" id="home-tab-fill" data-toggle="pill" href="#home-fill" aria-expanded="true">Purchased Magazines</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="profile-tab-fill" data-toggle="pill" href="#profile-fill" aria-expanded="false">Invited Magazines</a>
+                                    <a class="nav-link" id="profile-tab-fill" data-toggle="pill" href="#profile-fill" aria-expanded="false">Invited Magazines</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
-                                <div role="tabpanel" class="tab-pane" id="home-fill" aria-labelledby="home-tab-fill" aria-expanded="true">
+                                <div role="tabpanel" class="tab-pane  active" id="home-fill" aria-labelledby="home-tab-fill" aria-expanded="true">
 
                                     <div class="row">
                                         <div class="col-12">
@@ -66,7 +66,7 @@
                                     </div>
 
                                 </div>
-                                <div class="tab-pane active" id="profile-fill" role="tabpanel" aria-labelledby="profile-tab-fill" aria-expanded="false">
+                                <div class="tab-pane" id="profile-fill" role="tabpanel" aria-labelledby="profile-tab-fill" aria-expanded="false">
 
                                     <div class="row">
                                         <div class="col-12">

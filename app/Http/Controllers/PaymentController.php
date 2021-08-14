@@ -14,6 +14,7 @@ use App\Models\Amount;
 use App\Models\Order;
 use App\Models\CartOrder;
 use App\Models\CartItem;
+use App\Models\ExchangeRate;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\User;
@@ -78,15 +79,18 @@ class PaymentController extends Controller
         }
         elseif ($currency == 'TSh') {
             $currency = "KES";
-            $amount = round($amount/21);
+            $rate = ExchangeRate::where('currency','=','KSH')->value('TSH');
+            $amount = round($amount/$rate);
         }
         elseif ($currency == 'UGX') {
             $currency = "KES";
-            $amount = round($amount/33);
+            $rate = ExchangeRate::where('currency','=','KSH')->value('UGX');
+            $amount = round($amount/$rate);
         }
         else {
             $currency = "KES";
-            $amount = round($amount*109);
+            $rate = ExchangeRate::where('currency','=','USD')->value('KSHS_USD');
+            $amount = round($amount*$rate);
         }
         Session::put('user_currency', $currency);
         Session::put('user_amount', $amount);

@@ -11,6 +11,7 @@ use App\Models\Amount;
 use App\Models\Order;
 use App\Models\CartOrder;
 use App\Models\CartItem;
+use App\Models\ExchangeRate;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
 use App\Models\User;
@@ -62,36 +63,36 @@ class PaypalController extends Controller
 
         if ($currency == 'KSh') {
             $currency = "USD";
-            $amount = round($amount/109);
-        }
-        elseif ($currency == 'TSh') {
+            $rate = ExchangeRate::where('currency', '=', 'USD')->value('KSHS_USD');
+            $amount = round($amount / $rate);
+        } elseif ($currency == 'TSh') {
             $currency = "USD";
-            $amount = round($amount/2319);
-        }
-        elseif ($currency == 'UGX') {
+            $rate = ExchangeRate::where('currency', '=', 'USD')->value('TSH');
+            $amount = round($amount / $rate);
+        } elseif ($currency == 'UGX') {
             $currency = "USD";
-            $amount = round($amount/3556);
-        }
-        else {
+            $rate = ExchangeRate::where('currency', '=', 'USD')->value('UGX');
+            $amount = round($amount / $rate);
+        } else {
             $currency = "USD";
         }
         Session::put('user_currency', $currency);
         Session::put('user_amount', $amount);
 
         $order = $provider->createOrder([
-            "intent"=> "CAPTURE",
-            "purchase_units"=> [
+            "intent" => "CAPTURE",
+            "purchase_units" => [
                 0 => [
                     "reference_id" => $referenceId,
-                    "amount"=> [
-                        "currency_code"=> $currency,
-                        "value"=> $amount
+                    "amount" => [
+                        "currency_code" => $currency,
+                        "value" => $amount
                     ]
                 ]
             ],
             'application_context' => [
-                 'cancel_url' => env('APP_URL').'/paypal/cancel',
-                 'return_url' => env('APP_URL').'/paypal/success'
+                'cancel_url' => env('APP_URL') . '/paypal/cancel',
+                'return_url' => env('APP_URL') . '/paypal/success'
             ]
         ]);
 
@@ -133,10 +134,22 @@ class PaypalController extends Controller
         $paypalToken = $request->get('token');
         $PayerID = $request->get('PayerID');
         $payment = Payment::where('paypal_order_id', $order_id)->update(['token' => $paypalToken, 'PayerId' => $PayerID]);
-		
+
+        $data = [
+            'intro'  => 'Dear ' . $customer->name . ',',
+            'content'   => 'Your order  has been well received. Kindly go to your paypal account and approve the payment.',
+            'name' => $customer->name,
+            'email' => $customer->email,
+            'subject'  => 'Successful Payment for Order No. ' . $payment->reference
+        ];
+        Mail::send('emails.paypal-mail', $data, function ($message) use ($data) {
+            $message->to($data['email'], $data['name'])
+                ->subject($data['subject']);
+        });
+
         // Login the user
         Auth::login($customer);
-		
+
         return redirect('/user/profile')->with('message', 'Your Paypal payment has been received, wait for confirmation');
     }
 
@@ -192,40 +205,38 @@ class PaypalController extends Controller
             $transaction = "";
             $subscription = Subscription::where('reference', $payment->reference)->first();
             $cartOrder = CartOrder::where('reference', $payment->reference)->first();
-            if($cartOrder != null) {
+            if ($cartOrder != null) {
                 $transaction = "Cart Order";
                 $amounts = $cartOrder->SubIssuesAmount();
                 $issues = $cartOrder->SubIssuesItemCode();
                 $quantity = $cartOrder->SubIssuesQuantity();
 
                 $counts = count($issues);
-                foreach($counts as $key => $count) {
-                    array_push($lines, ["StockCode" => (string)$issues[$key], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[$key], "ToProcess" => (double)$quantity[$key], "UnitPrice" => (double)$amounts[$key]]);
+                foreach ($counts as $key => $count) {
+                    array_push($lines, ["StockCode" => (string)$issues[$key], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (float)$quantity[$key], "ToProcess" => (float)$quantity[$key], "UnitPrice" => (float)$amounts[$key]]);
                 }
-            }
-            else {
+            } else {
                 $transaction = "Subscription";
                 $amounts = $subscription->SubIssuesAmount();
                 $issues = $subscription->SubIssuesItemCode();
                 $quantity = $subscription->SubIssuesQuantity();
 
-                $lines = [["StockCode" => (string)$issues[0], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[0], "ToProcess" => (double)$quantity[0], "UnitPrice" => (double)$amounts[0]], ["StockCode" => (string)$issues[1], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[1], "ToProcess" => (double)$quantity[1], "UnitPrice" => (double)$amounts[1]], ["StockCode" => (string)$issues[2], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[2], "ToProcess" => (double)$quantity[2], "UnitPrice" => (double)$amounts[2]], ["StockCode" => (string)$issues[3], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[3], "ToProcess" => (double)$quantity[3], "UnitPrice" => (double)$amounts[3]]];
+                $lines = [["StockCode" => (string)$issues[0], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (float)$quantity[0], "ToProcess" => (float)$quantity[0], "UnitPrice" => (float)$amounts[0]], ["StockCode" => (string)$issues[1], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (float)$quantity[1], "ToProcess" => (float)$quantity[1], "UnitPrice" => (float)$amounts[1]], ["StockCode" => (string)$issues[2], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (float)$quantity[2], "ToProcess" => (float)$quantity[2], "UnitPrice" => (float)$amounts[2]], ["StockCode" => (string)$issues[3], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (float)$quantity[3], "ToProcess" => (float)$quantity[3], "UnitPrice" => (float)$amounts[3]]];
             }
             $sage = new SageEvolution();
-            $response = $sage->postTransaction('SalesOrderProcessInvoice', (object)["quote" =>["CustomerAccountCode" => $customer->customer_code, "OrderDate" => "\/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)\/", "InvoiceDate" => "\/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)\/", "Lines" => $lines,"FinancialLines" => []]]);
+            $response = $sage->postTransaction('SalesOrderProcessInvoice', (object)["quote" => ["CustomerAccountCode" => $customer->customer_code, "OrderDate" => "\/Date(" . str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT) . "+0300)\/", "InvoiceDate" => "\/Date(" . str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT) . "+0300)\/", "Lines" => $lines, "FinancialLines" => []]]);
 
             // Save invoice data
             $code = $issues[0];
-            $inventoryTransaction = $sage->getTransaction('InventoryTransactionListByItemCode?Code='.$code.'&OrderBy=1&PageNumber=1&PageSize=5000000');
+            $inventoryTransaction = $sage->getTransaction('InventoryTransactionListByItemCode?Code=' . $code . '&OrderBy=1&PageNumber=1&PageSize=5000000');
             $xml = simplexml_load_string($inventoryTransaction);
             $json = json_encode($xml);
             $responseInvoice = json_decode($json, true);
             $OrderNo = "";
             $InvoiceNo = "";
             $InvoiceDate = "";
-            foreach($responseInvoice['InventoryTransactionDto'] as $key => $value) 
-            {
-                if(end($responseInvoice['InventoryTransactionDto']) == $value) {
+            foreach ($responseInvoice['InventoryTransactionDto'] as $key => $value) {
+                if (end($responseInvoice['InventoryTransactionDto']) == $value) {
                     $OrderNo = $value['OrderNum'];
                     $InvoiceNo = $value['Reference'];
                     $InvoiceDate = Carbon::parse($value['Date']);
@@ -238,11 +249,11 @@ class PaypalController extends Controller
                 'transaction' => $transaction,
                 'sales_order_no' => $OrderNo,
                 'invoice_no' => $InvoiceNo,
-                'invoice_date'=> $InvoiceDate,
+                'invoice_date' => $InvoiceDate,
                 'currency' => $payment->currency
             ]);
             $counts = count($issues);
-            foreach($issues as $key => $count) {
+            foreach ($issues as $key => $count) {
                 InvoiceItem::create([
                     'invoice_id' => $invoice->id,
                     'amount' => $amounts[$key],
@@ -254,19 +265,18 @@ class PaypalController extends Controller
             $invoiceData = Invoice::with('user', 'items')->whereReference($orderId)->first()->toArray();
             $pdf = PDF::loadView('invoice.invoicepdf', $invoiceData);
             $data = [
-                'intro'  => 'Hello '.$customer->name.',',
-                'content'   => 'Your order with reference: '.$payment->reference.' has been well received. Kindly find attached your invoice.',
+                'intro'  => 'Hello ' . $customer->name . ',',
+                'content'   => 'Your order with reference: ' . $payment->reference . ' has been well received. Kindly find attached your invoice.',
                 'name' => $customer->name,
                 'email' => $customer->email,
-                'subject'  => 'Successful Payment for Order No. '.$payment->reference
+                'subject'  => 'Successful Payment for Order No. ' . $payment->reference
             ];
-            Mail::send('emails.order', $data, function($message) use ($data, $pdf) {
+            Mail::send('emails.order', $data, function ($message) use ($data, $pdf) {
                 $message->to($data['email'], $data['name'])
-                        ->subject($data['subject'])
-                        ->attachData($pdf->output(), "invoice.pdf");
+                    ->subject($data['subject'])
+                    ->attachData($pdf->output(), "invoice.pdf");
             });
-        }
-        else {
+        } else {
             Order::where('reference', $payment->reference)->update(['status' => 'failed']);
 
             Subscription::where('reference', $payment->reference)->update(['status' => 'failed']);
