@@ -125,8 +125,8 @@
                                     <label class="text-green-600 font-bold">Issue no</label>
                                     <select wire:model="issueNo" class="form-control">
                                         <option value="">-- Select Issue --</option>
-                                        @if($order)
-                                        @foreach($order->selectedIssue as $issue)
+                                        @if($Orderissues != '')
+                                        @foreach($Orderissues as $issue)
                                         <option value="{{$issue->id}}">{{$issue->issue_no}}</option>
                                         @endforeach
                                         @endif

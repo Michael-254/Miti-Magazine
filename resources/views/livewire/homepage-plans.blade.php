@@ -23,7 +23,8 @@
     <div class="col-lg-4 col-md-12 col-12">
       <div class="plan shadow-md">
         <div class="plan-header">
-          <h4 class="font-bold text-3xl text-green-600">Digital Plan</h4><p>(@if ($copies == 1) Single  Subscription @else {{$copies}}  Subscriptions @endif)</p>
+          <h4 class="font-bold text-2xl text-green-600">Digital Plan</h4>
+          <p class="text-muted mt-1">@if ($copies == 1) Single Subscription @else {{$copies}} Subscriptions @endif</p>
           <div class="plan-price text-green-700"><sup>{{$plans->currency()}}</sup>{{$plans->amounts->digital}} </div>
         </div>
         <div class="plan-list text-green-700">
@@ -52,7 +53,8 @@
     <div class="col-lg-4 col-md-12 col-12">
       <div class="plan shadow-md">
         <div class="plan-header">
-          <h4 class="font-bold text-3xl text-green-600">Digital & Printed Plan</h4><p>(@if ($copies == 1) Single  Subscription @else {{$copies}}  Subscriptions @endif)</p>
+          <h4 class="font-bold text-2xl text-green-600">Digital & Printed Plan</h4>
+          <p class="text-muted mt-1">@if ($copies == 1) Single Subscription @else {{$copies}} Subscriptions @endif</p>
           <div class="plan-price text-green-700"><sup>{{$plans->currency()}}</sup>{{$plans->amounts->combined}}</div>
         </div>
         <div class="plan-list text-green-700">
