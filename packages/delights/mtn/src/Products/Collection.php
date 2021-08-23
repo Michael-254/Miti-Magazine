@@ -193,14 +193,17 @@ class Collection extends Product
         $momoTransactionId = Uuid::uuid4()->toString();
 
         $headers = [
-            'X-Callback-Url' => $this->clientCallbackUri,
             'X-Reference-Id' => $momoTransactionId,
-            'X-Target-Environment' => $this->environment
+            'X-Target-Environment' => $this->environment,
         ];
-        //'Authorization' => 'Bearer '.$this->getToken()['access_token']
+        // 'Authorization' => 'Bearer '.$this->getToken()['access_token']
+
+        if ($this->environment != 'sandbox' && $this->clientCallbackUri) {
+            $headers['X-Callback-Url'] = $this->clientCallbackUri;
+        }
 
         try {
-            $tranx = $this->client->request('POST', $this->transactionUri, [
+            $response = $this->client->request('POST', $this->transactionUri, [
                 'headers' => $headers,
                 'json' => [
                     'amount' => $amount,
@@ -210,12 +213,10 @@ class Collection extends Product
                         'partyIdType' => $this->partyIdType,
                         'partyId' => $partyId,
                     ],
-                    'payerMessage' => $payerMessage,
-                    'payeeNote' => $payeeNote,
+                    'payerMessage' => alphanumeric($payerMessage),
+                    'payeeNote' => alphanumeric($payeeNote),
                 ],
             ]);
-            $statuscode = $response->getStatusCode();
-            dd($statuscode);
 
             return $momoTransactionId;
         } catch (RequestException $ex) {
