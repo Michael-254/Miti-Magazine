@@ -251,7 +251,7 @@ class PaypalController extends Controller
                 ]);
             }
 
-            $invoiceData = Invoice::with('user', 'items')->whereReference($orderId)->get()->toArray();
+            $invoiceData = Invoice::with('user', 'items')->whereReference($orderId)->first()->toArray();
             $pdf = PDF::loadView('invoice.invoicepdf', $invoiceData);
             $data = [
                 'intro'  => 'Hello '.$customer->name.',',

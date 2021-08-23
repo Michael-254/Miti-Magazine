@@ -14,6 +14,8 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         'ipay/callback',
         'ipay/failed',
+        'mtn/callback',
+        'mtn/failed',
         'paypal/success',
         'paypal/cancel',
         'paypal/ipn'

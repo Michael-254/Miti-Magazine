@@ -101,8 +101,8 @@
                             <tbody>
                                 @if($invoice->transaction == "Subscription")
                                     <tr>
-                                        <td>{{ "From issue: ".$invoice->items->first()->issue." to issue: ".$invoice->items->latest()->first()->issue }}</td>
-                                        <td>{{ $item->quantity * count($invoice->items) }}</td>
+                                        <td>{{ "From issue: ".$invoice->items->first()->issue." to issue: ".$invoice->items->last()->issue }}</td>
+                                        <td>{{ $invoice->items->first()->quantity." per issue." }}</td>
                                         <td>{{ $invoice->getTotalAmount() }}</td>
                                     </tr>
                                 @endif

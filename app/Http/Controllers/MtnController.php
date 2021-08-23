@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Delights\Ipay\Cashier;
+use Delights\Mtn\MtnMomoServiceProvider;
+use Delights\Mtn\Products\Collection;
 use Delights\Sage\SageEvolution;
-use App\Models\Payment;
+use App\Models\Mtn;
 use App\Models\SubscriptionPlan;
 use App\Models\Subscription;
 use App\Models\SelectedIssue;
@@ -27,7 +28,7 @@ use Illuminate\Support\Facades\Auth;
 use PDF;
 use Mail;
 
-class PaymentController extends Controller
+class MtnController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -36,9 +37,23 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        $payments = Payment::all();
+        $mtns = Mtn::all();
 
-        return view('admin.ipay-payments');
+        return view('admin.mtn-payments');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function testMtn()
+    {
+        $collection = new Collection();
+
+        $momoTransactionId = $collection->requestToPay('transactionId', '46733123454', 100);
+
+        dd($momoTransactionId);
     }
 
     /**
@@ -100,7 +115,7 @@ class PaymentController extends Controller
             ->transact($amount, $orderId, $invoiceNo);
 
         // Store in payment data in database
-        Payment::create([
+        Mtn::create([
             'user_id' => $customer->id,
             'currency' => 'KES',
             'amount' => $amount,
@@ -114,7 +129,7 @@ class PaymentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Payment  $payment
+     * @param  \App\Models\Mtn  $payment
      * @return \Illuminate\Http\Response
      */
     public function callback(Request $request)
@@ -148,7 +163,7 @@ class PaymentController extends Controller
         elseif($ipayStatus == 'aei7p7yrx4ae34') { 
             $msisdn_id = isset($request->msisdn_id) ? $request->msisdn_id : null; 
             $msisdn_idnum = isset($request->msisdn_idnum) ? $request->msisdn_idnum : null; 
-            $payment = Payment::where('reference', $orderId)->update(['msisdn_id' => $msisdn_id, 'msisdn_idnum' => $msisdn_idnum, 'txncd' => $request->txncd, 'channel' => $request->channel, 'status' => 'verified']);
+            $payment = Mtn::where('reference', $orderId)->update(['msisdn_id' => $msisdn_id, 'msisdn_idnum' => $msisdn_idnum, 'txncd' => $request->txncd, 'channel' => $request->channel, 'status' => 'verified']);
 
             Order::where('reference', $orderId)->update(['status' => 'verified']);
 
@@ -263,59 +278,12 @@ class PaymentController extends Controller
     }
 
     /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function sageTest(Request $request)
-    {
-        $data["name"] = "Evans Charles Wanguba";
-        $data["email"] = "ewanguba@gmail.com";
-        $data["title"] = "From Better Globe Forestry Ltd";
-        $data["body"] = "This is Demo";
-		$pdf = PDF::loadView('invoice.inv', $data);
-		return $pdf->download('invoice.pdf');
-		
-        /* $sage = new SageEvolution();
-
-        $code = "MIT2021";
-        $inventoryTransaction = $sage->getTransaction('InventoryTransactionListByItemCode?Code='.$code.'&OrderBy=1&PageNumber=1&PageSize=5000000');
-        $xml = simplexml_load_string($inventoryTransaction);
-        $json = json_encode($xml);
-        $responseInvoice = json_decode($json, true);
-        $OrderNo = "";
-        $InvoiceNo = "";
-        $InvoiceDate = "";
-        foreach($responseInvoice['InventoryTransactionDto'] as $key => $value) 
-        {
-            if(end($responseInvoice['InventoryTransactionDto']) == $value) {
-                $OrderNo = $value['OrderNum'];
-                $InvoiceNo = $value['Reference'];
-                $InvoiceDate = Carbon::parse($value['Date']);
-            }
-        }
-        dd($OrderNo." / ".$InvoiceNo." / ".$InvoiceDate); */
-        // $response = $sage->getTransaction('CustomerFind?Code=CASH');
-        // $response = $sage->getTransaction('CustomerExists?Code=CASH');
-        // $response = $sage->getTransaction('CustomerList?OrderBy=1&PageNumber=1&PageSize=50');
-        // $response = $sage->getTransaction('InventoryItemFind?Code=ISS001');
-        // $response = $sage->getTransaction('InventoryItemList?OrderBy=1&PageNumber=1&PageSize=50');
-        // $response = $sage->getTransaction('SalesOrderLoadByOrderNo?orderNo=SO0001');
-        // $response = $sage->getTransaction('SalesOrderExists?orderNo=SO0001');
-        // $response = $sage->postTransaction('CustomerInsert', (object)["client" => ["Active" => true, "Description" => "John Doe", "ChargeTax" => false, "Code" => "JD001"]]);
-        // $response = $sage->postTransaction('InventoryItemInsert', (object)["item" => ["Code" => "ISS001"]]);
-        // $response = $sage->postTransaction('SalesOrderProcessInvoice', (object)["quote" =>["CustomerAccountCode" => "CASH","OrderDate" => "/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)/","InvoiceDate" => "/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)/","Lines" => [["StockCode" => "Test","TaxCode" => "1","Quantity" => 1,"ToProcess" => 1,"UnitPrice" => 200.00], ["StockCode" => "Test","TaxCode" => "1","Quantity" => 1,"ToProcess" => 1,"UnitPrice" => 200.00]],"FinancialLines" => []]]); //QuotationPlaceOrder
-        
-        // dd($response);
-    }
-
-    /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Payment  $payment
+     * @param  \App\Models\Mtn  $mtn
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Payment $payment)
+    public function destroy(Mtn $payment)
     {
         $payment->delete();
 

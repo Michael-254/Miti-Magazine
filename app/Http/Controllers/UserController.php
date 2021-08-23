@@ -10,6 +10,7 @@ use App\Models\CartOrder;
 use App\Models\Country;
 use App\Models\Order;
 use App\Models\Payment;
+use App\Models\Mtn;
 use App\Models\Paypal;
 use App\Models\Invoice;
 use App\Models\SelectedIssue;
@@ -159,6 +160,16 @@ class UserController extends Controller
     public function ipayInvoice(Payment $payment)
     {
         $invoice = Invoice::where('reference', '=', $payment->reference)->first();
+        if ($invoice && $invoice->user_id == auth()->id()) {
+            return view('invoice/invoice', compact('invoice'));
+        } else {
+            abort(404);
+        }
+    }
+
+    public function mtnInvoice(Mtn $mtn)
+    {
+        $invoice = Invoice::where('reference', '=', $mtn->reference)->first();
         if ($invoice && $invoice->user_id == auth()->id()) {
             return view('invoice/invoice', compact('invoice'));
         } else {

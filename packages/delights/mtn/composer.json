@@ -1,0 +1,68 @@
+{
+  "name": "delights/mtn",
+  "description": "Laravel MTN MOMO integration.",
+  "homepage": "https://github.com/evans-wanguba/mtn",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "laravel",
+    "package",
+    "mtn",
+    "momo",
+    "api"
+  ],
+  "authors": [
+    {
+      "name": "Evans Wanguba",
+      "email": "ewanguba@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^7.3|^8.0",
+    "ext-json": "*",
+    "guzzlehttp/guzzle": "^7.0"
+  },
+  "require-dev": {
+    "code-lts/doctum": "^5.3",
+    "friendsofphp/php-cs-fixer": "^2.18",
+    "mockery/mockery": "^1.4.2",
+    "orchestra/testbench": "^6.0",
+    "phpunit/phpunit": "^9.3.3"
+  },
+  "suggest": {
+    "monolog/monolog": "For more comprehensive logging."
+  },
+  "autoload": {
+    "psr-4": {
+      "Delights\\Mtn\\": "src/",
+      "Delights\\Mtn\\Database\\Factories\\": "database/factories/"
+    },
+    "files": [
+      "src/Support/helpers.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Delights\\Mtn\\Tests\\": "tests/"
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "scripts": {
+    "cs-fix": "php-cs-fixer fix",
+    "cs-lint": "php-cs-fixer fix --dry-run",
+    "doc": "doctum.php update doctum.php -v",
+    "test": "phpunit",
+    "test-coverage": "phpunit --coverage-html coverage"
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Delights\\Mtn\\MtnMomoServiceProvider"
+      ]
+    }
+  }
+}

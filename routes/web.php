@@ -28,6 +28,9 @@ Route::prefix('email')->group(function () {
 Route::get('ipay/checkout', 'PaymentController@payment');
 Route::get('ipay/callback', 'PaymentController@callback');
 Route::get('ipay/failed', 'PaymentController@paymentFailed');
+Route::get('mtn/checkout', 'MtnController@payment');
+Route::get('mtn/callback', 'MtnController@callback');
+Route::get('mtn/failed', 'MtnController@paymentFailed');
 Route::get('paypal/checkout', 'PaypalController@paymentProcess');
 Route::get('paypal/success', 'PaypalController@paymentSuccess');
 Route::get('paypal/cancel', 'PaypalController@paymentCancel');
@@ -47,6 +50,7 @@ Route::prefix('user')->middleware(['auth', 'useremail'])->group(function () {
     Route::get('mySubscription', 'UserController@mySubscription')->name('user.subscriptions');
     Route::get('myOrders', 'UserController@Orders')->name('user.orders');
     Route::get('view-invoice-{payment}', 'UserController@ipayInvoice')->name('Myipay.invoice');
+    Route::get('mtn-invoice-{payment}', 'UserController@mtnInvoice')->name('Mymtn.invoice');
     Route::get('paypal-invoice-{payment}', 'UserController@paypalInvoice')->name('Mypaypal.invoice');
 });
 
@@ -73,6 +77,7 @@ Route::view('/dashboard', 'dashboard')->middleware(['auth', 'useremail'])->name(
 
 //Unauth Pages
 Route::view('/', 'welcome')->name('landing.page');
+Route::get('mtn', 'MtnController@testMtn');
 Route::get('/', 'HomePageController@welcome')->name('landing.page');
 Route::get('/Previous-Issues', 'HomePageController@previous')->name('previous.issues');
 Route::post('/Add-to-Cart', 'HomePageController@cart')->name('cart.store');
