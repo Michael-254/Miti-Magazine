@@ -188,21 +188,19 @@ class Collection extends Product
      *
      * @return string                Auto generated payment reference. Format: UUID
      */
-    public function requestToPay($transactionId, $partyId, $amount, $payerMessage = '', $payeeNote = '')
+    public function requestToPay($transactionId, $partyId, $amount, $payerMessage = 'Test message', $payeeNote = 'Test note')
     {
         $momoTransactionId = Uuid::uuid4()->toString();
 
         $headers = [
+            'X-Callback-Url' => $this->clientCallbackUri,
             'X-Reference-Id' => $momoTransactionId,
-            'X-Target-Environment' => $this->environment,
+            'X-Target-Environment' => $this->environment
         ];
-
-        if ($this->environment != 'sandbox' && $this->clientCallbackUri) {
-            $headers['X-Callback-Url'] = $this->clientCallbackUri;
-        }
+        //'Authorization' => 'Bearer '.$this->getToken()['access_token']
 
         try {
-            $this->client->request('POST', $this->transactionUri, [
+            $tranx = $this->client->request('POST', $this->transactionUri, [
                 'headers' => $headers,
                 'json' => [
                     'amount' => $amount,
@@ -212,10 +210,12 @@ class Collection extends Product
                         'partyIdType' => $this->partyIdType,
                         'partyId' => $partyId,
                     ],
-                    'payerMessage' => alphanumeric($payerMessage),
-                    'payeeNote' => alphanumeric($payeeNote),
+                    'payerMessage' => $payerMessage,
+                    'payeeNote' => $payeeNote,
                 ],
             ]);
+            $statuscode = $response->getStatusCode();
+            dd($statuscode);
 
             return $momoTransactionId;
         } catch (RequestException $ex) {
