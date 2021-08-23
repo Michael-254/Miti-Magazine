@@ -63,6 +63,7 @@ Route::prefix('admin')->middleware(['auth', 'useremail', 'AdminAccess'])->group(
     Route::get('Paypal-payments', 'ViewTransactionController@paypalTransaction')->name('paypal.admin')->middleware('SuperAccess');
     Route::get('Ipay-payments', 'ViewTransactionController@ipayTransaction')->name('ipay.admin')->middleware('SuperAccess');
     Route::get('Customers', 'CustomerController@index')->name('customers.view');
+    Route::get('ExchangeRates', 'ViewTransactionController@rates')->name('exchange.rates')->middleware('SuperAccess');
     Route::get('Customer-{customer}', 'CustomerController@customerInfo')->name('customer.info');
     Route::get('gifts', 'GiftController@gifts')->name('admin.gift');
     Route::post('gifts', 'GiftController@postGift')->name('gift.store');

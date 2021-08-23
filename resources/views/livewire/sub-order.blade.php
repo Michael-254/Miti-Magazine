@@ -28,8 +28,8 @@
                                                 <th>Customer Name</th>
                                                 <th>Customer Email</th>
                                                 <th>Customer Location</th>
-                                                <th>Status</th>
                                                 <th>Reference</th>
+                                                <th>Status</th>
                                                 <th>Type</th>
                                                 <th>Issues Selected and Status</th>
                                                 <th>Quantity</th>
@@ -125,8 +125,8 @@
                                     <label class="text-green-600 font-bold">Issue no</label>
                                     <select wire:model="issueNo" class="form-control">
                                         <option value="">-- Select Issue --</option>
-                                        @if($order)
-                                        @foreach($order->selectedIssue as $issue)
+                                        @if($Orderissues != '')
+                                        @foreach($Orderissues as $issue)
                                         <option value="{{$issue->id}}">{{$issue->issue_no}}</option>
                                         @endforeach
                                         @endif
@@ -138,7 +138,7 @@
                                     <select wire:model="status" class="form-control">
                                         <option value="">-- Update Status --</option>
                                         <option value="pending">pending</option>
-                                        <option value="dispached">dispached</option>
+                                        <option value="dispached">dispatched</option>
                                         <option value="cancelled">cancelled</option>
                                     </select>
                                 </div>

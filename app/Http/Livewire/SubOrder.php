@@ -13,11 +13,12 @@ class SubOrder extends Component
     protected $paginationTheme = 'bootstrap';
 
     public $search;
-    public $issueNo, $status, $order,$shipping;
+    public $issueNo, $status, $order,$shipping,$Orderissues;
 
     public function Order($id)
     {
         $this->order = Order::findOrFail($id);
+        $this->Orderissues = $this->order->selectedIssue;
         $this->shipping = $this->order->user->shippingInfo;
     }
 

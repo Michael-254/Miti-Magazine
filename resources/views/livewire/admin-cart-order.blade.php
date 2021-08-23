@@ -28,8 +28,8 @@
                                                 <th>Customer Name</th>
                                                 <th>Customer Email</th>
                                                 <th>Customer Location</th>
-                                                <th>Reference</th>
                                                 <th>Status</th>
+                                                <th>Reference</th>
                                                 <th>Issues Selected and Quantity</th>
                                                 <th>Action</th>
 
@@ -123,7 +123,7 @@
                                     <select wire:model="status" class="form-control">
                                         <option value="">-- Update Status --</option>
                                         <option value="verified">pending</option>
-                                        <option value="dispached">dispached</option>
+                                        <option value="dispached">dispatched</option>
                                         <option value="cancelled">cancelled</option>
                                     </select>
                                 </div>

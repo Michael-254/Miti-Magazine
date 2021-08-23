@@ -32,6 +32,8 @@ class Gift extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.gift')->subject('Miti Magazine Subscription Gift');
+        return $this->markdown('emails.gift')
+        ->subject('Miti Magazine Subscription Gift')
+        ->replyTo('miti-magazine@betterglobeforestry.com');
     }
 }

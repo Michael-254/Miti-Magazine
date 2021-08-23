@@ -1,7 +1,7 @@
 <div class="mt-12">
   <div class="text-center">
     <h1 class="font-bold text-3xl text-green-600 mb-2">Subscription Plans {{$plans->location ?? ''}}</h1>
-    <h4 class="text-gray-600">Each Subscription Package gives access to 4 issues. For subscription of more than 10 copies, Kindly Email us</h4>
+    <h4 class="text-gray-600">Each Subscription Package gives access to 4 issues. For subscription higher than 10 Subscriptions, Kindly Email: miti-magazine@betterglobeforestry.com</h4>
   </div>
 
   <div class="mt-8 border-b">
@@ -12,9 +12,9 @@
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
         </svg>
       </li>
-      <li wire:click="copySelected('1')" class="py-2 px-6  rounded-t-lg text-xs md:text-sm {{ $copies ==  '1' ? 'bg-gray-300' : ''  }}">Single Copy</li>
-      <li wire:click="copySelected('5')" class="py-2 px-6  rounded-t-lg text-xs md:text-sm {{ $copies ==  '5' ? 'bg-gray-300' : ''  }}">5 Copies</li>
-      <li wire:click="copySelected('10')" class="py-2 px-6  rounded-t-lg  text-xs md:text-sm {{ $copies ==  '10' ? 'bg-gray-300' : ''  }}">10 Copies</li>
+      <li wire:click="copySelected('1')" class="py-2 px-6  rounded-t-lg text-xs md:text-sm {{ $copies ==  '1' ? 'bg-gray-300' : ''  }}">Single Subscription</li>
+      <li wire:click="copySelected('5')" class="py-2 px-6  rounded-t-lg text-xs md:text-sm {{ $copies ==  '5' ? 'bg-gray-300' : ''  }}">5 Subscriptions</li>
+      <li wire:click="copySelected('10')" class="py-2 px-6  rounded-t-lg  text-xs md:text-sm {{ $copies ==  '10' ? 'bg-gray-300' : ''  }}">10 Subscriptions</li>
     </ul>
   </div>
 
@@ -23,7 +23,8 @@
     <div class="col-lg-4 col-md-12 col-12">
       <div class="plan shadow-md">
         <div class="plan-header">
-          <h4 class="font-bold text-3xl text-green-600">Digital Plan</h4>
+          <h4 class="font-bold text-2xl text-green-600">Digital Plan</h4>
+          <p class="text-muted mt-1">@if ($copies == 1) Single Subscription @else {{$copies}} Subscriptions @endif</p>
           <div class="plan-price text-green-700"><sup>{{$plans->currency()}}</sup>{{$plans->amounts->digital}} </div>
         </div>
         <div class="plan-list text-green-700">
@@ -52,7 +53,8 @@
     <div class="col-lg-4 col-md-12 col-12">
       <div class="plan shadow-md">
         <div class="plan-header">
-          <h4 class="font-bold text-3xl text-green-600">Digital & Printed Plan</h4>
+          <h4 class="font-bold text-2xl text-green-600">Digital & Printed Plan</h4>
+          <p class="text-muted mt-1">@if ($copies == 1) Single Subscription @else {{$copies}} Subscriptions @endif</p>
           <div class="plan-price text-green-700"><sup>{{$plans->currency()}}</sup>{{$plans->amounts->combined}}</div>
         </div>
         <div class="plan-list text-green-700">

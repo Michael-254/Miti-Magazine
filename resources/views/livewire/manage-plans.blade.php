@@ -52,7 +52,7 @@
                                                         <option value="Kenya">Kenya</option>
                                                         <option value="Uganda">Uganda</option>
                                                         <option value="Tanzania">Tanzania</option>
-                                                        <option value="Rest of World">Rest of World</option>
+                                                        <option value="Rest of Africa">Rest of Africa</option>
                                                     </select>
                                                 </td>
                                                 <td>
