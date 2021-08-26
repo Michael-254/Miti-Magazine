@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Amount;
 use App\Models\Country;
+use App\Models\ExchangeRate;
 use App\Models\Magazine;
 use App\Models\Subscription;
 use App\Models\SubscriptionPlan;
@@ -30,8 +31,25 @@ class SubscriptionController extends Controller
 
     public function checkout()
     {
+        $ip = request()->ip();
+        $data = \Location::get($ip);
+        $Mycountry = $data->countryName ?? '';
+        $currency = null;
+        switch ($Mycountry) {
+            case 'Kenya':
+                $currency = 'KSH';
+            case 'Uganda':
+                $currency = 'UGX';
+                $rate = ExchangeRate::where('currency','=','KSH')->value('UGX');
+            case 'Tanzania':
+                $currency = 'TSH';
+                $rate = ExchangeRate::where('currency','=','KSH')->value('TSH');
+            default:
+                $currency = '$';
+                $rate = ExchangeRate::where('currency','=','KSH')->value('KSHS_USD');
+        }
         $countries = Country::all();
-        return view('checkout',compact('countries'));
+        return view('checkout',compact('countries','currency','rate'));
     }
 
     /**

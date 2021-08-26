@@ -21,23 +21,4 @@ class HomePageController extends Controller
         return view('previous-issue',compact('previousmagazines'));
     }
 
-    // public function cart(Request $request)
-    // {
-    //    $magazine = Magazine::findOrFail($request->input('product'));
-    //    $cart = Cart::add([
-    //     'id' => $magazine->id,
-    //     'name' => $magazine->issue_no,
-    //     'price' => 250,
-    //     'quantity' => $request->input('quantity'),
-    //    ]);
-
-    //    return redirect('/Previous-Issues')->with('message', 'Successfully added to cart');
-    // }
-
-    // public function remove(Request $request)
-    // {
-    //     Cart::remove($request->product);
-
-    //    return redirect('/Previous-Issues')->with('message', 'Successfully removed from cart');
-    // }
 }

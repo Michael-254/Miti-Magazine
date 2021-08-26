@@ -190,6 +190,7 @@ class Collection extends Product
      */
     public function requestToPay($transactionId, $partyId, $amount, $payerMessage = 'Test message', $payeeNote = 'Test note')
     {
+        dd($this->getToken()['access_token']);
         $momoTransactionId = Uuid::uuid4()->toString();
 
         $headers = [
