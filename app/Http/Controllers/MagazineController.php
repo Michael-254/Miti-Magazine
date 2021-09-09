@@ -43,7 +43,7 @@ class MagazineController extends Controller
     {
         $request->validate([
             'issue_no' => 'required|unique:magazines,issue_no',
-            'title' => 'required',
+            'title' => 'required|unique:magazines,title',
             'file' => 'required|mimes:pdf',
             'image' => 'required|mimes:jpeg,jpg,png,gif',
         ]);

@@ -30,7 +30,7 @@
                                                                 <div class="form-group">
                                                                     <label class="font-bold text-green-600">Issue_no</label>
                                                                     <div>
-                                                                        <input type="number" name="issue_no" class="rounded-md border-gray-400 form-control" placeholder="Issue number">
+                                                                        <input type="number" name="issue_no" value="{{old('issue_no')}}" class="rounded-md border-gray-400 form-control" placeholder="Issue number">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -39,7 +39,7 @@
                                                                 <div class="form-group">
                                                                     <label class="font-bold text-green-600">Item Code</label>
                                                                     <div>
-                                                                        <input type="text" name="item_code" class="rounded-md border-gray-400 form-control" placeholder="Item Code">
+                                                                        <input type="text" name="item_code" value="{{old('item_code')}}" class="rounded-md border-gray-400 form-control" placeholder="Item Code">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -48,7 +48,7 @@
                                                                 <div class="form-group">
                                                                     <label class="font-bold text-green-600">Quanity in Stock</label>
                                                                     <div>
-                                                                        <input type="text" name="inventory" class="rounded-md border-gray-400 form-control" placeholder="Quantity">
+                                                                        <input type="text" name="inventory" value="{{old('inventory')}}" class="rounded-md border-gray-400 form-control" placeholder="Quantity">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -57,7 +57,7 @@
                                                                 <div class="form-group">
                                                                     <label class="font-bold text-green-600">Title</label>
                                                                     <div>
-                                                                        <input type="text" name="title" class="rounded-md border-gray-400 form-control" placeholder="Title of magazine">
+                                                                        <input type="text" name="title" value="{{old('title')}}" class="rounded-md border-gray-400 form-control" placeholder="Title of magazine">
                                                                         <div class="form-control-position">
                                                                         </div>
                                                                     </div>

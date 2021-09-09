@@ -39,15 +39,20 @@ class SubscriptionController extends Controller
         switch ($Mycountry) {
             case 'Kenya':
                 $currency = 'KSH';
+                $rate = 1; 
+                break;
             case 'Uganda':
                 $currency = 'UGX';
                 $rate = ExchangeRate::where('currency', '=', 'KSH')->value('UGX');
+                break;
             case 'Tanzania':
                 $currency = 'TSH';
                 $rate = ExchangeRate::where('currency', '=', 'KSH')->value('TSH');
+                break;
             default:
                 $currency = '$';
                 $rate = ExchangeRate::where('currency', '=', 'KSH')->value('KSHS_USD');
+                break;
         }
         $countries = Country::all();
         return view('checkout', compact('countries', 'currency', 'rate'));
