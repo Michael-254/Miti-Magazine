@@ -8,6 +8,7 @@ use App\Models\ExchangeRate;
 use App\Models\Magazine;
 use App\Models\Subscription;
 use App\Models\SubscriptionPlan;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -25,8 +26,8 @@ class SubscriptionController extends Controller
         $plan_type = Session::get('plan_type');
         $currency = SubscriptionPlan::findOrFail($plan_id);
         $amount = Amount::whereSubscriptionPlanId($plan_id)->value($plan_type);
-        $recentmagazines = Magazine::latest()->limit(4)->get();
-        return view('selected-plan', compact('amount','currency','countries','plan_type','recentmagazines'));
+        $recentmagazines = Magazine::whereYear('created_at', '=', Carbon::now()->format('Y'))->latest()->limit(4)->get();
+        return view('selected-plan', compact('amount', 'currency', 'countries', 'plan_type', 'recentmagazines'));
     }
 
     public function checkout()
@@ -40,16 +41,16 @@ class SubscriptionController extends Controller
                 $currency = 'KSH';
             case 'Uganda':
                 $currency = 'UGX';
-                $rate = ExchangeRate::where('currency','=','KSH')->value('UGX');
+                $rate = ExchangeRate::where('currency', '=', 'KSH')->value('UGX');
             case 'Tanzania':
                 $currency = 'TSH';
-                $rate = ExchangeRate::where('currency','=','KSH')->value('TSH');
+                $rate = ExchangeRate::where('currency', '=', 'KSH')->value('TSH');
             default:
                 $currency = '$';
-                $rate = ExchangeRate::where('currency','=','KSH')->value('KSHS_USD');
+                $rate = ExchangeRate::where('currency', '=', 'KSH')->value('KSHS_USD');
         }
         $countries = Country::all();
-        return view('checkout',compact('countries','currency','rate'));
+        return view('checkout', compact('countries', 'currency', 'rate'));
     }
 
     /**
@@ -70,9 +71,9 @@ class SubscriptionController extends Controller
      */
     public function store(Request $request)
     {
-       Session::put('plan_id',$request->plan_id);
-       Session::put('plan_type',$request->plan_type);
-       return redirect('subscribe/plan');
+        Session::put('plan_id', $request->plan_id);
+        Session::put('plan_type', $request->plan_type);
+        return redirect('subscribe/plan');
     }
 
     /**

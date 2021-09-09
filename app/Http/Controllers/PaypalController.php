@@ -198,58 +198,91 @@ class PaypalController extends Controller
 
             CartOrder::where('reference', $payment->reference)->update(['status' => 'verified']);
 
+            // $amounts = [];
+            // $issues = [];
+            // $quantity = [];
+            // $lines = [];
+            // $transaction = "";
+            // $subscription = Subscription::where('reference', $payment->reference)->first();
+            // $cartOrder = CartOrder::where('reference', $payment->reference)->first();
+            // if ($cartOrder != null) {
+            //     $transaction = "Cart Order";
+            //     $amounts = $cartOrder->SubIssuesAmount();
+            //     $issues = $cartOrder->SubIssuesItemCode();
+            //     $quantity = $cartOrder->SubIssuesQuantity();
+
+            //     $counts = count($issues);
+            //     foreach ($counts as $key => $count) {
+            //         array_push($lines, ["StockCode" => (string)$issues[$key], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (float)$quantity[$key], "ToProcess" => (float)$quantity[$key], "UnitPrice" => (float)$amounts[$key]]);
+            //     }
+            // } else {
+            //     $transaction = "Subscription";
+            //     $amounts = $subscription->SubIssuesAmount();
+            //     $issues = $subscription->SubIssuesItemCode();
+            //     $quantity = $subscription->SubIssuesQuantity();
+
+            //     $lines = [["StockCode" => (string)$issues[0], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (float)$quantity[0], "ToProcess" => (float)$quantity[0], "UnitPrice" => (float)$amounts[0]], ["StockCode" => (string)$issues[1], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (float)$quantity[1], "ToProcess" => (float)$quantity[1], "UnitPrice" => (float)$amounts[1]], ["StockCode" => (string)$issues[2], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (float)$quantity[2], "ToProcess" => (float)$quantity[2], "UnitPrice" => (float)$amounts[2]], ["StockCode" => (string)$issues[3], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (float)$quantity[3], "ToProcess" => (float)$quantity[3], "UnitPrice" => (float)$amounts[3]]];
+            // }
+            // $sage = new SageEvolution();
+            // $response = $sage->postTransaction('SalesOrderProcessInvoice', (object)["quote" => ["CustomerAccountCode" => $customer->customer_code, "OrderDate" => "\/Date(" . str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT) . "+0300)\/", "InvoiceDate" => "\/Date(" . str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT) . "+0300)\/", "Lines" => $lines, "FinancialLines" => []]]);
+
+            // // Save invoice data
+            // $code = $issues[0];
+            // $inventoryTransaction = $sage->getTransaction('InventoryTransactionListByItemCode?Code=' . $code . '&OrderBy=1&PageNumber=1&PageSize=5000000');
+            // $xml = simplexml_load_string($inventoryTransaction);
+            // $json = json_encode($xml);
+            // $responseInvoice = json_decode($json, true);
+            // $OrderNo = "";
+            // $InvoiceNo = "";
+            // $InvoiceDate = "";
+            // foreach ($responseInvoice['InventoryTransactionDto'] as $key => $value) {
+            //     if (end($responseInvoice['InventoryTransactionDto']) == $value) {
+            //         $OrderNo = $value['OrderNum'];
+            //         $InvoiceNo = $value['Reference'];
+            //         $InvoiceDate = Carbon::parse($value['Date']);
+            //     }
+            // }
+
+            //start of changes
+            $orderId = $payment->reference;
+            $invoiceID = "";
+            $transaction = "";
+            $customerID = "";
             $amounts = [];
             $issues = [];
             $quantity = [];
-            $lines = [];
-            $transaction = "";
-            $subscription = Subscription::where('reference', $payment->reference)->first();
-            $cartOrder = CartOrder::where('reference', $payment->reference)->first();
+            $subscription = Subscription::where('reference', $orderId)->first();
+            $cartOrder = CartOrder::where('reference', $orderId)->first();
+
             if ($cartOrder != null) {
+                $customerID = $cartOrder->user_id;
+                $invoiceID = $cartOrder->id;
                 $transaction = "Cart Order";
                 $amounts = $cartOrder->SubIssuesAmount();
                 $issues = $cartOrder->SubIssuesItemCode();
                 $quantity = $cartOrder->SubIssuesQuantity();
-
-                $counts = count($issues);
-                foreach ($counts as $key => $count) {
-                    array_push($lines, ["StockCode" => (string)$issues[$key], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (float)$quantity[$key], "ToProcess" => (float)$quantity[$key], "UnitPrice" => (float)$amounts[$key]]);
-                }
             } else {
+                $findOrder = Order::where('reference', $orderId)->first();
+                $invoiceID = $findOrder->id;
+                $customerID = $findOrder->user_id;
                 $transaction = "Subscription";
                 $amounts = $subscription->SubIssuesAmount();
                 $issues = $subscription->SubIssuesItemCode();
                 $quantity = $subscription->SubIssuesQuantity();
-
-                $lines = [["StockCode" => (string)$issues[0], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (float)$quantity[0], "ToProcess" => (float)$quantity[0], "UnitPrice" => (float)$amounts[0]], ["StockCode" => (string)$issues[1], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (float)$quantity[1], "ToProcess" => (float)$quantity[1], "UnitPrice" => (float)$amounts[1]], ["StockCode" => (string)$issues[2], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (float)$quantity[2], "ToProcess" => (float)$quantity[2], "UnitPrice" => (float)$amounts[2]], ["StockCode" => (string)$issues[3], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (float)$quantity[3], "ToProcess" => (float)$quantity[3], "UnitPrice" => (float)$amounts[3]]];
             }
-            $sage = new SageEvolution();
-            $response = $sage->postTransaction('SalesOrderProcessInvoice', (object)["quote" => ["CustomerAccountCode" => $customer->customer_code, "OrderDate" => "\/Date(" . str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT) . "+0300)\/", "InvoiceDate" => "\/Date(" . str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT) . "+0300)\/", "Lines" => $lines, "FinancialLines" => []]]);
 
-            // Save invoice data
-            $code = $issues[0];
-            $inventoryTransaction = $sage->getTransaction('InventoryTransactionListByItemCode?Code=' . $code . '&OrderBy=1&PageNumber=1&PageSize=5000000');
-            $xml = simplexml_load_string($inventoryTransaction);
-            $json = json_encode($xml);
-            $responseInvoice = json_decode($json, true);
-            $OrderNo = "";
-            $InvoiceNo = "";
-            $InvoiceDate = "";
-            foreach ($responseInvoice['InventoryTransactionDto'] as $key => $value) {
-                if (end($responseInvoice['InventoryTransactionDto']) == $value) {
-                    $OrderNo = $value['OrderNum'];
-                    $InvoiceNo = $value['Reference'];
-                    $InvoiceDate = Carbon::parse($value['Date']);
-                }
-            }
+            $OrderNo = 'SO' . str_pad($invoiceID , 4, '0', STR_PAD_LEFT);
+            $InvoiceNo = 'RCPT' . str_pad($invoiceID , 4, '0', STR_PAD_LEFT);
+            //end of changes
+
             $invoice = Invoice::create([
-                'user_id' => $customer->id,
+                'user_id' => $customerID,
                 'reference' => $payment->reference,
                 'discount' => "0",
                 'transaction' => $transaction,
                 'sales_order_no' => $OrderNo,
                 'invoice_no' => $InvoiceNo,
-                'invoice_date' => $InvoiceDate,
+                'invoice_date' => Carbon::now(),
                 'currency' => $payment->currency
             ]);
             $counts = count($issues);

@@ -24,9 +24,9 @@
                 <div class="col-sm-6 col-12 text-right">
                     <h1 class="font-bold text-3xl">Invoice</h1>
                     <div class="invoice-details mt-2">
-                        <h6 class="font-bold">INVOICE NO.</h6>
+                        <h6 class="font-bold">RECEIPT NO.</h6>
                         <p>{{ $invoice->invoice_no }}</p>
-                        <h6 class="mt-2 font-bold">INVOICE DATE</h6>
+                        <h6 class="mt-2 font-bold">RECEIPT DATE</h6>
                         <p>{{ \Carbon\Carbon::parse($invoice->invoice_date)->format('d-M-Y') }}</p>
                     </div>
                 </div>

@@ -60,7 +60,7 @@
                             </div>
                             <div class="col-lg-6 form-group">
                                 <label class="sr-only">Phone</label>
-                                <input type="tel" name="phone_no" value="{{ old('phone_no') ?? auth()->user()->phone_no ?? '' }}" placeholder="Phone Number*" class="form-control rounded-md border-gray-300">
+                                <input type="tel" name="phone_no" value="{{ old('phone_no') ?? auth()->user()->phone_no ?? '' }}" placeholder="Phone Number (No code)" pattern="[0-9]{3}[0-9]{3}[0-9]{4}" class="form-control rounded-md border-gray-300">
                             </div>
                         </div>
                     </div>

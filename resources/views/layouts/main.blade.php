@@ -172,6 +172,6 @@
 <script src="{{asset('temp/js/plugins.js')}}"></script>
 
 <script src="{{asset('temp/js/functions.js')}}"></script>
-@yield('scripts')
+@stack('scripts')
 
 </html>

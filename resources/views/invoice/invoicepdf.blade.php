@@ -162,7 +162,7 @@
 						<td>
 							<div class="col-sm-6 col-12 text-right">
 								<div class="invoice-details mt-2">
-									<p class="text-green-800">INVOICE NO: {{ $invoice_no }}</p>
+									<p class="text-green-800">RECEIPT NO: {{ $invoice_no }}</p>
 									<p class="text-green-800">DATE: {{
 										\Carbon\Carbon::parse($invoice_date)->format('d-M-Y') }}</p>
 									<p class="text-green-800">KRA PIN: P051167447E</p>

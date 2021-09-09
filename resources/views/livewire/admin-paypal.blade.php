@@ -33,7 +33,7 @@
                                                 <th>Customer Contacts</th>
                                                 <th>Amount Paid</th>
                                                 <th>Reference ID</th>
-                                                <th>Invoice</th>
+                                                <th>Receipt</th>
 
                                             </tr>
                                         </thead>

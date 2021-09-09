@@ -3,7 +3,7 @@
 
 We are happy to see you at Miti Magazine.
 
-<h4>Registration was successfull</h4>
+Registration was successfull
 Your password is {{$password}}.
 
 
@@ -11,7 +11,7 @@ Your password is {{$password}}.
  Get started
 @endcomponent
 
-Have questions? Please, Email <span class="text-success">miti-magazine@betterglobeforestry.com</span>
+If you have questions, Please reply to this email.
 
 <small class="text-sm">
 Thanks,<br>

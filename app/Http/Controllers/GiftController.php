@@ -84,6 +84,9 @@ class GiftController extends Controller
 
     public function destroyGift(Gift $gift)
     {
+        $subscription = Subscription::where('id',$gift->subscription_id)->first();
+        $subscription->SubIssues()->delete();
+        $subscription->delete();
         $gift->delete();
         return redirect('admin/gifts')->with('message', 'member removed');
     }

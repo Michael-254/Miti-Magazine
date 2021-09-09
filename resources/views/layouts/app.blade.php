@@ -148,7 +148,7 @@
                             </li>
                             <li class="{{ (request()->is('user/invites')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="{{route('user.invite')}}" data-toggle="dropdown" data-i18n="2 columns">Invite Others</a>
                             </li>
-                            <li class="{{ (request()->is('user/payments')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="{{route('user.payments')}}" data-toggle="dropdown" data-i18n="Fixed navbar">My payments and Invoices</a>
+                            <li class="{{ (request()->is('user/payments')) ? 'active' : '' }}" data-menu=""><a class="dropdown-item" href="{{route('user.payments')}}" data-toggle="dropdown" data-i18n="Fixed navbar">My payments and Receipts</a>
                             </li>
                         </ul>
                     </li>
