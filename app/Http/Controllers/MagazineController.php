@@ -42,7 +42,7 @@ class MagazineController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'issue_no' => 'required|unique:magazines,issue_no',
+            'issue_no' => 'required',
             'title' => 'required|unique:magazines,title',
             'file' => 'required|mimes:pdf',
             'image' => 'required|mimes:jpeg,jpg,png,gif',
@@ -69,14 +69,16 @@ class MagazineController extends Controller
         // $inventoryItemFind = $sage->getTransaction('InventoryItemFind?Code='.$code);
         // $response = json_decode($inventoryItemFind, true);
 
-        $magazine = Magazine::create([
-            'item_code' => $request->item_code,
+        $magazine = Magazine::updateOrCreate([
             'issue_no' => $request->issue_no,
+        ],[
+            'item_code' => $request->item_code,
             'title' => $request->title,
             'slug' => $slug,
             'file' => $filename,
             'image' =>  $image_name,
             'quantity' =>  $request->inventory,
+            'created_at' => Carbon::now()->toDateString(),
         ]);
 
         return redirect('admin/file-manager')->with('message','Uploaded successfully');
