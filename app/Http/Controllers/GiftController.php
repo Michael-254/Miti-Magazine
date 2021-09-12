@@ -9,6 +9,7 @@ use App\Models\SubscriptionPlan;
 use App\Models\Magazine;
 use App\Models\Gift;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -47,7 +48,7 @@ class GiftController extends Controller
         }
 
         $quantity = SubscriptionPlan::findOrFail($request->plan)->quantity;
-        $referenceId = "GIFTED" . auth()->id();
+        $referenceId = Carbon::now()->timestamp;
         $subscription = Subscription::create([
             'user_id' => $customer->id,
             'subscription_plan_id' => $request->plan,

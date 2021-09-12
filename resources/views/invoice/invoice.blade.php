@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div class="col-sm-6 col-12 text-right">
-                    <h1 class="font-bold text-3xl">Invoice</h1>
+                    <h1 class="font-bold text-3xl">Receipt</h1>
                     <div class="invoice-details mt-2">
                         <h6 class="font-bold">RECEIPT NO.</h6>
                         <p>{{ $invoice->invoice_no }}</p>

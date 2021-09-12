@@ -31,7 +31,7 @@
                                                 <div class="card-deck">
                                                     @forelse($subscriptions as $magazine)
                                                     @foreach($magazine->SubIssues as $issue)
-                                                    @if($issuefound = App\Models\Magazine::where('issue_no',$issue->issue_no)->first())
+                                                    @if($issuefound = App\Models\Magazine::where([['issue_no',$issue->issue_no],['created_at','!=','']])->first())
                                                     <div class="col-xl-3 col-md-6 col-sm-12">
                                                         <div class="card">
                                                             <div class="card-content">
@@ -75,7 +75,7 @@
 
                                                     @forelse($invites as $invite)
                                                     @foreach($invite->subscriptionSize->SubIssues as $issue)
-                                                    @if($issuefound = App\Models\Magazine::where('issue_no',$issue->issue_no)->first())
+                                                    @if($issuefound = App\Models\Magazine::where([['issue_no',$issue->issue_no],['created_at','!=','']])->first())
                                                     <div class="col-xl-3 col-md-6 col-sm-12">
                                                         <div class="card">
                                                             <div class="card-content">
