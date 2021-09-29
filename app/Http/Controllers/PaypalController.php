@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Srmklive\PayPal\Services\PayPal as PayPalClient;
-use App\Models\Paypal as Payment;
 use App\Models\SubscriptionPlan;
 use App\Models\Shipping;
 use App\Models\Amount;
@@ -17,6 +16,7 @@ use App\Models\InvoiceItem;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Magazine;
+use App\Models\Paypal;
 use App\Models\Subscription;
 use App\Models\SelectedIssue;
 use Carbon\Carbon;
@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Delights\Sage\SageEvolution;
+use Illuminate\Support\Facades\Mail as FacadesMail;
 use PDF;
 use Mail;
 
@@ -97,7 +98,7 @@ class PaypalController extends Controller
         ]);
 
 
-        Payment::create([
+        Paypal::create([
             'user_id' => Session::get('customer_id'),
             'currency' => $currency,
             'amount' => $amount,
@@ -133,16 +134,17 @@ class PaypalController extends Controller
 
         $paypalToken = $request->get('token');
         $PayerID = $request->get('PayerID');
-        $payment = Payment::where('paypal_order_id', $order_id)->update(['token' => $paypalToken, 'PayerId' => $PayerID]);
+        $payment = Paypal::where('paypal_order_id', $order_id)->update(['token' => $paypalToken, 'PayerId' => $PayerID]);
+        $response = Paypal::where('paypal_order_id', $order_id)->first();
 
         $data = [
             'intro'  => 'Dear ' . $customer->name . ',',
             'content'   => 'Your order  has been well received. Kindly go to your paypal account and approve the payment.',
             'name' => $customer->name,
             'email' => $customer->email,
-            'subject'  => 'Successful Payment for Order No. ' . $payment->reference
+            'subject'  => 'Successful Payment for Order No. ' . $response->reference
         ];
-        Mail::send('emails.paypal-mail', $data, function ($message) use ($data) {
+        FacadesMail::send('emails.paypal-mail', $data, function ($message) use ($data) {
             $message->to($data['email'], $data['name'])
                 ->subject($data['subject']);
         });
@@ -178,20 +180,12 @@ class PaypalController extends Controller
         $token = $provider->getAccessToken();
         $provider->setAccessToken($token);
 
-        $post = [
-            'cmd' => '_notify-validate',
-        ];
-        $data = $request->all();
-        foreach ($data as $key => $value) {
-            $post[$key] = $value;
-        }
+        $data_back = $request->all();
+        $referenceId = $data_back['resource']['purchase_units'][0]['reference_id'];
+        Paypal::whereReference($referenceId)->update(['payload' => json_encode($data_back['resource']), 'status' => $data_back['resource']['status']]);
+        $payment = Paypal::whereReference($referenceId)->first();
 
-        $response = (string) $this->provider->verifyIPN($post);
-
-        $paypalToken = $request->get('token');
-        $payment = Payment::whereToken($paypalToken)->update(['payload' => json_encode($post), 'status' => $response]);
-
-        if ($response == 'VERIFIED') {
+        if ($data_back['resource']['status'] == 'APPROVED'|| $data_back['resource']['status'] == 'COMPLETED') {
             Order::where('reference', $payment->reference)->update(['status' => 'verified']);
 
             Subscription::where('reference', $payment->reference)->update(['status' => 'paid']);
@@ -273,8 +267,9 @@ class PaypalController extends Controller
 
             $OrderNo = 'SO' . str_pad($invoiceID , 4, '0', STR_PAD_LEFT);
             $InvoiceNo = 'RCPT' . str_pad($invoiceID , 4, '0', STR_PAD_LEFT);
+            $customer = User::where('id',$customerID)->first();
             //end of changes
-
+            
             $invoice = Invoice::create([
                 'user_id' => $customerID,
                 'reference' => $payment->reference,

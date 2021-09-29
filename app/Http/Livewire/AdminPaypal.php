@@ -18,7 +18,7 @@ class AdminPaypal extends Component
     { 
         return view('livewire.admin-paypal',[
             'payments' => Paypal::with('user')
-            ->where('status','verified')
+            ->where('status','APPROVED')
             ->search(trim($this->search))
             ->paginate(10),
         ]);
