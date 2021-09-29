@@ -29,9 +29,9 @@ class ViewTransactionController extends Controller
         }
     }
 
-    public function paypalInvoice(Paypal $paypal)
+    public function paypalInvoice(Paypal $payment)
     {
-        $invoice = Invoice::where('reference', '=', $paypal->reference)->first();
+        $invoice = Invoice::where('reference', '=', $payment->reference)->first();
         if (!$invoice) {
             abort(404);
         } else {
