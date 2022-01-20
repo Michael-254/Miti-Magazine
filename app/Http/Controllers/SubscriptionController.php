@@ -26,7 +26,7 @@ class SubscriptionController extends Controller
         $plan_type = Session::get('plan_type');
         $currency = SubscriptionPlan::findOrFail($plan_id);
         $amount = Amount::whereSubscriptionPlanId($plan_id)->value($plan_type);
-        $recentmagazines = Magazine::whereYear('created_at', '=', Carbon::now()->format('Y'))->latest()->limit(4)->get();
+        $recentmagazines = Magazine::whereNotNull('created_at')->latest()->limit(4)->get();
         return view('selected-plan', compact('amount', 'currency', 'countries', 'plan_type', 'recentmagazines'));
     }
 
