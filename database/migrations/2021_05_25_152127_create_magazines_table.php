@@ -22,6 +22,7 @@ class CreateMagazinesTable extends Migration
             $table->string('file');
             $table->string('image');
             $table->integer('quantity')->nullable();
+            $table->string('type')->default('payable');
             $table->timestamps();
         });
     }

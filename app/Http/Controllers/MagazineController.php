@@ -97,6 +97,19 @@ class MagazineController extends Controller
         return view('read', compact('magazine'));
     }
 
+    public function freeDownload($slug)
+    {
+        $magazine = Magazine::whereSlug($slug)->first();
+        abort_if($magazine->type == 'payable',404);
+
+        $file = public_path() . '/files/magazines/'.$magazine->file;
+
+        $headers = ['Content-Type: application/pdf'];
+    
+        return \Response::download($file,$magazine->file, $headers);
+
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
