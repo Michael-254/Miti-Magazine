@@ -10,8 +10,9 @@ class HomePageController extends Controller
 {
     public function welcome()
     {
-        $recentmagazines = Magazine::latest()->limit(4)->get();
-        return view('welcome',compact('recentmagazines'));
+        $recentmagazines = Magazine::where('type','payable')->latest()->limit(4)->get();
+        $freemagazines = Magazine::where('type','promotional')->latest()->limit(4)->get();
+        return view('welcome',compact('recentmagazines','freemagazines'));
     }
 
     public function previous()

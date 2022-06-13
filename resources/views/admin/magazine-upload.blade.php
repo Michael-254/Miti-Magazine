@@ -46,7 +46,7 @@
 
                                                             <div class="col-12">
                                                                 <div class="form-group">
-                                                                    <label class="font-bold text-green-600">Quanity in Stock</label>
+                                                                    <label class="font-bold text-green-600">Quantity in Stock</label>
                                                                     <div>
                                                                         <input type="text" name="inventory" value="{{old('inventory')}}" class="rounded-md border-gray-400 form-control" placeholder="Quantity">
                                                                     </div>

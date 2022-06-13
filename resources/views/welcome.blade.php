@@ -19,39 +19,49 @@
 
 </div>
 
-
-<section>
-    <div class="container">
-        <div class="text-xl text-center mb-3">
-            <h2 class="font-bold text-xl uppercase px-8 text-black">Recent Miti Issues</h2>
-        </div>
-        <div class="row">
-            @foreach($recentmagazines as $magazine)
-            <div class="col-xl-3 col-md-6 col-sm-12 mt-2" data-animate="fadeInUp" data-animate-delay="0">
-                <div class="card">
-                    <div class="card-content">
-                        @if ($magazine->type == 'payable')
-                        <a href="{{ url('user/read/'.$magazine->slug)}}" class="mt-2">
-                            <div class="card-body">
-                                <img class="card-img-top img-fluid" src="{{asset('files/magazines/cover/'.$magazine->image)}}" alt="Card image cap">
-                                <h5 class="my-1 font-bold text-blue-600">Issue {{$magazine->issue_no}} ({{$magazine->title}})</h5>
-                            </div>
-                        </a>
-                        @else
-                        <a href="{{ route('downloadissue',$magazine->slug)}}" class="mt-2">
-                            <div class="card-body">
-                                <img class="card-img-top img-fluid" src="{{asset('files/magazines/cover/'.$magazine->image)}}" alt="Card image cap">
-                                <h5 class="my-1 font-bold text-blue-600">Issue {{$magazine->issue_no}} ({{$magazine->title}})</h5>
-                            </div>
-                        </a>
-                        @endif
-                    </div>
+<div class="container pt-16">
+    <div class="text-xl text-center mb-1">
+        <h2 class="font-bold text-xl uppercase text-black">Recent Miti Issues</h2>
+    </div>
+    <div class="row">
+        @foreach($recentmagazines as $magazine)
+        <div class="col-xl-3 col-md-6 col-sm-12 mt-2" data-animate="fadeInUp" data-animate-delay="0">
+            <div class="card">
+                <div class="card-content">
+                    <a href="{{ url('user/read/'.$magazine->slug)}}" class="mt-2">
+                        <div class="card-body">
+                            <img class="card-img-top img-fluid" src="{{asset('files/magazines/cover/'.$magazine->image)}}" alt="Card image cap">
+                            <h5 class="my-1 font-bold text-blue-600">Issue {{$magazine->issue_no}} ({{$magazine->title}})</h5>
+                        </div>
+                    </a>
                 </div>
             </div>
-            @endforeach
         </div>
+        @endforeach
     </div>
-</section>
+</div>
+
+<div class="container pt-4">
+    <div class="text-xl text-center mb-3">
+        <h2 class="font-bold text-xl uppercase text-black">Free to Download Miti Issues</h2>
+    </div>
+    <div class="row">
+        @foreach($freemagazines as $magazine)
+        <div class="col-xl-3 col-md-6 col-sm-12 mt-1" data-animate="fadeInUp" data-animate-delay="0">
+            <div class="card">
+                <div class="card-content">
+                    <a href="{{ route('downloadissue',$magazine->slug)}}" class="mt-2">
+                        <div class="card-body">
+                            <img class="card-img-top img-fluid" src="{{asset('files/magazines/cover/'.$magazine->image)}}" alt="Card image cap">
+                            <h5 class="my-1 font-bold text-blue-600">Issue {{$magazine->issue_no}} ({{$magazine->title}})</h5>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        @endforeach
+    </div>
+</div>
 
 
 <section class="bg-success text-center">
