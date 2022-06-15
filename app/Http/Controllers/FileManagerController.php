@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Magazine;
+
 class FileManagerController extends Controller
 {
     /**
@@ -13,4 +15,5 @@ class FileManagerController extends Controller
     {
         return view('admin.file-manager');
     }
+
 }

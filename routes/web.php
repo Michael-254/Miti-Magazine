@@ -58,6 +58,9 @@ Route::prefix('user')->middleware(['auth', 'useremail'])->group(function () {
 //Admin Links
 Route::prefix('admin')->middleware(['auth', 'useremail', 'AdminAccess'])->group(function () {
     Route::get('file-manager', 'FileManagerController@index')->name('manage.magazines');
+    Route::get('give-promotional-magazine', 'MagazineController@givePromotion')->name('promote.magazine');
+    Route::patch('give-promotional-magazine', 'MagazineController@updatePromotion')->name('update.promotion');
+    Route::get('destroy-promotional-magazine/{id}', 'MagazineController@destroyPromotion')->name('destroy.promotion');
     Route::view('subscription-plans', 'admin.subscription-plans')->name('manage.plans')->middleware('SuperAccess');
     Route::view('upload-magazine', 'admin.magazine-upload')->name('upload.magazine');
     Route::post('post-magazine', 'MagazineController@store')->name('magazine.upload');

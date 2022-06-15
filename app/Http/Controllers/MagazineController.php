@@ -143,4 +143,19 @@ class MagazineController extends Controller
     {
         //
     }
+
+    public function givePromotion(){
+        $magazines = Magazine::all();
+        return view('admin.create-promotion',compact('magazines'));
+    }
+
+    public function updatePromotion(Request $request){
+        Magazine::findOrFail($request->magazine)->update(['type'=>'promotional']);
+        return redirect()->back()->with('message','Promotion Created successfully');
+    }
+
+    public function destroyPromotion($id){
+        Magazine::findOrFail($id)->update(['type'=>'payable']);
+        return redirect()->back()->with('message','Promotion destroyed successfully');
+    }
 }
