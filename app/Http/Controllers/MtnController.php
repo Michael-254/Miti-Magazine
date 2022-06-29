@@ -52,7 +52,7 @@ class MtnController extends Controller
         $collection = new Collection();
 
         $transactionId = Carbon::now()->timestamp;
-        $momoTransactionId = $collection->requestToPay($transactionId, '0780123456', 100);
+        $momoTransactionId = $collection->requestToPay($transactionId, '256772485678', 100);
 
         dd($momoTransactionId);
     }
@@ -64,66 +64,31 @@ class MtnController extends Controller
      */
     public function payment()
     {
-        $cashier = new Cashier();
+        $collection = new Collection();
 
-        $transactChannels = [
-            Cashier::CHANNEL_MPESA,
-            Cashier::CHANNEL_BONGA,
-            Cashier::CHANNEL_AIRTEL,
-            cashier::CHANNEL_EQUITY,
-            cashier::CHANNEL_MOBILE_BANKING,
-            cashier::CHANNEL_DEBIT_CARD,
-            cashier::CHANNEL_CREDIT_CARD,
-            cashier::CHANNEL_MKOPO_RAHISI,
-            cashier::CHANNEL_SAIDA,
-            cashier::CHANNEL_ELIPA,
-            cashier::CHANNEL_UNIONPAY,
-            cashier::CHANNEL_MVISA,
-            cashier::CHANNEL_VOOMA,
-            cashier::CHANNEL_PESAPAL,
-        ];
-        
         $currency = Session::get('currency');
         $amount = Session::get('amount');
         $orderId = Session::get('referenceId');
         $invoiceNo = $orderId;
         
-        if ($currency == 'KSh') {
-            $currency = "KES";
-            $amount = $amount;
-        }
-        elseif ($currency == 'TSh') {
-            $currency = "KES";
-            $amount = round($amount/21);
-        }
-        elseif ($currency == 'UGX') {
-            $currency = "KES";
-            $amount = round($amount/33);
-        }
-        else {
-            $currency = "KES";
-            $amount = round($amount*109);
-        }
+        $currency = "UGX";
+        $amount = $amount;
+      
         Session::put('user_currency', $currency);
         Session::put('user_amount', $amount);
 
         $customer = User::findOrFail(Session::get('customer_id'));
-        $fields = $cashier
-            ->usingChannels($transactChannels)
-            ->usingVendorId(env('IPAY_VENDOR_ID'), env('IPAY_VENDOR_SECRET'))
-            ->withCallback(env('APP_URL').'/ipay/callback', env('APP_URL').'/ipay/failed')
-            ->withCustomer($customer->phone_no, $customer->email, false)
-            ->transact($amount, $orderId, $invoiceNo);
+        $momoTransactionId = $collection->requestToPay($orderId, $customer->phone_no, $amount);
 
         // Store in payment data in database
         Mtn::create([
             'user_id' => $customer->id,
-            'currency' => 'KES',
+            'currency' => $currency,
             'amount' => $amount,
             'reference' => $orderId
         ]);
 
-        return view('ipay', compact('fields'));
+        return redirect('/');
     }
 
     /**

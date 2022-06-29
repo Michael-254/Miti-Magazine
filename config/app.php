@@ -1,7 +1,7 @@
 <?php
 
 return [
-
+ 
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -171,7 +171,7 @@ return [
         /*
          * Package Service Providers...
          */
-        Delights\Ipay\IpayServiceProvider::class,
+        //Delights\Ipay\IpayServiceProvider::class,
         Delights\Mtn\MtnMomoServiceProvider::class,
         Delights\Sage\SageServiceProvider::class,
 

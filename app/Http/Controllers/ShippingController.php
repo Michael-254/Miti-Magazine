@@ -148,6 +148,8 @@ class ShippingController extends Controller
 
         if ($request->payment_method == 'paypal') {
             return redirect('paypal/checkout');
+        } elseif ($request->payment_method == 'mtn') {
+            return redirect('mtn/checkout');
         } else {
             return redirect('ipay/checkout');
         }

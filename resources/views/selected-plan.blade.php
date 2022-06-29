@@ -127,6 +127,8 @@
                                 <div class="list-group">
                                     <input type="radio" name="payment_method" value="ipay" id="Radio1" />
                                     <label class="list-group-item text-yellow-700" for="Radio1">Mpesa,Airtel Money or Card</label>
+                                    <input type="radio" name="payment_method" value="mtn" id="Radio2" />
+                                    <label class="list-group-item" for="Radio2"><img width="90" alt="mtn" src="/storage/mtn.png"> MTN</label>
                                     <input type="radio" name="payment_method" value="paypal" id="Radio3" />
                                     <label class="list-group-item" for="Radio3"><img width="90" alt="paypal" src="/storage/paypal.png"></label>
                                 </div>

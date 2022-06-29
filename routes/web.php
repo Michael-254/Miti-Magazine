@@ -14,7 +14,6 @@ use Illuminate\Http\Request;
 |
 */
 
-
 //EMAIL VERIFICATION
 Route::prefix('email')->group(function () {
     Route::view('verify', 'auth.verify-email')->middleware('auth')->name('verification.notice');

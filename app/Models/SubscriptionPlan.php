@@ -15,7 +15,7 @@ class SubscriptionPlan extends Model
         return $this->hasOne(Amount::class,'subscription_plan_id');
     }
 
-    public function currency():string
+    public function currency()
     {
         return [
             'Kenya' => 'KSh',
