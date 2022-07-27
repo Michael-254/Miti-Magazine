@@ -49,12 +49,25 @@ class MtnController extends Controller
      */
     public function testMtn()
     {
-        $collection = new Collection();
+        try {
+            $collection = new Collection();
+            
+            $transactionId = Carbon::now()->timestamp;
+            $momoTransactionId = $collection->requestToPay($transactionId, '256772485678', 100);
 
-        $transactionId = Carbon::now()->timestamp;
-        $momoTransactionId = $collection->requestToPay($transactionId, '256783717005', 10);
+            $transtatus = $collection->getTransactionStatus($momoTransactionId);
 
-        dd($momoTransactionId);
+            Log::info($momoTransactionId);
+            Log::info($transtatus);
+
+            //dd($momoTransactionId);
+            dd($transtatus);
+        } catch(CollectionRequestException $e) {
+            do {
+                printf("\n\r%s:%d %s (%d) [%s]\n\r", 
+                    $e->getFile(), $e->getLine(), $e->getMessage(), $e->getCode(), get_class($e));
+            } while($e = $e->getPrevious());
+        }
     }
 
     /**
