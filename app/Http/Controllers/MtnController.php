@@ -53,7 +53,7 @@ class MtnController extends Controller
             $collection = new Collection();
             
             $transactionId = Carbon::now()->timestamp;
-            $momoTransactionId = $collection->requestToPay($transactionId, '256772485678', 100);
+            $momoTransactionId = $collection->requestToPay($transactionId, '256783717005', 510);
 
             $transtatus = $collection->getTransactionStatus($momoTransactionId);
 
