@@ -53,7 +53,7 @@ class MtnController extends Controller
             $collection = new Collection();
             
             $transactionId = Carbon::now()->timestamp;
-            $momoTransactionId = $collection->requestToPay($transactionId, '256783717005', 510);
+            $momoTransactionId = $collection->requestToPay($transactionId, '256775392597', 510);
 
             $transtatus = $collection->getTransactionStatus($momoTransactionId);
 
@@ -77,31 +77,50 @@ class MtnController extends Controller
      */
     public function payment()
     {
-        $collection = new Collection();
+        try {
+            $customer = User::findOrFail(Session::get('customer_id'));
 
-        $currency = Session::get('currency');
-        $amount = Session::get('amount');
-        $orderId = Session::get('referenceId');
-        $invoiceNo = $orderId;
+            $currency = Session::get('currency');
+            $amount = Session::get('amount');
+            $orderId = Session::get('referenceId');
+            $invoiceNo = $orderId;
+            
+            $currency = "UGX";
+            $amount = $amount;
         
-        $currency = "UGX";
-        $amount = $amount;
-      
-        Session::put('user_currency', $currency);
-        Session::put('user_amount', $amount);
+            Session::put('user_currency', $currency);
+            Session::put('user_amount', $amount);
 
-        $customer = User::findOrFail(Session::get('customer_id'));
-        $momoTransactionId = $collection->requestToPay($orderId, $customer->phone_no, $amount);
+            $msisdn = ltrim($customer->phone_no, '0') ? '256'.ltrim($customer->phone_no, '0') : $customer->phone_no;
+            $msisdn = ltrim($customer->phone_no, '+') ? : $customer->phone_no; 
 
-        // Store in payment data in database
-        Mtn::create([
-            'user_id' => $customer->id,
-            'currency' => $currency,
-            'amount' => $amount,
-            'reference' => $orderId
-        ]);
+            $collection = new Collection();
+            
+            $transactionId = Carbon::now()->timestamp;
+            $momoTransactionId = $collection->requestToPay($transactionId, $msisdn, $amount);
 
-        return redirect('/');
+            $transtatus = $collection->getTransactionStatus($momoTransactionId);
+
+            Log::info($momoTransactionId);
+            Log::info($transtatus);
+
+            // Store in payment data in database
+            Mtn::create([
+                'user_id' => $customer->id,
+                'currency' => $currency,
+                'amount' => $amount,
+                'reference' => $orderId,
+                'access_token' => $momoTransactionId,
+                'product' => 'Collection',
+            ]);
+
+            return redirect('/');
+        } catch(CollectionRequestException $e) {
+            do {
+                printf("\n\r%s:%d %s (%d) [%s]\n\r", 
+                    $e->getFile(), $e->getLine(), $e->getMessage(), $e->getCode(), get_class($e));
+            } while($e = $e->getPrevious());
+        }
     }
 
     /**
@@ -113,36 +132,22 @@ class MtnController extends Controller
      */
     public function callback(Request $request)
     {
-        /* Response
-         * http://localhost/ipay/callback?status=aei7p7yrx4ae34&txncd=PG28TZAZ0E&msisdn_id=JOHN+DOE&msisdn_idnum=254722000000&p1=&p2=&p3=&p4=&uyt=1817486427&agt=658397967&qwh=1226344355&ifd=784861590&afd=1521439284&poi=78179582&id=1625230215&ivm=1625230215&mc=5.00&channel=MPESA
-        */
-
         $currency = Session::get('user_currency');
         $amount = Session::get('user_amount');
         $orderId = Session::get('referenceId');
         $user_id = Session::get('customer_id');
         $customer = User::findorFail($user_id);
 
-        $ipayStatus = $request->status;
-        if($ipayStatus == 'fe2707etr5s4wq') { 
-            return redirect('subscribe/plan')->with('info', 'Failed transaction. Not all parameters fulfilled. A notification of this transaction sent to the merchant.');
+        $mtnStatus = $request->status;
+        if($mtnStatus == 'FAILED') { 
+            return redirect('subscribe/plan')->with('info', 'Failed transaction. Not all parameters fulfilled. Either the phone number is wrong or you have insufficient funds.');
         }
-        elseif($ipayStatus == 'bdi6p2yy76etrs') { 
-            return redirect('subscribe/plan')->with('info', 'Pending: Incoming Mobile Money Transaction Not found. Please try again in 5 minutes.');
+        elseif($mtnStatus == 'PENDING') { 
+            return redirect('subscribe/plan')->with('info', 'Pending: Transaction awaiting confirmation.');
         }
-        elseif($ipayStatus == 'dtfi4p7yty45wq') { 
-            return redirect('subscribe/plan')->with('info', 'Less: The amount that you have sent via mobile money is LESS than what was required to validate this transaction.');
-        }
-        elseif($ipayStatus == 'cr5i3pgy9867e1') { 
-            return redirect('subscribe/plan')->with('info', 'Used: This code has been used already. Try again!.');
-        }
-        elseif($ipayStatus == 'eq3i7p5yt7645e') { 
-            return redirect('subscribe/plan')->with('info', 'More: The amount that you have sent via mobile money is MORE than what was required to validate this transaction. (Up to the merchant to decide what to do with this transaction; whether to pass it or not)');
-        }
-        elseif($ipayStatus == 'aei7p7yrx4ae34') { 
-            $msisdn_id = isset($request->msisdn_id) ? $request->msisdn_id : null; 
-            $msisdn_idnum = isset($request->msisdn_idnum) ? $request->msisdn_idnum : null; 
-            $payment = Mtn::where('reference', $orderId)->update(['msisdn_id' => $msisdn_id, 'msisdn_idnum' => $msisdn_idnum, 'txncd' => $request->txncd, 'channel' => $request->channel, 'status' => 'verified']);
+        elseif($mtnStatus == 'SUCCESS') { 
+            $msisdn_id = isset($request->payer) ? $request->payer['partyId'] : null; 
+            $payment = Mtn::where('reference', $orderId)->update(['msisdn_id' => $msisdn_id, 'txncd' => $request->externalId, 'status' => 'verified']);
 
             Order::where('reference', $orderId)->update(['status' => 'verified']);
 
@@ -150,52 +155,80 @@ class MtnController extends Controller
 
             CartOrder::where('reference', $orderId)->update(['status' => 'verified']);
 
+            // $amounts = [];
+            // $issues = [];
+            // $quantity = [];
+            // $lines = [];
+            // $transaction = "";
+            // $subscription = Subscription::where('reference', $orderId)->first();
+            // $cartOrder = CartOrder::where('reference', $orderId)->first();
+            // if($cartOrder != null) {
+            //     $transaction = "Cart Order";
+            //     $amounts = $cartOrder->SubIssuesAmount();
+            //     $issues = $cartOrder->SubIssuesItemCode();
+            //     $quantity = $cartOrder->SubIssuesQuantity();
+
+            //     $counts = count($issues);
+            //     foreach($counts as $key => $count) {
+            //         array_push($lines, ["StockCode" => (string)$issues[$key], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[$key], "ToProcess" => (double)$quantity[$key], "UnitPrice" => (double)$amounts[$key]]);
+            //     }
+            // }
+            // else {
+            //     $transaction = "Subscription";
+            //     $amounts = $subscription->SubIssuesAmount();
+            //     $issues = $subscription->SubIssuesItemCode();
+            //     $quantity = $subscription->SubIssuesQuantity();
+
+            //     $lines = [["StockCode" => (string)$issues[0], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[0], "ToProcess" => (double)$quantity[0], "UnitPrice" => (double)$amounts[0]], ["StockCode" => (string)$issues[1], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[1], "ToProcess" => (double)$quantity[1], "UnitPrice" => (double)$amounts[1]], ["StockCode" => (string)$issues[2], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[2], "ToProcess" => (double)$quantity[2], "UnitPrice" => (double)$amounts[2]], ["StockCode" => (string)$issues[3], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[3], "ToProcess" => (double)$quantity[3], "UnitPrice" => (double)$amounts[3]]];
+            // }
+            // $sage = new SageEvolution();
+            // $response = $sage->postTransaction('SalesOrderProcessInvoice', (object)["quote" =>["CustomerAccountCode" => $customer->customer_code, "OrderDate" => "/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)/", "InvoiceDate" => "/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)/", "Lines" => $lines,"FinancialLines" => []]]);
+
+            // // Save invoice data
+            // $code = $issues[0];
+            // $inventoryTransaction = $sage->getTransaction('InventoryTransactionListByItemCode?Code='.$code.'&OrderBy=1&PageNumber=1&PageSize=5000000');
+            // $xml = simplexml_load_string($inventoryTransaction);
+            // $json = json_encode($xml);
+            // $responseInvoice = json_decode($json, true);
+            // $OrderNo = "";
+            // $InvoiceNo = "";
+            // $InvoiceDate = "";
+            // foreach($responseInvoice['InventoryTransactionDto'] as $key => $value) 
+            // {
+            //     if(end($responseInvoice['InventoryTransactionDto']) == $value) {
+            //         $OrderNo = $value['OrderNum'];
+            //         $InvoiceNo = $value['Reference'];
+            //         $InvoiceDate = Carbon::parse($value['Date']);
+            //     }
+            // }
+
+            //start of changes
+            $invoiceID = "";
+            $transaction = "";
             $amounts = [];
             $issues = [];
             $quantity = [];
-            $lines = [];
-            $transaction = "";
             $subscription = Subscription::where('reference', $orderId)->first();
             $cartOrder = CartOrder::where('reference', $orderId)->first();
-            if($cartOrder != null) {
+
+            if ($cartOrder != null) {
+                $invoiceID = $cartOrder->id;
                 $transaction = "Cart Order";
                 $amounts = $cartOrder->SubIssuesAmount();
                 $issues = $cartOrder->SubIssuesItemCode();
                 $quantity = $cartOrder->SubIssuesQuantity();
-
-                $counts = count($issues);
-                foreach($counts as $key => $count) {
-                    array_push($lines, ["StockCode" => (string)$issues[$key], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[$key], "ToProcess" => (double)$quantity[$key], "UnitPrice" => (double)$amounts[$key]]);
-                }
-            }
-            else {
+            } else {
+                $invoiceID = Order::where('reference', $orderId)->first()->id;
                 $transaction = "Subscription";
                 $amounts = $subscription->SubIssuesAmount();
                 $issues = $subscription->SubIssuesItemCode();
                 $quantity = $subscription->SubIssuesQuantity();
-
-                $lines = [["StockCode" => (string)$issues[0], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[0], "ToProcess" => (double)$quantity[0], "UnitPrice" => (double)$amounts[0]], ["StockCode" => (string)$issues[1], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[1], "ToProcess" => (double)$quantity[1], "UnitPrice" => (double)$amounts[1]], ["StockCode" => (string)$issues[2], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[2], "ToProcess" => (double)$quantity[2], "UnitPrice" => (double)$amounts[2]], ["StockCode" => (string)$issues[3], "WarehouseCode" => "MitiMagazineWH", "TaxCode" => "1", "Quantity" => (double)$quantity[3], "ToProcess" => (double)$quantity[3], "UnitPrice" => (double)$amounts[3]]];
             }
-            $sage = new SageEvolution();
-            $response = $sage->postTransaction('SalesOrderProcessInvoice', (object)["quote" =>["CustomerAccountCode" => $customer->customer_code, "OrderDate" => "/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)/", "InvoiceDate" => "/Date(".str_pad(Carbon::now()->timestamp, 13, '0', STR_PAD_RIGHT)."+0300)/", "Lines" => $lines,"FinancialLines" => []]]);
 
-            // Save invoice data
-            $code = $issues[0];
-            $inventoryTransaction = $sage->getTransaction('InventoryTransactionListByItemCode?Code='.$code.'&OrderBy=1&PageNumber=1&PageSize=5000000');
-            $xml = simplexml_load_string($inventoryTransaction);
-            $json = json_encode($xml);
-            $responseInvoice = json_decode($json, true);
-            $OrderNo = "";
-            $InvoiceNo = "";
-            $InvoiceDate = "";
-            foreach($responseInvoice['InventoryTransactionDto'] as $key => $value) 
-            {
-                if(end($responseInvoice['InventoryTransactionDto']) == $value) {
-                    $OrderNo = $value['OrderNum'];
-                    $InvoiceNo = $value['Reference'];
-                    $InvoiceDate = Carbon::parse($value['Date']);
-                }
-            }
+            $OrderNo = 'SO' . str_pad($invoiceID , 4, '0', STR_PAD_LEFT);
+            $InvoiceNo = 'RCPT' . str_pad($invoiceID , 4, '0', STR_PAD_LEFT);
+            //end of changes
+
             $invoice = Invoice::create([
                 'user_id' => $customer->id,
                 'reference' => $orderId,
@@ -203,7 +236,7 @@ class MtnController extends Controller
                 'transaction' => $transaction,
                 'sales_order_no' => $OrderNo,
                 'invoice_no' => $InvoiceNo,
-                'invoice_date'=> $InvoiceDate,
+                'invoice_date'=> Carbon::now(),
                 'currency' => $currency
             ]);
             $counts = count($issues);
@@ -234,7 +267,7 @@ class MtnController extends Controller
             // Login the user
             Auth::login($customer);
             
-            return redirect('/user/profile')->with('ok', 'Your iPay payment has been received, wait for confirmation');
+            return redirect('/user/profile')->with('message', 'Your MTN payment has been received, wait for confirmation');
         }
     }
 
@@ -253,7 +286,7 @@ class MtnController extends Controller
 
         CartOrder::where('reference', $orderId)->update(['status' => 'failed']);
 
-        return redirect('subscribe/plan')->with('info', 'Your iPay payment failed! Try again later.');
+        return redirect('subscribe/plan')->with('info', 'Your MTN payment failed! Try again later.');
     }
 
     /**

@@ -24,6 +24,7 @@ class Mtn extends Model
         'access_token',
         'refresh_token',
         'token_type',
+        'txncd',
         'product',
         'expires_at'
     ];

@@ -19,8 +19,14 @@ class CreateMtnsTable extends Migration
             $table->string('currency');
             $table->string('amount');
             $table->string('reference');
-            $table->string('msisdn');
+            $table->string('msisdn_id');
             $table->string('status')->default('unverified');
+            $table->string('access_token')->nullable();
+            $table->string('refresh_token')->nullable();
+            $table->string('token_type')->nullable();
+            $table->string('txncd')->nullable();
+            $table->string('product')->nullable();
+            $table->string('expires_at')->nullable();
             $table->timestamps();
         });
     }
